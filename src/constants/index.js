@@ -99,32 +99,42 @@ const blogPosts = [
   },
 ];
 
+
 const techStack = [
   {
-    category: "Frontend",
-    items: ["React.js", "Next.js", "TypeScript"],
+    category: "Languages",
+    items: ["C++", "Java", "JavaScript", "TypeScript", "Python"],
   },
   {
-    category: "Mobile",
-    items: ["React Native", "Expo"],
+    category: "Frontend",
+    items: ["React", "Next.js", "HTML5"],
   },
   {
     category: "Styling",
-    items: ["Tailwind CSS", "Sass", "CSS"],
+    items: ["CSS3", "Tailwind CSS"],
   },
   {
     category: "Backend",
-    items: ["Node.js", "Express", "NestJS", "Hono"],
+    items: ["Node.js", "REST APIs"],
   },
   {
-    category: "Database",
-    items: ["MongoDB", "PostgreSQL"],
+    category: "Databases",
+    items: ["MySQL", "SQL"],
+  },
+  {
+    category: "Cloud",
+    items: ["AWS", "Terraform", "Vercel"],
   },
   {
     category: "Dev Tools",
-    items: ["Git", "GitHub", "Docker"],
+    items: ["Git", "GitHub", "VS Code", "IntelliJ IDEA"],
+  },
+  {
+    category: "OS",
+    items: ["Linux(Ubuntu)", "Windows"],
   },
 ];
+
 
 const socials = [
   {
@@ -132,7 +142,7 @@ const socials = [
     text: "Github",
     icon: "/icons/github.svg",
     bg: "#f4656b",
-    link: "https://github.com/JavaScript-Mastery-Pro",
+    link: "https://github.com/Arlikhozhaev",
   },
   {
     id: 2,
@@ -153,7 +163,7 @@ const socials = [
     text: "LinkedIn",
     icon: "/icons/linkedin.svg",
     bg: "#05b6f6",
-    link: "https://www.linkedin.com/company/javascriptmastery/posts/?feedView=all",
+    link: "https://www.linkedin.com/arlikhozhaev",
   },
 ];
 
@@ -427,10 +437,10 @@ const ABOUT_LOCATION = {
       subtitle: "Meet the Developer Behind the Code",
       image: "/images/adrian.jpg",
       description: [
-        "Hey! I’m Adrian 👋, a web developer who enjoys building sleek, interactive websites that actually work well.",
-        "I specialize in JavaScript, React, and Next.js—and I love making things feel smooth, fast, and just a little bit delightful.",
-        "I’m big on clean UI, good UX, and writing code that doesn’t need a search party to debug.",
-        "Outside of dev work, you'll find me tweaking layouts at 2AM, sipping overpriced coffee, or impulse-buying gadgets I absolutely convinced myself I needed 😅",
+        "Hey! I’m Adrian 👋, a Software Engineer who enjoys building scalable, interactive and user-friendly websites that actually work well.",
+        "I specialize in C++, Java, JavaScript, React, and Next.js — and I love making things feel smooth, fast, and delightful.",
+        "I’m big on clean UI, good UX, solid backend and writing code that doesn’t need a search party to debug.",
+        "Outside of dev work, you'll find me boxing, hiking somewhere in the mountains, or literally nature glazing anywhere I can. 😅",
       ],
     },
   ],
