@@ -55,6 +55,6 @@ const Terminal = () => {
   );
 };
 
-const TerminalWindow = WindowWrapper(Terminal, "terminal");
+const terminalWindow = WindowWrapper(Terminal, "terminal");
 
-export default TerminalWindow;
+export default terminalWindow;
