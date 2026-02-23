@@ -77,13 +77,13 @@ const dockApps = [
 const blogPosts = [
   {
     id: 1,
-    date: "Sep 2, 2025",
+    date: "Feb 12, 2026",
     title:
-      "TypeScript Explained: What It Is, Why It Matters, and How to Master It",
+      "AI Made Student Developers Faster — But Not Necessarily Better",
     image: "/images/blog1.png",
-    link: "https://google.com/",
+    link: "https://medium.com/techtrends-digest/ai-made-student-developers-faster-but-not-necessarily-better-19750d07d0f6",
   },
-  {
+/*   {
     id: 2,
     date: "Aug 28, 2025",
     title: "The Ultimate Guide to Mastering Three.js for 3D Development",
@@ -96,7 +96,7 @@ const blogPosts = [
     title: "The Ultimate Guide to Mastering GSAP Animations",
     image: "/images/blog3.png",
     link: "https://google.com/",
-  },
+  }, */
 ];
 
 
@@ -198,19 +198,28 @@ const photosLinks = [
 const gallery = [
   {
     id: 1,
-    img: "/images/gal1.png",
+    img: "/images/gal1.jpg",
+    title: "High School Honors Graduate 🎓",
   },
   {
     id: 2,
-    img: "/images/gal2.png",
+    img: "/images/gal2.jpg",
+    title: "Judging Hacker Projects at nwHacks 2026 💻",
   },
   {
     id: 3,
-    img: "/images/gal3.png",
+    img: "/images/gal3.jpg",
+    title: "Happy Me 👍",
   },
   {
     id: 4,
-    img: "/images/gal4.png",
+    img: "/images/gal4.jpg",
+    title: "Hackathon in Waterloo ✨",
+  },
+  {
+    id: 5,
+    img: "/images/gal5.jpg",
+    title: "Hackathon Closing Ceremony 📚",
   },
 ];
 
@@ -402,43 +411,43 @@ const ABOUT_LOCATION = {
   children: [
     {
       id: 1,
-      name: "me.png",
+      name: "travel-me.png",
       icon: "/images/image.png",
       kind: "file",
       fileType: "img",
       position: "top-10 left-5",
-      imageUrl: "/images/adrian.jpg",
+      imageUrl: "/images/travel-me.jpg",
     },
     {
       id: 2,
-      name: "casual-me.png",
+      name: "nomad-me.png",
       icon: "/images/image.png",
       kind: "file",
       fileType: "img",
       position: "top-28 right-72",
-      imageUrl: "/images/adrian-2.jpg",
+      imageUrl: "/images/nomad-me.jpg",
     },
     {
       id: 3,
-      name: "conference-me.png",
+      name: "boxing-me.png",
       icon: "/images/image.png",
       kind: "file",
       fileType: "img",
       position: "top-52 left-80",
-      imageUrl: "/images/adrian-3.jpeg",
+      imageUrl: "/images/boxing-me.jpg",
     },
     {
       id: 4,
-      name: "about-me.txt",
+      name: "Abdu-Alim.txt",
       icon: "/images/txt.png",
       kind: "file",
       fileType: "txt",
       position: "top-60 left-5",
       subtitle: "Meet the Developer Behind the Code",
-      image: "/images/adrian.jpg",
+      image: "/images/young-me.jpg",
       description: [
-        "Hey! I’m Adrian 👋, a Software Engineer who enjoys building scalable, interactive and user-friendly websites that actually work well.",
-        "I specialize in C++, Java, JavaScript, React, and Next.js — and I love making things feel smooth, fast, and delightful.",
+        "Hey! I’m Abdu Alim 👋, a Software Engineer who enjoys building scalable, interactive and user-friendly websites that actually work well.",
+        "I specialize in C++, Java, JavaScript, TypeScript, React, and Next.js — and I love making things feel smooth, fast, and delightful.",
         "I’m big on clean UI, good UX, solid backend and writing code that doesn’t need a search party to debug.",
         "Outside of dev work, you'll find me boxing, hiking somewhere in the mountains, or literally nature glazing anywhere I can. 😅",
       ],
