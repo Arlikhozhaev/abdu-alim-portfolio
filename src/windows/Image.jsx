@@ -17,7 +17,7 @@ const Image = () => {
         <h2>{name}</h2>
       </div>
 
-      <div className="p-5 bg-white">
+      <div className="p-5 bg-gray-200 dark:bg-zinc-800 max-h-[70vh]">
         {imageUrl ? (
           <div className="w-full">
             <img
