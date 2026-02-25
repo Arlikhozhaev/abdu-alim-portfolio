@@ -31,7 +31,7 @@ const navIcons = [
   },
   {
     id: 4,
-    img: "/icons/mode.svg",
+    img: "/icons/moon.svg",
   },
 ];
 

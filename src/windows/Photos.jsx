@@ -5,7 +5,7 @@ import useWindowStore from "#store/window";
 import { Mail, Search } from "lucide-react";
 
 const Photos = () => {
-  const { openWindow } = useWindowStore();
+  const { openDynamicWindow } = useWindowStore();
 
   return (
     <>
@@ -32,19 +32,15 @@ const Photos = () => {
           </ul>
         </div>
 
-        {/* Masonry gallery using CSS columns — no JS, no gaps */}
         <div
           className="flex-1 overflow-y-auto p-2"
-          style={{
-            columnCount: 2,
-            columnGap: "4px",
-          }}
+          style={{ columnCount: 2, columnGap: "4px" }}
         >
           {gallery.map(({ id, img, title, desc }) => (
             <div
               key={id}
               onClick={() =>
-                openWindow("imgfile", {
+                openDynamicWindow({
                   id,
                   name: title,
                   icon: "/images/image.png",
@@ -66,12 +62,31 @@ const Photos = () => {
               <img
                 src={img}
                 alt={title}
-                style={{
-                  width: "100%",
-                  height: "auto",   
-                  display: "block",
-                }}
+                style={{ width: "100%", height: "auto", display: "block" }}
               />
+
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  background: "linear-gradient(transparent, rgba(0,0,0,0.6))",
+                  padding: "24px 10px 10px",
+                  opacity: 0,
+                  transition: "opacity 0.2s ease",
+                }}
+                className="group-hover:opacity-100"
+              >
+                <p style={{ color: "white", fontSize: "13px", fontWeight: 600, margin: 0 }}>
+                  {title}
+                </p>
+                {desc && (
+                  <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "11px", margin: "2px 0 0" }}>
+                    {desc}
+                  </p>
+                )}
+              </div>
             </div>
           ))}
         </div>

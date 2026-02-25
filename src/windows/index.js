@@ -6,5 +6,6 @@ import Text from "./Text";
 import Image from "./Image";
 import Contact from "./Contact";
 import Photos from "./Photos";
+import DynamicWindows from "./DynamicWindows";
 
-export { Terminal, Safari, Resume, Finder, Text, Image, Contact, Photos };
+export { Terminal, Safari, Resume, Finder, Text, Image, Contact, Photos, DynamicWindows };
