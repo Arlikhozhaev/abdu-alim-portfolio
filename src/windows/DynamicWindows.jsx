@@ -38,8 +38,8 @@ const DynamicImageWindow = ({ windowData }) => {
     <section
       ref={ref}
       id="imgfile"
-      className="absolute w-xl top-40 left-[16%]"
-      style={{ zIndex }}
+      className="absolute overflow-hidden"
+      style={{ zIndex, width: "36rem", height: "80vh", top: "5rem", left: "16%" }}
       onMouseDown={() => focusDynamicWindow(key)}
     >
       <div id="window-header">
@@ -55,12 +55,15 @@ const DynamicImageWindow = ({ windowData }) => {
         <p className="font-bold text-[#5f6266] dark:text-zinc-400">{name}</p>
       </div>
 
-      <div className="p-2 bg-gray-200 dark:bg-zinc-800 max-h-[70vh] overflow-auto">
+      <div 
+        className="p-2 bg-gray-200 dark:bg-zinc-800 flex items-center justify-center"
+        style={{ height: "calc(100% - 44px)" }}
+      >
         {imageUrl && (
           <img
             src={imageUrl}
             alt={name}
-            className="w-full h-fit object-contain object-center"
+            style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", borderRadius: 6 }}
           />
         )}
       </div>

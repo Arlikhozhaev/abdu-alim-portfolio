@@ -7,7 +7,7 @@ import clsx from "clsx";
 import useWindowStore from "#store/window";
 
 const Finder = () => {
-  const { openWindow } = useWindowStore();
+  const { openWindow, openDynamicWindow } = useWindowStore();
   const { activeLocation, setActiveLocation } = useLocationStore();
 
   const openItem = (item) => {
@@ -15,6 +15,17 @@ const Finder = () => {
     if (item.kind === "folder") return setActiveLocation(item);
     if (["fig", "url"].includes(item.fileType) && item.href) {
       return window.open(item.href, "_blank");
+    }
+
+    if (item.fileType === "img") {
+      return openDynamicWindow({
+        id: item.id,
+        name: item.name,
+        icon: item.icon,
+        kind: "file",
+        fileType: "img",
+        imageUrl: item.imageUrl,
+      });
     }
 
     openWindow(`${item.fileType}${item.kind}`, item);
