@@ -11,10 +11,11 @@ const DynamicImageWindow = ({ windowData }) => {
   const { name, imageUrl } = data;
   const ref = useRef(null);
 
-  // Entrance animation
+  // entrance animation
   useGSAP(() => {
     const el = ref.current;
     if (!el) return;
+    focusDynamicWindow(key);
     gsap.fromTo(
       el,
       { scale: 0.8, opacity: 0, y: 40 },
@@ -22,7 +23,7 @@ const DynamicImageWindow = ({ windowData }) => {
     );
   }, []);
 
-  // Draggable
+  // draggable
   useGSAP(() => {
     const el = ref.current;
     if (!el) return;
@@ -67,7 +68,6 @@ const DynamicImageWindow = ({ windowData }) => {
   );
 };
 
-// Renders ALL open dynamic windows — drop this once in your App.jsx
 const DynamicWindows = () => {
   const { dynamicWindows } = useWindowStore();
   return (

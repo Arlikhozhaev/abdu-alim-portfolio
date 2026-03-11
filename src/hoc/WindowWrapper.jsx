@@ -15,6 +15,7 @@ const WindowWrapper = (Component, windowKey) => {
             if(!el || !isOpen) return;
 
             el.style.display = "block";
+            focusWindow(windowKey);
 
             gsap.fromTo(
                 el, 
