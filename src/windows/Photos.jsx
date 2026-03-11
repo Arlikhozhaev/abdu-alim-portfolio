@@ -18,7 +18,7 @@ const Photos = () => {
         </div>
       </div>
 
-      <div className="flex w-full h-full overflow-hidden">
+      <div className="flex w-full overflow-hidden" style={{ height: "70vh" }}>
         <div className="sidebar">
           <h2>Photos</h2>
 
