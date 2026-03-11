@@ -27,9 +27,16 @@ const Resume = () => {
         </a>
       </div>
 
-      <Document file="files/resume.pdf">
-        <Page pageNumber={1} renderTextLayer renderAnnotationLayer />
-      </Document>
+      <div className="overflow-hidden">
+        <Document file="files/resume.pdf">
+          <Page
+            pageNumber={1}
+            width={550}
+            renderTextLayer
+            renderAnnotationLayer
+          />
+        </Document>
+      </div>
     </>
   );
 };
