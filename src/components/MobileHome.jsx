@@ -53,22 +53,14 @@ const HomeIndicator = ({ onPress }) => (
 
 <<<<<<< Updated upstream
 // ─── App Sheet with swipe-to-close ───────────────────────────────────────────
-const SWIPE_THRESHOLD = 120; // px down to trigger dismiss
-const SWIPE_VELOCITY  = 0.5; // px/ms fast flick also triggers dismiss
-=======
-// ─── App Sheet with swipe-up-to-close ────────────────────────────────────────
 const SWIPE_THRESHOLD = 100;
 const SWIPE_VELOCITY  = 0.4;
->>>>>>> Stashed changes
 
 const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) => {
-  const sheetRef  = useRef(null);
+  const sheetRef   = useRef(null);
   const overlayRef = useRef(null);
+  const touch      = useRef({ startY: 0, startTime: 0, dragging: false });
 
-  // Touch state stored in a ref so handlers don't cause re-renders
-  const touch = useRef({ startY: 0, startTime: 0, dragging: false, scrollEl: null });
-
-  // ── Open / close animation ──────────────────────────────────────────────
   useGSAP(() => {
     const sheet   = sheetRef.current;
     const overlay = overlayRef.current;
@@ -94,12 +86,12 @@ const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) =
     }
   }, [isOpen]);
 
-  // ── Swipe helpers ────────────────────────────────────────────────────────
   const dismiss = useCallback(() => {
 <<<<<<< Updated upstream
     const sheet   = sheetRef.current;
     const overlay = overlayRef.current;
-    gsap.to(sheet,   { y: "100%", duration: 0.32, ease: "power3.in",
+    // Slide UP and out — like iOS home swipe
+    gsap.to(sheet,   { y: "-100%", duration: 0.32, ease: "power3.in",
       onComplete: () => { gsap.set(sheet, { y: 0, pointerEvents: "none" }); onClose(); }
 =======
     gsap.to(sheetRef.current, {
@@ -114,42 +106,20 @@ const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) =
     gsap.to(sheetRef.current, { y: 0, duration: 0.4, ease: "back.out(2)" });
   }, []);
 
-<<<<<<< Updated upstream
-  // ── Touch handlers attached to the drag-handle zone ─────────────────────
-=======
->>>>>>> Stashed changes
+  // Touch on the BOTTOM bar / home indicator
   const onTouchStart = useCallback((e) => {
-    // Find the scrollable child so we can ignore drags that are actually scrolls
-    const scrollEl = sheetRef.current?.querySelector("[data-scroll]");
-    touch.current = {
-      startY:    e.touches[0].clientY,
-      startTime: Date.now(),
-      dragging:  true,
-      scrollEl,
-      scrollTop: scrollEl?.scrollTop ?? 0,
-    };
+    touch.current = { startY: e.touches[0].clientY, startTime: Date.now(), dragging: true };
   }, []);
 
   const onTouchMove = useCallback((e) => {
-    const t = touch.current;
+    const t  = touch.current;
     if (!t.dragging) return;
-<<<<<<< Updated upstream
+    const dy = e.touches[0].clientY - t.startY; // negative = swipe up
+    if (dy >= 0) return; // ignore downward movement
 
-    const dy = e.touches[0].clientY - t.startY;
-
-    // If scrollable content isn't at the top, let it scroll normally
-    if (t.scrollEl && t.scrollEl.scrollTop > 0 && dy > 0) {
-      t.dragging = false;
-      return;
-    }
-
-    if (dy <= 0) return; // don't allow dragging up
-
-    // Resist drag slightly for feel
-    const resistance = 1 - Math.min(dy / 600, 0.4);
+    const resistance = 1 - Math.min(Math.abs(dy) / 600, 0.4);
     gsap.set(sheetRef.current, { y: dy * resistance });
-    // Fade overlay proportionally
-    const progress = Math.min(dy / SWIPE_THRESHOLD, 1);
+    const progress = Math.min(Math.abs(dy) / SWIPE_THRESHOLD, 1);
     gsap.set(overlayRef.current, { opacity: 1 - progress * 0.6 });
 =======
     const dy = e.touches[0].clientY - t.startY;
@@ -165,18 +135,10 @@ const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) =
     if (!t.dragging) return;
 <<<<<<< Updated upstream
     t.dragging = false;
-
-    const dy       = e.changedTouches[0].clientY - t.startY;
-    const elapsed  = Date.now() - t.startTime;
-    const velocity = dy / elapsed;
-
-    if (dy > SWIPE_THRESHOLD || velocity > SWIPE_VELOCITY) {
-=======
-    t.dragging     = false;
     const dy       = e.changedTouches[0].clientY - t.startY;
     const velocity = Math.abs(dy) / (Date.now() - t.startTime);
+
     if (dy < -SWIPE_THRESHOLD || velocity > SWIPE_VELOCITY) {
->>>>>>> Stashed changes
       dismiss();
     } else {
       springBack();
@@ -195,21 +157,8 @@ const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) =
         ref={sheetRef}
         style={{ position: "fixed", bottom: 0, left: 0, right: 0, height: "92dvh", zIndex: 101, borderRadius: "20px 20px 0 0", backgroundColor: "#1c1c1e", overflow: "hidden", opacity: 0, pointerEvents: "none", display: "flex", flexDirection: "column", willChange: "transform" }}
       >
-<<<<<<< Updated upstream
-        {/* ── Drag handle zone — touch starts here ── */}
-        <div
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
-          style={{ padding: "12px 16px 0", flexShrink: 0, touchAction: "none" }}
-        >
-          {/* Pill — visual affordance */}
-          <div style={{ width: 36, height: 5, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.35)", margin: "0 auto 12px" }} />
-
-=======
-        {/* Header */}
+        {/* Header — no touch events here anymore */}
         <div style={{ padding: "12px 16px 0", flexShrink: 0 }}>
->>>>>>> Stashed changes
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <img src={appIcon} alt={appName} style={{ width: 36, height: 36, borderRadius: 9, objectFit: "contain" }} />
@@ -225,19 +174,11 @@ const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) =
           <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.08)" }} />
         </div>
 
-<<<<<<< Updated upstream
-        {/* Scrollable content — data-scroll lets swipe handler check position */}
-=======
-        {/* Scrollable content */}
->>>>>>> Stashed changes
         <div data-scroll style={{ flex: 1, overflowY: "auto", padding: "16px" }}>
           {children}
         </div>
 
-<<<<<<< Updated upstream
-        <HomeIndicator onPress={onClose} />
-=======
-        {/* Swipe-up-to-close zone */}
+        {/* Bottom swipe zone — swipe UP from here to close */}
         <div
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
@@ -246,7 +187,6 @@ const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) =
         >
           <HomeIndicator onPress={onClose} />
         </div>
->>>>>>> Stashed changes
       </div>
     </>
   );
