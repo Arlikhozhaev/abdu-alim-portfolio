@@ -6,7 +6,15 @@ import {
   X, MoveRight, Check, Flag, ExternalLink, ChevronLeft,
   Download, Trash2, FolderOpen, FileText, User,
 } from "lucide-react";
+import { Document, Page, pdfjs } from "react-pdf";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import "react-pdf/dist/Page/TextLayer.css";
 import { gallery, techStack, blogPosts, socials } from "#constants";
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.mjs",
+  import.meta.url,
+).toString();
 
 // ─── iOS Status Bar ───────────────────────────────────────────────────────────
 const StatusBar = () => {
@@ -51,7 +59,6 @@ const HomeIndicator = ({ onPress }) => (
   </div>
 );
 
-<<<<<<< Updated upstream
 // ─── App Sheet with swipe-to-close ───────────────────────────────────────────
 const SWIPE_THRESHOLD = 100;
 const SWIPE_VELOCITY  = 0.4;
@@ -87,17 +94,9 @@ const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) =
   }, [isOpen]);
 
   const dismiss = useCallback(() => {
-<<<<<<< Updated upstream
-    const sheet   = sheetRef.current;
-    const overlay = overlayRef.current;
-    // Slide UP and out — like iOS home swipe
-    gsap.to(sheet,   { y: "-100%", duration: 0.32, ease: "power3.in",
-      onComplete: () => { gsap.set(sheet, { y: 0, pointerEvents: "none" }); onClose(); }
-=======
     gsap.to(sheetRef.current, {
       y: "-100%", duration: 0.32, ease: "power3.in",
       onComplete: () => { gsap.set(sheetRef.current, { y: 0, pointerEvents: "none" }); onClose(); },
->>>>>>> Stashed changes
     });
     gsap.to(overlayRef.current, { opacity: 0, duration: 0.25, pointerEvents: "none" });
   }, [onClose]);
@@ -106,7 +105,6 @@ const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) =
     gsap.to(sheetRef.current, { y: 0, duration: 0.4, ease: "back.out(2)" });
   }, []);
 
-  // Touch on the BOTTOM bar / home indicator
   const onTouchStart = useCallback((e) => {
     touch.current = { startY: e.touches[0].clientY, startTime: Date.now(), dragging: true };
   }, []);
@@ -114,26 +112,16 @@ const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) =
   const onTouchMove = useCallback((e) => {
     const t  = touch.current;
     if (!t.dragging) return;
-    const dy = e.touches[0].clientY - t.startY; // negative = swipe up
-    if (dy >= 0) return; // ignore downward movement
-
-    const resistance = 1 - Math.min(Math.abs(dy) / 600, 0.4);
-    gsap.set(sheetRef.current, { y: dy * resistance });
-    const progress = Math.min(Math.abs(dy) / SWIPE_THRESHOLD, 1);
-    gsap.set(overlayRef.current, { opacity: 1 - progress * 0.6 });
-=======
     const dy = e.touches[0].clientY - t.startY;
     if (dy >= 0) return;
     const resistance = 1 - Math.min(Math.abs(dy) / 600, 0.4);
     gsap.set(sheetRef.current,   { y: dy * resistance });
     gsap.set(overlayRef.current, { opacity: 1 - Math.min(Math.abs(dy) / SWIPE_THRESHOLD, 1) * 0.6 });
->>>>>>> Stashed changes
   }, []);
 
   const onTouchEnd = useCallback((e) => {
     const t = touch.current;
     if (!t.dragging) return;
-<<<<<<< Updated upstream
     t.dragging = false;
     const dy       = e.changedTouches[0].clientY - t.startY;
     const velocity = Math.abs(dy) / (Date.now() - t.startTime);
@@ -157,7 +145,6 @@ const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) =
         ref={sheetRef}
         style={{ position: "fixed", bottom: 0, left: 0, right: 0, height: "92dvh", zIndex: 101, borderRadius: "20px 20px 0 0", backgroundColor: "#1c1c1e", overflow: "hidden", opacity: 0, pointerEvents: "none", display: "flex", flexDirection: "column", willChange: "transform" }}
       >
-        {/* Header — no touch events here anymore */}
         <div style={{ padding: "12px 16px 0", flexShrink: 0 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -178,7 +165,6 @@ const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) =
           {children}
         </div>
 
-        {/* Bottom swipe zone — swipe UP from here to close */}
         <div
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
@@ -334,7 +320,7 @@ const NotesApp = () => (
         ⚡ What sets me apart
       </p>
       <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.65, margin: 0 }}>
-        I don't just code — I learn fast, adapt quickly, and ship results. I thrive where creativity meets engineering: optimizing systems, solving hard problems, and building things that actually matter.
+        I don't just code - I learn fast, adapt quickly, and ship results. I thrive where creativity meets engineering: optimizing systems, solving hard problems, and building things that actually matter.
       </p>
     </div>
 
@@ -343,7 +329,7 @@ const NotesApp = () => (
         💻 Stack
       </p>
       <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.65, margin: 0 }}>
-        C++, Java, JavaScript, TypeScript, Python · React, Next.js · FastAPI, Node.js · PostgreSQL, Firebase · AWS, Vercel
+        C++, Java, JavaScript, TypeScript, Python, React, Next.js, FastAPI, Node.js, PostgreSQL, Firebase, AWS, Vercel
       </p>
     </div>
 
@@ -352,7 +338,7 @@ const NotesApp = () => (
         🥊 Outside the keyboard
       </p>
       <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.65, margin: 0 }}>
-        Boxing, hiking in the mountains, and nature glazing wherever I can find it. Stepping away from the screen makes me a better engineer. 😅
+        Boxing, hiking in the mountains, and nature gazing wherever I can find it. Stepping away from the screen helps me recharge, think clearly, and come back a better engineer.
       </p>
     </div>
 
@@ -396,56 +382,92 @@ const TerminalApp = () => (
 );
 
 // ─── Resume App ───────────────────────────────────────────────────────────────
-const ResumeApp = () => (
-  <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-    {/* Preview card */}
-    <div style={{ backgroundColor: "#2c2c2e", borderRadius: 20, padding: 24, display: "flex", flexDirection: "column", alignItems: "center", gap: 16, border: "1px solid rgba(255,255,255,0.08)" }}>
-      {/* Doc icon */}
-      <div style={{ width: 80, height: 100, borderRadius: 10, background: "linear-gradient(145deg, #1c4f8a, #0A84FF)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 8px 32px rgba(10,132,255,0.35)", position: "relative" }}>
-        <div style={{ position: "absolute", top: 0, right: 0, width: 20, height: 20, background: "rgba(255,255,255,0.15)", borderRadius: "0 10px 0 10px" }} />
-        <FileText size={32} color="white" />
+const ResumeApp = () => {
+  const [numPages, setNumPages]   = useState(null);
+  const [scale, setScale]         = useState(1);
+  const containerRef              = useRef(null);
+  const [pageWidth, setPageWidth] = useState(300);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      setPageWidth(containerRef.current.offsetWidth - 32);
+    }
+  }, []);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      {/* Actions */}
+      <div style={{ display: "flex", gap: 8 }}>
+        <a
+          href="/files/resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: "#0A84FF", color: "white", fontWeight: 600, fontSize: 13, padding: "12px 0", borderRadius: 12, textDecoration: "none" }}
+        >
+          <ExternalLink size={14} /> Open
+        </a>
+        <a
+          href="/files/resume.pdf"
+          download="Abdu-Alim-Resume.pdf"
+          style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: "rgba(255,255,255,0.1)", color: "white", fontWeight: 600, fontSize: 13, padding: "12px 0", borderRadius: 12, textDecoration: "none" }}
+        >
+          <Download size={14} /> Download
+        </a>
       </div>
 
-      <div style={{ textAlign: "center" }}>
-        <p style={{ color: "white", fontWeight: 700, fontSize: 17, margin: "0 0 4px", letterSpacing: "-0.3px" }}>Abdu Alim — Resume</p>
-        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, margin: 0 }}>PDF · Updated 2025</p>
+      {/* Zoom controls */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10, padding: "8px 0" }}>
+        <button
+          onClick={() => setScale(s => Math.max(0.5, s - 0.25))}
+          style={{ background: "none", border: "none", color: "white", fontSize: 20, cursor: "pointer", padding: "0 12px" }}
+        >
+          −
+        </button>
+        <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, minWidth: 40, textAlign: "center" }}>
+          {Math.round(scale * 100)}%
+        </span>
+        <button
+          onClick={() => setScale(s => Math.min(2.5, s + 0.25))}
+          style={{ background: "none", border: "none", color: "white", fontSize: 20, cursor: "pointer", padding: "0 12px" }}
+        >
+          +
+        </button>
       </div>
 
-      {/* Highlights */}
-      <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: 8 }}>
-        {[
-          "💼 Software Engineering · Full Stack",
-          "🎓 Computer Science @ Langara College",
-          "📍 Vancouver, BC · Open to internships & full-time",
-          "🛠 C++, Python, JavaScript, TypeScript, Next.js, FastAPI",
-        ].map((line, i) => (
-          <div key={i} style={{ backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10, padding: "10px 14px" }}>
-            <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 13, margin: 0, lineHeight: 1.4 }}>{line}</p>
-          </div>
-        ))}
+      {/* PDF Viewer */}
+      <div
+        ref={containerRef}
+        style={{ backgroundColor: "#2c2c2e", borderRadius: 12, overflow: "auto", maxHeight: "55vh", padding: "16px 0" }}
+      >
+        <Document
+          file="/files/resume.pdf"
+          onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+          loading={
+            <p style={{ color: "rgba(255,255,255,0.4)", textAlign: "center", padding: 24, fontSize: 13 }}>
+              Loading...
+            </p>
+          }
+          error={
+            <p style={{ color: "#ff453a", textAlign: "center", padding: 24, fontSize: 13 }}>
+              Failed to load PDF.
+            </p>
+          }
+        >
+          {Array.from({ length: numPages || 0 }, (_, i) => (
+            <div key={i} style={{ marginBottom: 8, display: "flex", justifyContent: "center" }}>
+              <Page
+                pageNumber={i + 1}
+                width={pageWidth * scale}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+              />
+            </div>
+          ))}
+        </Document>
       </div>
     </div>
-
-    {/* Actions */}
-    <a
-      href="/files/resume.pdf"
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, backgroundColor: "#0A84FF", color: "white", fontWeight: 600, fontSize: 15, padding: "14px 0", borderRadius: 14, textDecoration: "none" }}
-    >
-      <ExternalLink size={16} />
-      Open Resume
-    </a>
-    <a
-      href="/files/resume.pdf"
-      download="Abdu-Alim-Resume.pdf"
-      style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, backgroundColor: "rgba(255,255,255,0.1)", color: "white", fontWeight: 600, fontSize: 15, padding: "14px 0", borderRadius: 14, textDecoration: "none" }}
-    >
-      <Download size={16} />
-      Download PDF
-    </a>
-  </div>
-);
+  );
+};
 
 // ─── Finder App ───────────────────────────────────────────────────────────────
 const FinderApp = () => {
@@ -545,11 +567,11 @@ const FinderApp = () => {
           </div>
 
           <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 14 }}>
-            <p style={{ color: "#0A84FF", fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: 1, margin: "0 0 8px" }}>
+            <p style={{ color: "#0A84FF", fontWeight: 700, fontSize: 13, textTransform: "uppercase", letterSpacing: 1, margin: "0 0 8px" }}>
               ⚡ What sets me apart
             </p>
             <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 13, lineHeight: 1.65, margin: 0 }}>
-              I learn fast, adapt quickly, and ship results. I thrive where creativity meets engineering.
+              I don't just code - I learn fast, adapt quickly, and ship results. I thrive where creativity meets engineering: optimizing systems, solving hard problems, and building things that actually matter.
             </p>
           </div>
 
@@ -558,7 +580,7 @@ const FinderApp = () => {
               💻 Stack
             </p>
             <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.65, margin: 0 }}>
-              C++, Java, JavaScript, TypeScript, Python · React, Next.js · FastAPI, Node.js · PostgreSQL, Firebase · AWS, Vercel
+              C++, Java, JavaScript, TypeScript, Python, React, Next.js, FastAPI, Node.js, PostgreSQL, Firebase, AWS, Vercel
             </p>
           </div>
 
@@ -567,7 +589,7 @@ const FinderApp = () => {
               🥊 Outside the keyboard
             </p>
             <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.65, margin: 0 }}>
-              Boxing, hiking in the mountains, and nature glazing wherever I can find it. Stepping away from the screen makes me a better engineer. 😅
+              Boxing, hiking in the mountains, and nature gazing wherever I can find it. Stepping away from the screen helps me recharge, think clearly, and come back a better engineer.
             </p>
           </div>
 
