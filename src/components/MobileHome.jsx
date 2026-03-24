@@ -3,8 +3,18 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import dayjs from "dayjs";
 import {
-  X, MoveRight, Check, Flag, ExternalLink, ChevronLeft,
-  Download, Trash2, FolderOpen, FileText, User,
+  X,
+  MoveRight,
+  Check,
+  Flag,
+  ExternalLink,
+  ChevronLeft,
+  Download,
+  Trash2,
+  FolderOpen,
+  FileText,
+  User,
+  Briefcase,
 } from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -27,25 +37,77 @@ const StatusBar = () => {
 
   return (
     <div className="flex justify-between items-center px-6 pt-3 pb-1 select-none">
-      <span style={{ fontFamily: "'SF Pro Display', system-ui", fontWeight: 600, fontSize: "17px", color: "white", letterSpacing: "-0.3px" }}>
+      <span
+        style={{
+          fontFamily: "'SF Pro Display', system-ui",
+          fontWeight: 600,
+          fontSize: "17px",
+          color: "white",
+          letterSpacing: "-0.3px",
+        }}
+      >
         {time}
       </span>
       <div className="flex items-center gap-1.5">
         <div className="flex items-end gap-0.5">
           {[3, 5, 7, 9].map((h, i) => (
-            <div key={i} style={{ width: 3, height: h, borderRadius: 1.5, backgroundColor: i < 3 ? "white" : "rgba(255,255,255,0.35)" }} />
+            <div
+              key={i}
+              style={{
+                width: 3,
+                height: h,
+                borderRadius: 1.5,
+                backgroundColor: i < 3 ? "white" : "rgba(255,255,255,0.35)",
+              }}
+            />
           ))}
         </div>
         <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
           <path d="M8 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z" fill="white" />
-          <path d="M3.5 6.5a6.5 6.5 0 0 1 9 0" stroke="white" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-          <path d="M1 4a10 10 0 0 1 14 0" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+          <path
+            d="M3.5 6.5a6.5 6.5 0 0 1 9 0"
+            stroke="white"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            fill="none"
+          />
+          <path
+            d="M1 4a10 10 0 0 1 14 0"
+            stroke="rgba(255,255,255,0.5)"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            fill="none"
+          />
         </svg>
         <div className="flex items-center gap-0.5">
-          <div style={{ width: 24, height: 12, borderRadius: 3, border: "1.5px solid rgba(255,255,255,0.7)", padding: "1.5px", display: "flex", alignItems: "center" }}>
-            <div style={{ width: "75%", height: "100%", borderRadius: 1.5, backgroundColor: "white" }} />
+          <div
+            style={{
+              width: 24,
+              height: 12,
+              borderRadius: 3,
+              border: "1.5px solid rgba(255,255,255,0.7)",
+              padding: "1.5px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                width: "75%",
+                height: "100%",
+                borderRadius: 1.5,
+                backgroundColor: "white",
+              }}
+            />
           </div>
-          <div style={{ width: 2, height: 5, borderRadius: 1, backgroundColor: "rgba(255,255,255,0.5)" }} />
+          <div
+            style={{
+              width: 2,
+              height: 5,
+              borderRadius: 1,
+              backgroundColor: "rgba(255,255,255,0.5)",
+            }}
+          />
         </div>
       </div>
     </div>
@@ -54,40 +116,71 @@ const StatusBar = () => {
 
 // ─── Home Indicator ───────────────────────────────────────────────────────────
 const HomeIndicator = ({ onPress }) => (
-  <div className="flex justify-center pb-2 pt-3" onClick={onPress} style={{ cursor: "pointer" }}>
-    <div style={{ width: 134, height: 5, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.4)" }} />
+  <div
+    className="flex justify-center pb-2 pt-3"
+    onClick={onPress}
+    style={{ cursor: "pointer" }}
+  >
+    <div
+      style={{
+        width: 134,
+        height: 5,
+        borderRadius: 3,
+        backgroundColor: "rgba(255,255,255,0.4)",
+      }}
+    />
   </div>
 );
 
 // ─── App Sheet with swipe-to-close ───────────────────────────────────────────
 const SWIPE_THRESHOLD = 100;
-const SWIPE_VELOCITY  = 0.4;
+const SWIPE_VELOCITY = 0.4;
 
-const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) => {
-  const sheetRef   = useRef(null);
+const AppSheet = ({
+  isOpen,
+  onClose,
+  children,
+  appName,
+  appIcon,
+  originRect,
+}) => {
+  const sheetRef = useRef(null);
   const overlayRef = useRef(null);
-  const touch      = useRef({ startY: 0, startTime: 0, dragging: false });
+  const touch = useRef({ startY: 0, startTime: 0, dragging: false });
 
   useGSAP(() => {
-    const sheet   = sheetRef.current;
+    const sheet = sheetRef.current;
     const overlay = overlayRef.current;
     if (!sheet || !overlay) return;
 
     if (isOpen && originRect) {
-      const cx = originRect.left + originRect.width  / 2;
-      const cy = originRect.top  + originRect.height / 2;
+      const cx = originRect.left + originRect.width / 2;
+      const cy = originRect.top + originRect.height / 2;
       gsap.set(sheet, {
-        y: 0, scale: 0.05, opacity: 0,
+        y: 0,
+        scale: 0.05,
+        opacity: 0,
         transformOrigin: `${(cx / window.innerWidth) * 100}% ${(cy / window.innerHeight) * 100}%`,
-        borderRadius: "50%", pointerEvents: "auto",
+        borderRadius: "50%",
+        pointerEvents: "auto",
       });
       gsap.set(overlay, { opacity: 0, pointerEvents: "auto" });
-      gsap.to(sheet,   { scale: 1, opacity: 1, borderRadius: "20px 20px 0 0", duration: 0.45, ease: "expo.out" });
+      gsap.to(sheet, {
+        scale: 1,
+        opacity: 1,
+        borderRadius: "20px 20px 0 0",
+        duration: 0.45,
+        ease: "expo.out",
+      });
       gsap.to(overlay, { opacity: 1, duration: 0.3 });
     } else {
       gsap.to(sheet, {
-        scale: 0.05, opacity: 0, duration: 0.3, ease: "expo.in",
-        onComplete: () => gsap.set(sheet, { pointerEvents: "none", y: 0, scale: 1 }),
+        scale: 0.05,
+        opacity: 0,
+        duration: 0.3,
+        ease: "expo.in",
+        onComplete: () =>
+          gsap.set(sheet, { pointerEvents: "none", y: 0, scale: 1 }),
       });
       gsap.to(overlay, { opacity: 0, duration: 0.25, pointerEvents: "none" });
     }
@@ -95,10 +188,19 @@ const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) =
 
   const dismiss = useCallback(() => {
     gsap.to(sheetRef.current, {
-      y: "-100%", duration: 0.32, ease: "power3.in",
-      onComplete: () => { gsap.set(sheetRef.current, { y: 0, pointerEvents: "none" }); onClose(); },
+      y: "-100%",
+      duration: 0.32,
+      ease: "power3.in",
+      onComplete: () => {
+        gsap.set(sheetRef.current, { y: 0, pointerEvents: "none" });
+        onClose();
+      },
     });
-    gsap.to(overlayRef.current, { opacity: 0, duration: 0.25, pointerEvents: "none" });
+    gsap.to(overlayRef.current, {
+      opacity: 0,
+      duration: 0.25,
+      pointerEvents: "none",
+    });
   }, [onClose]);
 
   const springBack = useCallback(() => {
@@ -106,62 +208,134 @@ const AppSheet = ({ isOpen, onClose, children, appName, appIcon, originRect }) =
   }, []);
 
   const onTouchStart = useCallback((e) => {
-    touch.current = { startY: e.touches[0].clientY, startTime: Date.now(), dragging: true };
+    touch.current = {
+      startY: e.touches[0].clientY,
+      startTime: Date.now(),
+      dragging: true,
+    };
   }, []);
 
   const onTouchMove = useCallback((e) => {
-    const t  = touch.current;
+    const t = touch.current;
     if (!t.dragging) return;
     const dy = e.touches[0].clientY - t.startY;
     if (dy >= 0) return;
     const resistance = 1 - Math.min(Math.abs(dy) / 600, 0.4);
-    gsap.set(sheetRef.current,   { y: dy * resistance });
-    gsap.set(overlayRef.current, { opacity: 1 - Math.min(Math.abs(dy) / SWIPE_THRESHOLD, 1) * 0.6 });
+    gsap.set(sheetRef.current, { y: dy * resistance });
+    gsap.set(overlayRef.current, {
+      opacity: 1 - Math.min(Math.abs(dy) / SWIPE_THRESHOLD, 1) * 0.6,
+    });
   }, []);
 
-  const onTouchEnd = useCallback((e) => {
-    const t = touch.current;
-    if (!t.dragging) return;
-    t.dragging = false;
-    const dy       = e.changedTouches[0].clientY - t.startY;
-    const velocity = Math.abs(dy) / (Date.now() - t.startTime);
+  const onTouchEnd = useCallback(
+    (e) => {
+      const t = touch.current;
+      if (!t.dragging) return;
+      t.dragging = false;
+      const dy = e.changedTouches[0].clientY - t.startY;
+      const velocity = Math.abs(dy) / (Date.now() - t.startTime);
 
-    if (dy < -SWIPE_THRESHOLD || velocity > SWIPE_VELOCITY) {
-      dismiss();
-    } else {
-      springBack();
-      gsap.to(overlayRef.current, { opacity: 1, duration: 0.2 });
-    }
-  }, [dismiss, springBack]);
+      if (dy < -SWIPE_THRESHOLD || velocity > SWIPE_VELOCITY) {
+        dismiss();
+      } else {
+        springBack();
+        gsap.to(overlayRef.current, { opacity: 1, duration: 0.2 });
+      }
+    },
+    [dismiss, springBack],
+  );
 
   return (
     <>
       <div
         ref={overlayRef}
         onClick={onClose}
-        style={{ position: "fixed", inset: 0, zIndex: 100, backgroundColor: "rgba(0,0,0,0.6)", pointerEvents: "none", opacity: 0, backdropFilter: "blur(6px)" }}
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 100,
+          backgroundColor: "rgba(0,0,0,0.6)",
+          pointerEvents: "none",
+          opacity: 0,
+          backdropFilter: "blur(6px)",
+        }}
       />
       <div
         ref={sheetRef}
-        style={{ position: "fixed", bottom: 0, left: 0, right: 0, height: "92dvh", zIndex: 101, borderRadius: "20px 20px 0 0", backgroundColor: "#1c1c1e", overflow: "hidden", opacity: 0, pointerEvents: "none", display: "flex", flexDirection: "column", willChange: "transform" }}
+        style={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: "92dvh",
+          zIndex: 101,
+          borderRadius: "20px 20px 0 0",
+          backgroundColor: "#1c1c1e",
+          overflow: "hidden",
+          opacity: 0,
+          pointerEvents: "none",
+          display: "flex",
+          flexDirection: "column",
+          willChange: "transform",
+        }}
       >
         <div style={{ padding: "12px 16px 0", flexShrink: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: 12,
+            }}
+          >
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <img src={appIcon} alt={appName} style={{ width: 36, height: 36, borderRadius: 9, objectFit: "contain" }} />
-              <span style={{ color: "white", fontWeight: 700, fontSize: 18, letterSpacing: "-0.3px" }}>{appName}</span>
+              <img
+                src={appIcon}
+                alt={appName}
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 9,
+                  objectFit: "contain",
+                }}
+              />
+              <span
+                style={{
+                  color: "white",
+                  fontWeight: 700,
+                  fontSize: 18,
+                  letterSpacing: "-0.3px",
+                }}
+              >
+                {appName}
+              </span>
             </div>
             <button
               onClick={onClose}
-              style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", border: "none", cursor: "pointer" }}
+              style={{
+                width: 32,
+                height: 32,
+                borderRadius: 16,
+                backgroundColor: "rgba(255,255,255,0.15)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "none",
+                cursor: "pointer",
+              }}
             >
               <X size={16} color="white" />
             </button>
           </div>
-          <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.08)" }} />
+          <div
+            style={{ height: 1, backgroundColor: "rgba(255,255,255,0.08)" }}
+          />
         </div>
 
-        <div data-scroll style={{ flex: 1, overflowY: "auto", padding: "16px" }}>
+        <div
+          data-scroll
+          style={{ flex: 1, overflowY: "auto", padding: "16px" }}
+        >
           {children}
         </div>
 
@@ -183,27 +357,100 @@ const PhotoLightbox = ({ photo, onClose }) => {
   const ref = useRef(null);
 
   useGSAP(() => {
-    gsap.fromTo(ref.current, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.25, ease: "power3.out" });
+    gsap.fromTo(
+      ref.current,
+      { opacity: 0, scale: 0.92 },
+      { opacity: 1, scale: 1, duration: 0.25, ease: "power3.out" },
+    );
   }, []);
 
   const handleClose = () => {
-    gsap.to(ref.current, { opacity: 0, scale: 0.92, duration: 0.2, ease: "power3.in", onComplete: onClose });
+    gsap.to(ref.current, {
+      opacity: 0,
+      scale: 0.92,
+      duration: 0.2,
+      ease: "power3.in",
+      onComplete: onClose,
+    });
   };
 
   return (
-    <div ref={ref} style={{ position: "absolute", inset: 0, zIndex: 200, backgroundColor: "#000", display: "flex", flexDirection: "column" }}>
-      <div style={{ display: "flex", alignItems: "center", padding: "16px", flexShrink: 0 }}>
-        <button onClick={handleClose} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, color: "#0A84FF" }}>
+    <div
+      ref={ref}
+      style={{
+        position: "absolute",
+        inset: 0,
+        zIndex: 200,
+        backgroundColor: "#000",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          padding: "16px",
+          flexShrink: 0,
+        }}
+      >
+        <button
+          onClick={handleClose}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: 4,
+            color: "#0A84FF",
+          }}
+        >
           <ChevronLeft size={20} />
           <span style={{ fontSize: 16 }}>Gallery</span>
         </button>
-        <p style={{ color: "white", fontWeight: 600, fontSize: 16, margin: "0 auto", letterSpacing: "-0.2px" }}>{photo.title}</p>
+        <p
+          style={{
+            color: "white",
+            fontWeight: 600,
+            fontSize: 16,
+            margin: "0 auto",
+            letterSpacing: "-0.2px",
+          }}
+        >
+          {photo.title}
+        </p>
       </div>
-      <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 8px" }}>
-        <img src={photo.img} alt={photo.title} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", borderRadius: 12 }} />
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "0 8px",
+        }}
+      >
+        <img
+          src={photo.img}
+          alt={photo.title}
+          style={{
+            maxWidth: "100%",
+            maxHeight: "100%",
+            objectFit: "contain",
+            borderRadius: 12,
+          }}
+        />
       </div>
       {photo.desc && (
-        <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, textAlign: "center", padding: "12px 16px 24px", margin: 0 }}>
+        <p
+          style={{
+            color: "rgba(255,255,255,0.5)",
+            fontSize: 13,
+            textAlign: "center",
+            padding: "12px 16px 24px",
+            margin: 0,
+          }}
+        >
           {photo.desc}
         </p>
       )}
@@ -217,7 +464,15 @@ const PhotosApp = () => {
 
   return (
     <div style={{ position: "relative" }}>
-      <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, marginBottom: 12, textTransform: "uppercase", letterSpacing: 1 }}>
+      <p
+        style={{
+          color: "rgba(255,255,255,0.4)",
+          fontSize: 12,
+          marginBottom: 12,
+          textTransform: "uppercase",
+          letterSpacing: 1,
+        }}
+      >
         Library
       </p>
       <div style={{ columns: 2, columnGap: 4 }}>
@@ -225,17 +480,58 @@ const PhotosApp = () => {
           <div
             key={photo.id}
             onClick={() => setSelected(photo)}
-            style={{ breakInside: "avoid", marginBottom: 4, borderRadius: 10, overflow: "hidden", position: "relative", cursor: "pointer" }}
+            style={{
+              breakInside: "avoid",
+              marginBottom: 4,
+              borderRadius: 10,
+              overflow: "hidden",
+              position: "relative",
+              cursor: "pointer",
+            }}
           >
-            <img src={photo.img} alt={photo.title} style={{ width: "100%", height: "auto", display: "block" }} />
-            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.7))", padding: "20px 8px 8px" }}>
-              <p style={{ color: "white", fontSize: 11, fontWeight: 600, margin: 0 }}>{photo.title}</p>
-              {photo.desc && <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 10, margin: "2px 0 0" }}>{photo.desc}</p>}
+            <img
+              src={photo.img}
+              alt={photo.title}
+              style={{ width: "100%", height: "auto", display: "block" }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                background: "linear-gradient(transparent, rgba(0,0,0,0.7))",
+                padding: "20px 8px 8px",
+              }}
+            >
+              <p
+                style={{
+                  color: "white",
+                  fontSize: 11,
+                  fontWeight: 600,
+                  margin: 0,
+                }}
+              >
+                {photo.title}
+              </p>
+              {photo.desc && (
+                <p
+                  style={{
+                    color: "rgba(255,255,255,0.65)",
+                    fontSize: 10,
+                    margin: "2px 0 0",
+                  }}
+                >
+                  {photo.desc}
+                </p>
+              )}
             </div>
           </div>
         ))}
       </div>
-      {selected && <PhotoLightbox photo={selected} onClose={() => setSelected(null)} />}
+      {selected && (
+        <PhotoLightbox photo={selected} onClose={() => setSelected(null)} />
+      )}
     </div>
   );
 };
@@ -243,17 +539,71 @@ const PhotosApp = () => {
 // ─── Safari App ───────────────────────────────────────────────────────────────
 const SafariApp = () => (
   <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-    <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, textTransform: "uppercase", letterSpacing: 1, margin: 0 }}>
+    <p
+      style={{
+        color: "rgba(255,255,255,0.4)",
+        fontSize: 12,
+        textTransform: "uppercase",
+        letterSpacing: 1,
+        margin: 0,
+      }}
+    >
       My Developer Blog
     </p>
     {blogPosts.map(({ id, image, title, date, link }) => (
-      <a key={id} href={link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block" }}>
-        <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, overflow: "hidden" }}>
-          <img src={image} alt={title} style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }} />
+      <a
+        key={id}
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ textDecoration: "none", display: "block" }}
+      >
+        <div
+          style={{
+            backgroundColor: "#2c2c2e",
+            borderRadius: 16,
+            overflow: "hidden",
+          }}
+        >
+          <img
+            src={image}
+            alt={title}
+            style={{
+              width: "100%",
+              height: 180,
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
           <div style={{ padding: 14 }}>
-            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, margin: "0 0 6px" }}>{date}</p>
-            <p style={{ color: "white", fontWeight: 600, fontSize: 15, lineHeight: 1.4, margin: "0 0 10px" }}>{title}</p>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, color: "#0A84FF" }}>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.4)",
+                fontSize: 11,
+                margin: "0 0 6px",
+              }}
+            >
+              {date}
+            </p>
+            <p
+              style={{
+                color: "white",
+                fontWeight: 600,
+                fontSize: 15,
+                lineHeight: 1.4,
+                margin: "0 0 10px",
+              }}
+            >
+              {title}
+            </p>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                color: "#0A84FF",
+              }}
+            >
               <span style={{ fontSize: 13 }}>Read full post</span>
               <MoveRight size={14} />
             </div>
@@ -267,29 +617,113 @@ const SafariApp = () => (
 // ─── Contact App ──────────────────────────────────────────────────────────────
 const ContactApp = () => (
   <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, paddingTop: 8 }}>
-      <img src="/images/abdualim.jpg" alt="Abdu Alim" style={{ width: 80, height: 80, borderRadius: 40, objectFit: "cover", border: "3px solid rgba(255,255,255,0.2)" }} />
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 12,
+        paddingTop: 8,
+      }}
+    >
+      <img
+        src="/images/abdualim.jpg"
+        alt="Abdu Alim"
+        style={{
+          width: 80,
+          height: 80,
+          borderRadius: 40,
+          objectFit: "cover",
+          border: "3px solid rgba(255,255,255,0.2)",
+        }}
+      />
       <div style={{ textAlign: "center" }}>
-        <p style={{ color: "white", fontWeight: 700, fontSize: 22, margin: 0, letterSpacing: "-0.3px" }}>Abdu Alim</p>
-        <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, margin: "4px 0 0" }}>Software Developer · Vancouver, BC</p>
+        <p
+          style={{
+            color: "white",
+            fontWeight: 700,
+            fontSize: 22,
+            margin: 0,
+            letterSpacing: "-0.3px",
+          }}
+        >
+          Abdu Alim
+        </p>
+        <p
+          style={{
+            color: "rgba(255,255,255,0.5)",
+            fontSize: 14,
+            margin: "4px 0 0",
+          }}
+        >
+          Software Developer · Vancouver, BC
+        </p>
       </div>
     </div>
 
     <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
-      <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, textTransform: "uppercase", letterSpacing: 1, margin: "0 0 8px" }}>Email</p>
-      <a href="mailto:arlikhozhaevca@gmail.com" style={{ color: "#0A84FF", fontSize: 15, textDecoration: "none" }}>
+      <p
+        style={{
+          color: "rgba(255,255,255,0.4)",
+          fontSize: 11,
+          textTransform: "uppercase",
+          letterSpacing: 1,
+          margin: "0 0 8px",
+        }}
+      >
+        Email
+      </p>
+      <a
+        href="mailto:arlikhozhaevca@gmail.com"
+        style={{ color: "#0A84FF", fontSize: 15, textDecoration: "none" }}
+      >
         arlikhozhaevca@gmail.com
       </a>
     </div>
 
     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-      <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, textTransform: "uppercase", letterSpacing: 1, margin: 0 }}>Socials</p>
+      <p
+        style={{
+          color: "rgba(255,255,255,0.4)",
+          fontSize: 11,
+          textTransform: "uppercase",
+          letterSpacing: 1,
+          margin: 0,
+        }}
+      >
+        Socials
+      </p>
       {socials.map(({ id, bg, link, icon, text }) => (
-        <a key={id} href={link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
-          <div style={{ backgroundColor: bg, borderRadius: 16, padding: "14px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <a
+          key={id}
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <div
+            style={{
+              backgroundColor: bg,
+              borderRadius: 16,
+              padding: "14px 16px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <img src={icon} alt={text} style={{ width: 20, height: 20, filter: "brightness(0) invert(1)" }} />
-              <span style={{ color: "white", fontWeight: 600, fontSize: 15 }}>{text}</span>
+              <img
+                src={icon}
+                alt={text}
+                style={{
+                  width: 20,
+                  height: 20,
+                  filter: "brightness(0) invert(1)",
+                }}
+              />
+              <span style={{ color: "white", fontWeight: 600, fontSize: 15 }}>
+                {text}
+              </span>
             </div>
             <ExternalLink size={14} color="rgba(255,255,255,0.7)" />
           </div>
@@ -302,51 +736,159 @@ const ContactApp = () => (
 // ─── Notes App (About Me) ─────────────────────────────────────────────────────
 const NotesApp = () => (
   <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-    <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, overflow: "hidden" }}>
-      <img src="/images/young-me.jpg" alt="Abdu Alim" style={{ width: "100%", height: "auto", display: "block", objectFit: "contain" }} />
+    <div
+      style={{
+        backgroundColor: "#2c2c2e",
+        borderRadius: 16,
+        overflow: "hidden",
+      }}
+    >
+      <img
+        src="/images/young-me.jpg"
+        alt="Abdu Alim"
+        style={{
+          width: "100%",
+          height: "auto",
+          display: "block",
+          objectFit: "contain",
+        }}
+      />
     </div>
 
     <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
-      <p style={{ color: "white", fontWeight: 700, fontSize: 17, margin: "0 0 8px", letterSpacing: "-0.2px" }}>
+      <p
+        style={{
+          color: "white",
+          fontWeight: 700,
+          fontSize: 17,
+          margin: "0 0 8px",
+          letterSpacing: "-0.2px",
+        }}
+      >
         Hey, I'm Alim (Ah-leem)! 👨🏻‍💻
       </p>
-      <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.65, margin: 0 }}>
-        CS student & software engineer based in Vancouver. I build scalable, interactive software and love the intersection where clean engineering meets great design.
+      <p
+        style={{
+          color: "rgba(255,255,255,0.75)",
+          fontSize: 14,
+          lineHeight: 1.65,
+          margin: 0,
+        }}
+      >
+        CS student & software engineer based in Vancouver. I build scalable,
+        interactive software and love the intersection where clean engineering
+        meets great design.
       </p>
     </div>
 
     <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
-      <p style={{ color: "#0A84FF", fontWeight: 700, fontSize: 13, textTransform: "uppercase", letterSpacing: 1, margin: "0 0 8px" }}>
+      <p
+        style={{
+          color: "#0A84FF",
+          fontWeight: 700,
+          fontSize: 13,
+          textTransform: "uppercase",
+          letterSpacing: 1,
+          margin: "0 0 8px",
+        }}
+      >
         ⚡ What sets me apart
       </p>
-      <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.65, margin: 0 }}>
-        I don't just code - I learn fast, adapt quickly, and ship results. I thrive where creativity meets engineering: optimizing systems, solving hard problems, and building things that actually matter.
+      <p
+        style={{
+          color: "rgba(255,255,255,0.75)",
+          fontSize: 14,
+          lineHeight: 1.65,
+          margin: 0,
+        }}
+      >
+        I don't just code - I learn fast, adapt quickly, and ship results. I
+        thrive where creativity meets engineering: optimizing systems, solving
+        hard problems, and building things that actually matter.
       </p>
     </div>
 
     <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
-      <p style={{ color: "#30d158", fontWeight: 700, fontSize: 13, textTransform: "uppercase", letterSpacing: 1, margin: "0 0 8px" }}>
+      <p
+        style={{
+          color: "#30d158",
+          fontWeight: 700,
+          fontSize: 13,
+          textTransform: "uppercase",
+          letterSpacing: 1,
+          margin: "0 0 8px",
+        }}
+      >
         💻 Stack
       </p>
-      <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.65, margin: 0 }}>
-        C++, Java, JavaScript, TypeScript, Python, React, Next.js, FastAPI, Node.js, PostgreSQL, Firebase, AWS, Vercel
+      <p
+        style={{
+          color: "rgba(255,255,255,0.75)",
+          fontSize: 14,
+          lineHeight: 1.65,
+          margin: 0,
+        }}
+      >
+        C++, Java, JavaScript, TypeScript, Python, React, Next.js, FastAPI,
+        Node.js, PostgreSQL, Firebase, AWS, Vercel
       </p>
     </div>
 
     <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
-      <p style={{ color: "#ff9f0a", fontWeight: 700, fontSize: 13, textTransform: "uppercase", letterSpacing: 1, margin: "0 0 8px" }}>
+      <p
+        style={{
+          color: "#ff9f0a",
+          fontWeight: 700,
+          fontSize: 13,
+          textTransform: "uppercase",
+          letterSpacing: 1,
+          margin: "0 0 8px",
+        }}
+      >
         🥊 Outside the keyboard
       </p>
-      <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.65, margin: 0 }}>
-        Boxing, hiking in the mountains, and nature gazing wherever I can find it. Stepping away from the screen helps me recharge, think clearly, and come back a better engineer.
+      <p
+        style={{
+          color: "rgba(255,255,255,0.75)",
+          fontSize: 14,
+          lineHeight: 1.65,
+          margin: 0,
+        }}
+      >
+        Boxing, hiking in the mountains, and nature gazing wherever I can find
+        it. Stepping away from the screen helps me recharge, think clearly, and
+        come back a better engineer.
       </p>
     </div>
 
-    <div style={{ backgroundColor: "#1a3a5c", borderRadius: 16, padding: 16, border: "1px solid rgba(10,132,255,0.3)" }}>
-      <p style={{ color: "white", fontSize: 14, lineHeight: 1.65, margin: "0 0 10px" }}>
-        🚀 Actively seeking software engineering internship opportunities. If you're building something ambitious - let's talk.
+    <div
+      style={{
+        backgroundColor: "#1a3a5c",
+        borderRadius: 16,
+        padding: 16,
+        border: "1px solid rgba(10,132,255,0.3)",
+      }}
+    >
+      <p
+        style={{
+          color: "white",
+          fontSize: 14,
+          lineHeight: 1.65,
+          margin: "0 0 10px",
+        }}
+      >
+        🚀 Actively seeking software engineering internship opportunities. If
+        you're building something ambitious - let's talk.
       </p>
-      <a href="mailto:arlikhozhaevca@gmail.com" style={{ color: "#0A84FF", fontSize: 14, fontWeight: 600, textDecoration: "none" }}>
+      <a
+        href="mailto:arlikhozhaevca@gmail.com"
+        style={{
+          color: "#0A84FF",
+          fontSize: 14,
+          fontWeight: 600,
+          textDecoration: "none",
+        }}
+      >
         arlikhozhaevca@gmail.com →
       </a>
     </div>
@@ -357,24 +899,74 @@ const NotesApp = () => (
 const TerminalApp = () => (
   <div style={{ fontFamily: "'Roboto Mono', monospace" }}>
     <p style={{ color: "#00A154", fontSize: 13, marginBottom: 16 }}>
-      <span style={{ color: "white", fontWeight: 700 }}>@abdu-alim % </span>show tech stack
+      <span style={{ color: "white", fontWeight: 700 }}>@abdu-alim % </span>show
+      tech stack
     </p>
     <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
       {techStack.map(({ category, items }) => (
-        <div key={category} style={{ backgroundColor: "#2c2c2e", borderRadius: 12, padding: "12px 14px", display: "flex", gap: 10, alignItems: "flex-start" }}>
-          <Check size={14} style={{ color: "#00A154", flexShrink: 0, marginTop: 2 }} />
+        <div
+          key={category}
+          style={{
+            backgroundColor: "#2c2c2e",
+            borderRadius: 12,
+            padding: "12px 14px",
+            display: "flex",
+            gap: 10,
+            alignItems: "flex-start",
+          }}
+        >
+          <Check
+            size={14}
+            style={{ color: "#00A154", flexShrink: 0, marginTop: 2 }}
+          />
           <div>
-            <p style={{ color: "#00A154", fontWeight: 700, fontSize: 12, margin: "0 0 4px" }}>{category}</p>
-            <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, margin: 0, lineHeight: 1.5 }}>{items.join(", ")}</p>
+            <p
+              style={{
+                color: "#00A154",
+                fontWeight: 700,
+                fontSize: 12,
+                margin: "0 0 4px",
+              }}
+            >
+              {category}
+            </p>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.7)",
+                fontSize: 12,
+                margin: 0,
+                lineHeight: 1.5,
+              }}
+            >
+              {items.join(", ")}
+            </p>
           </div>
         </div>
       ))}
     </div>
-    <div style={{ marginTop: 16, color: "#00A154", fontSize: 12, display: "flex", flexDirection: "column", gap: 6 }}>
+    <div
+      style={{
+        marginTop: 16,
+        color: "#00A154",
+        fontSize: 12,
+        display: "flex",
+        flexDirection: "column",
+        gap: 6,
+      }}
+    >
       <p style={{ margin: 0, display: "flex", alignItems: "center", gap: 8 }}>
-        <Check size={14} /> {techStack.length} of {techStack.length} stacks loaded (100%)
+        <Check size={14} /> {techStack.length} of {techStack.length} stacks
+        loaded (100%)
       </p>
-      <p style={{ margin: 0, display: "flex", alignItems: "center", gap: 8, color: "rgba(255,255,255,0.6)" }}>
+      <p
+        style={{
+          margin: 0,
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          color: "rgba(255,255,255,0.6)",
+        }}
+      >
         <Flag size={12} fill="currentColor" /> Render time: 6ms
       </p>
     </div>
@@ -383,9 +975,9 @@ const TerminalApp = () => (
 
 // ─── Resume App ───────────────────────────────────────────────────────────────
 const ResumeApp = () => {
-  const [numPages, setNumPages]   = useState(null);
-  const [scale, setScale]         = useState(1);
-  const containerRef              = useRef(null);
+  const [numPages, setNumPages] = useState(null);
+  const [scale, setScale] = useState(1);
+  const containerRef = useRef(null);
   const [pageWidth, setPageWidth] = useState(300);
 
   useEffect(() => {
@@ -402,33 +994,90 @@ const ResumeApp = () => {
           href="/files/resume.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: "#0A84FF", color: "white", fontWeight: 600, fontSize: 13, padding: "12px 0", borderRadius: 12, textDecoration: "none" }}
+          style={{
+            flex: 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            backgroundColor: "#0A84FF",
+            color: "white",
+            fontWeight: 600,
+            fontSize: 13,
+            padding: "12px 0",
+            borderRadius: 12,
+            textDecoration: "none",
+          }}
         >
           <ExternalLink size={14} /> Open
         </a>
         <a
           href="/files/resume.pdf"
           download="Abdu-Alim-Resume.pdf"
-          style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: "rgba(255,255,255,0.1)", color: "white", fontWeight: 600, fontSize: 13, padding: "12px 0", borderRadius: 12, textDecoration: "none" }}
+          style={{
+            flex: 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            backgroundColor: "rgba(255,255,255,0.1)",
+            color: "white",
+            fontWeight: 600,
+            fontSize: 13,
+            padding: "12px 0",
+            borderRadius: 12,
+            textDecoration: "none",
+          }}
         >
           <Download size={14} /> Download
         </a>
       </div>
 
       {/* Zoom controls */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10, padding: "8px 0" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 16,
+          backgroundColor: "rgba(255,255,255,0.06)",
+          borderRadius: 10,
+          padding: "8px 0",
+        }}
+      >
         <button
-          onClick={() => setScale(s => Math.max(0.5, s - 0.25))}
-          style={{ background: "none", border: "none", color: "white", fontSize: 20, cursor: "pointer", padding: "0 12px" }}
+          onClick={() => setScale((s) => Math.max(0.5, s - 0.25))}
+          style={{
+            background: "none",
+            border: "none",
+            color: "white",
+            fontSize: 20,
+            cursor: "pointer",
+            padding: "0 12px",
+          }}
         >
           −
         </button>
-        <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, minWidth: 40, textAlign: "center" }}>
+        <span
+          style={{
+            color: "rgba(255,255,255,0.5)",
+            fontSize: 12,
+            minWidth: 40,
+            textAlign: "center",
+          }}
+        >
           {Math.round(scale * 100)}%
         </span>
         <button
-          onClick={() => setScale(s => Math.min(2.5, s + 0.25))}
-          style={{ background: "none", border: "none", color: "white", fontSize: 20, cursor: "pointer", padding: "0 12px" }}
+          onClick={() => setScale((s) => Math.min(2.5, s + 0.25))}
+          style={{
+            background: "none",
+            border: "none",
+            color: "white",
+            fontSize: 20,
+            cursor: "pointer",
+            padding: "0 12px",
+          }}
         >
           +
         </button>
@@ -437,24 +1086,51 @@ const ResumeApp = () => {
       {/* PDF Viewer */}
       <div
         ref={containerRef}
-        style={{ backgroundColor: "#2c2c2e", borderRadius: 12, overflow: "auto", maxHeight: "55vh", padding: "16px 0" }}
+        style={{
+          backgroundColor: "#2c2c2e",
+          borderRadius: 12,
+          overflow: "auto",
+          maxHeight: "55vh",
+          padding: "16px 0",
+        }}
       >
         <Document
           file="/files/resume.pdf"
           onLoadSuccess={({ numPages }) => setNumPages(numPages)}
           loading={
-            <p style={{ color: "rgba(255,255,255,0.4)", textAlign: "center", padding: 24, fontSize: 13 }}>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.4)",
+                textAlign: "center",
+                padding: 24,
+                fontSize: 13,
+              }}
+            >
               Loading...
             </p>
           }
           error={
-            <p style={{ color: "#ff453a", textAlign: "center", padding: 24, fontSize: 13 }}>
+            <p
+              style={{
+                color: "#ff453a",
+                textAlign: "center",
+                padding: 24,
+                fontSize: 13,
+              }}
+            >
               Failed to load PDF.
             </p>
           }
         >
           {Array.from({ length: numPages || 0 }, (_, i) => (
-            <div key={i} style={{ marginBottom: 8, display: "flex", justifyContent: "center" }}>
+            <div
+              key={i}
+              style={{
+                marginBottom: 8,
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
               <Page
                 pageNumber={i + 1}
                 width={pageWidth * scale}
@@ -471,25 +1147,28 @@ const ResumeApp = () => {
 
 // ─── Finder App ───────────────────────────────────────────────────────────────
 const FinderApp = () => {
-  const [tab, setTab] = useState("work");
+  const [tab, setTab] = useState("about");
 
   const tabs = [
-    { id: "work",   label: "Work",   icon: <FolderOpen size={14} /> },
-    { id: "resume", label: "Resume", icon: <FileText   size={14} /> },
-    { id: "about",  label: "About",  icon: <User       size={14} /> },
-    { id: "trash",  label: "Trash",  icon: <Trash2     size={14} /> },
+    { id: "about", label: "About", icon: <User size={14} /> },
+    { id: "experience", label: "Experience", icon: <Briefcase size={14} /> },
+    { id: "resume", label: "Resume", icon: <FileText size={14} /> },
+    { id: "work", label: "Projects", icon: <FolderOpen size={14} /> },
+    { id: "trash", label: "Trash", icon: <Trash2 size={14} /> },
   ];
 
   const projects = [
     {
-      id: 1, name: "FlashStudy-AI",
+      id: 1,
+      name: "FlashStudy-AI",
       desc: "AI-powered flashcard generator using NLP to transform study material into structured flashcards.",
       link: "https://flash-study-ai.vercel.app/",
       img: "/images/project-1.png",
       tech: ["React", "Node.js", "Firebase", "OpenAI"],
     },
     {
-      id: 2, name: "AutoDev",
+      id: 2,
+      name: "AutoDev",
       desc: "AI-powered autonomous code analysis, refactoring, and PR automation.",
       link: "https://github.com/Arlikhozhaev/autodev",
       img: "/images/project-2.png",
@@ -497,20 +1176,64 @@ const FinderApp = () => {
     },
   ];
 
+  const experience = [
+    {
+      id: 1,
+      company: "Envia Together",
+      logo: "/images/envia-logo.png",
+      title: "Software Developer Intern",
+      dates: "Oct 2025 – Jan 2026",
+      location: "Remote · Vancouver, BC",
+      tech: [
+        "AWS",
+        "Node.js",
+        "TypeScript",
+        "MySQL",
+        "Terraform",
+        "RevenueCat",
+      ],
+      bullets: [
+        "Co-designed and built a subscription backend integrating RevenueCat webhooks, covering the full lifecycle — new subscriptions, renewals, expirations, and cancellations",
+        "Implemented an event-driven AWS architecture (Lambda + API Gateway) serving as the paywall source of truth, decoupling billing logic entirely from mobile clients",
+        "Exposed a subscription status REST API consumed by mobile clients, reducing client-side billing complexity and centralizing subscription state",
+        "Secured API credentials via AWS environment variables and implemented robust error handling for edge cases including expired subscriptions, invalid receipts, and network failures",
+        "Deployed and validated backend services on AWS, testing all endpoint flows using Postman before client integration",
+      ],
+    },
+  ];
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
       {/* Tab Bar */}
-      <div style={{ display: "flex", gap: 6, marginBottom: 16, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, padding: 4 }}>
+      <div
+        style={{
+          display: "flex",
+          gap: 6,
+          marginBottom: 16,
+          backgroundColor: "rgba(255,255,255,0.06)",
+          borderRadius: 12,
+          padding: 4,
+        }}
+      >
         {tabs.map(({ id, label, icon }) => (
           <button
             key={id}
             onClick={() => setTab(id)}
             style={{
-              flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
-              padding: "8px 4px", borderRadius: 9, border: "none", cursor: "pointer",
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 3,
+              padding: "8px 4px",
+              borderRadius: 9,
+              border: "none",
+              cursor: "pointer",
               backgroundColor: tab === id ? "#0A84FF" : "transparent",
               color: tab === id ? "white" : "rgba(255,255,255,0.45)",
-              transition: "all 0.15s ease", fontSize: 10, fontWeight: 600,
+              transition: "all 0.15s ease",
+              fontSize: 10,
+              fontWeight: 600,
             }}
           >
             {icon}
@@ -522,28 +1245,272 @@ const FinderApp = () => {
       {/* Work Tab */}
       {tab === "work" && (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, textTransform: "uppercase", letterSpacing: 1, margin: 0 }}>
+          <p
+            style={{
+              color: "rgba(255,255,255,0.4)",
+              fontSize: 12,
+              textTransform: "uppercase",
+              letterSpacing: 1,
+              margin: 0,
+            }}
+          >
             Projects
           </p>
           {projects.map(({ id, name, desc, link, img, tech }) => (
-            <div key={id} style={{ backgroundColor: "#2c2c2e", borderRadius: 16, overflow: "hidden" }}>
-              <img src={img} alt={name} style={{ width: "100%", height: 150, objectFit: "cover", display: "block" }} />
+            <div
+              key={id}
+              style={{
+                backgroundColor: "#2c2c2e",
+                borderRadius: 16,
+                overflow: "hidden",
+              }}
+            >
+              <img
+                src={img}
+                alt={name}
+                style={{
+                  width: "100%",
+                  height: 150,
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
               <div style={{ padding: 14 }}>
-                <p style={{ color: "white", fontWeight: 700, fontSize: 15, margin: "0 0 6px" }}>{name}</p>
-                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 13, lineHeight: 1.5, margin: "0 0 10px" }}>{desc}</p>
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 10 }}>
+                <p
+                  style={{
+                    color: "white",
+                    fontWeight: 700,
+                    fontSize: 15,
+                    margin: "0 0 6px",
+                  }}
+                >
+                  {name}
+                </p>
+                <p
+                  style={{
+                    color: "rgba(255,255,255,0.55)",
+                    fontSize: 13,
+                    lineHeight: 1.5,
+                    margin: "0 0 10px",
+                  }}
+                >
+                  {desc}
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 6,
+                    flexWrap: "wrap",
+                    marginBottom: 10,
+                  }}
+                >
                   {tech.map((t) => (
-                    <span key={t} style={{ backgroundColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.7)", fontSize: 10, padding: "3px 9px", borderRadius: 20, fontWeight: 500 }}>
+                    <span
+                      key={t}
+                      style={{
+                        backgroundColor: "rgba(255,255,255,0.1)",
+                        color: "rgba(255,255,255,0.7)",
+                        fontSize: 10,
+                        padding: "3px 9px",
+                        borderRadius: 20,
+                        fontWeight: 500,
+                      }}
+                    >
                       {t}
                     </span>
                   ))}
                 </div>
-                <a href={link} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 6, color: "#0A84FF", fontSize: 13, textDecoration: "none", fontWeight: 600 }}>
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    color: "#0A84FF",
+                    fontSize: 13,
+                    textDecoration: "none",
+                    fontWeight: 600,
+                  }}
+                >
                   View Project <ExternalLink size={13} />
                 </a>
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Experience Tab */}
+      {tab === "experience" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <p
+            style={{
+              color: "rgba(255,255,255,0.4)",
+              fontSize: 12,
+              textTransform: "uppercase",
+              letterSpacing: 1,
+              margin: 0,
+            }}
+          >
+            Work Experience
+          </p>
+          {experience.map(
+            ({ id, company, logo, title, dates, location, tech, bullets }) => (
+              <div
+                key={id}
+                style={{
+                  backgroundColor: "#2c2c2e",
+                  borderRadius: 16,
+                  overflow: "hidden",
+                }}
+              >
+                {/* Card Header */}
+                <div
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #1c3a5c, rgba(10,132,255,0.12))",
+                    padding: "16px 14px 12px",
+                    borderBottom: "1px solid rgba(255,255,255,0.06)",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      marginBottom: 8,
+                    }}
+                  >
+                    <img
+                      src={logo}
+                      alt={company}
+                      style={{
+                        width: 44,
+                        height: 44,
+                        borderRadius: 10,
+                        objectFit: "contain",
+                        backgroundColor: "rgba(255,255,255,0.08)",
+                        padding: 4,
+                        border: "1px solid rgba(255,255,255,0.1)",
+                      }}
+                    />
+                    <div>
+                      <p
+                        style={{
+                          color: "white",
+                          fontWeight: 700,
+                          fontSize: 15,
+                          margin: "0 0 3px",
+                        }}
+                      >
+                        {company}
+                      </p>
+                      <p
+                        style={{
+                          color: "#0A84FF",
+                          fontWeight: 600,
+                          fontSize: 12,
+                          margin: 0,
+                        }}
+                      >
+                        {title}
+                      </p>
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", gap: 12 }}>
+                    <p
+                      style={{
+                        color: "rgba(255,255,255,0.4)",
+                        fontSize: 11,
+                        margin: 0,
+                      }}
+                    >
+                      {dates}
+                    </p>
+                    <p
+                      style={{
+                        color: "rgba(255,255,255,0.4)",
+                        fontSize: 11,
+                        margin: 0,
+                      }}
+                    >
+                      · {location}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bullets */}
+                <div
+                  style={{
+                    padding: 16,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 10,
+                  }}
+                >
+                  {bullets.map((b, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        display: "flex",
+                        gap: 10,
+                        alignItems: "flex-start",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 5,
+                          height: 5,
+                          borderRadius: "50%",
+                          backgroundColor: "#0A84FF",
+                          flexShrink: 0,
+                          marginTop: 7,
+                        }}
+                      />
+                      <p
+                        style={{
+                          color: "rgba(255,255,255,0.7)",
+                          fontSize: 13,
+                          lineHeight: 1.65,
+                          margin: 0,
+                        }}
+                      >
+                        {b}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Tech Tags */}
+                <div
+                  style={{
+                    padding: "0 14px 14px",
+                    display: "flex",
+                    gap: 6,
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {tech.map((t) => (
+                    <span
+                      key={t}
+                      style={{
+                        backgroundColor: "rgba(10,132,255,0.12)",
+                        color: "#0A84FF",
+                        fontSize: 10,
+                        padding: "3px 9px",
+                        borderRadius: 20,
+                        fontWeight: 500,
+                      }}
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ),
+          )}
         </div>
       )}
 
@@ -553,51 +1520,176 @@ const FinderApp = () => {
       {/* About Tab */}
       {tab === "about" && (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, overflow: "hidden" }}>
-            <img src="/images/young-me.jpg" alt="Abdu Alim" style={{ width: "100%", height: "auto", display: "block" }} />
+          <div
+            style={{
+              backgroundColor: "#2c2c2e",
+              borderRadius: 16,
+              overflow: "hidden",
+            }}
+          >
+            <img
+              src="/images/young-me.jpg"
+              alt="Abdu Alim"
+              style={{ width: "100%", height: "auto", display: "block" }}
+            />
           </div>
 
-          <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 14 }}>
-            <p style={{ color: "white", fontWeight: 700, fontSize: 16, margin: "0 0 8px" }}>
+          <div
+            style={{
+              backgroundColor: "#2c2c2e",
+              borderRadius: 16,
+              padding: 14,
+            }}
+          >
+            <p
+              style={{
+                color: "white",
+                fontWeight: 700,
+                fontSize: 16,
+                margin: "0 0 8px",
+              }}
+            >
               Hey, I'm Alim (Ah-leem)! 👨🏻‍💻
             </p>
-            <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 13, lineHeight: 1.65, margin: 0 }}>
-              CS student & software engineer in Vancouver. I build scalable, interactive software where clean engineering meets great design.
+            <p
+              style={{
+                color: "rgba(255,255,255,0.75)",
+                fontSize: 13,
+                lineHeight: 1.65,
+                margin: 0,
+              }}
+            >
+              CS student & software engineer in Vancouver. I build scalable,
+              interactive software where clean engineering meets great design.
             </p>
           </div>
 
-          <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 14 }}>
-            <p style={{ color: "#0A84FF", fontWeight: 700, fontSize: 13, textTransform: "uppercase", letterSpacing: 1, margin: "0 0 8px" }}>
+          <div
+            style={{
+              backgroundColor: "#2c2c2e",
+              borderRadius: 16,
+              padding: 14,
+            }}
+          >
+            <p
+              style={{
+                color: "#0A84FF",
+                fontWeight: 700,
+                fontSize: 13,
+                textTransform: "uppercase",
+                letterSpacing: 1,
+                margin: "0 0 8px",
+              }}
+            >
               ⚡ What sets me apart
             </p>
-            <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 13, lineHeight: 1.65, margin: 0 }}>
-              I don't just code - I learn fast, adapt quickly, and ship results. I thrive where creativity meets engineering: optimizing systems, solving hard problems, and building things that actually matter.
+            <p
+              style={{
+                color: "rgba(255,255,255,0.75)",
+                fontSize: 13,
+                lineHeight: 1.65,
+                margin: 0,
+              }}
+            >
+              I don't just code - I learn fast, adapt quickly, and ship results.
+              I thrive where creativity meets engineering: optimizing systems,
+              solving hard problems, and building things that actually matter.
             </p>
           </div>
 
-          <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 14 }}>
-            <p style={{ color: "#30d158", fontWeight: 700, fontSize: 13, textTransform: "uppercase", letterSpacing: 1, margin: "0 0 8px" }}>
+          <div
+            style={{
+              backgroundColor: "#2c2c2e",
+              borderRadius: 16,
+              padding: 14,
+            }}
+          >
+            <p
+              style={{
+                color: "#30d158",
+                fontWeight: 700,
+                fontSize: 13,
+                textTransform: "uppercase",
+                letterSpacing: 1,
+                margin: "0 0 8px",
+              }}
+            >
               💻 Stack
             </p>
-            <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.65, margin: 0 }}>
-              C++, Java, JavaScript, TypeScript, Python, React, Next.js, FastAPI, Node.js, PostgreSQL, Firebase, AWS, Vercel
+            <p
+              style={{
+                color: "rgba(255,255,255,0.75)",
+                fontSize: 14,
+                lineHeight: 1.65,
+                margin: 0,
+              }}
+            >
+              C++, Java, JavaScript, TypeScript, Python, React, Next.js,
+              FastAPI, Node.js, PostgreSQL, Firebase, AWS, Vercel
             </p>
           </div>
 
-          <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 14 }}>
-            <p style={{ color: "#ff9f0a", fontWeight: 700, fontSize: 13, textTransform: "uppercase", letterSpacing: 1, margin: "0 0 8px" }}>
+          <div
+            style={{
+              backgroundColor: "#2c2c2e",
+              borderRadius: 16,
+              padding: 14,
+            }}
+          >
+            <p
+              style={{
+                color: "#ff9f0a",
+                fontWeight: 700,
+                fontSize: 13,
+                textTransform: "uppercase",
+                letterSpacing: 1,
+                margin: "0 0 8px",
+              }}
+            >
               🥊 Outside the keyboard
             </p>
-            <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.65, margin: 0 }}>
-              Boxing, hiking in the mountains, and nature gazing wherever I can find it. Stepping away from the screen helps me recharge, think clearly, and come back a better engineer.
+            <p
+              style={{
+                color: "rgba(255,255,255,0.75)",
+                fontSize: 14,
+                lineHeight: 1.65,
+                margin: 0,
+              }}
+            >
+              Boxing, hiking in the mountains, and nature gazing wherever I can
+              find it. Stepping away from the screen helps me recharge, think
+              clearly, and come back a better engineer.
             </p>
           </div>
 
-          <div style={{ backgroundColor: "#1a3a5c", borderRadius: 16, padding: 14, border: "1px solid rgba(10,132,255,0.3)" }}>
-            <p style={{ color: "white", fontSize: 14, lineHeight: 1.65, margin: "0 0 8px" }}>
-              🚀 Actively seeking software engineering internship opportunities. If you're building something ambitious - let's talk.
+          <div
+            style={{
+              backgroundColor: "#1a3a5c",
+              borderRadius: 16,
+              padding: 14,
+              border: "1px solid rgba(10,132,255,0.3)",
+            }}
+          >
+            <p
+              style={{
+                color: "white",
+                fontSize: 14,
+                lineHeight: 1.65,
+                margin: "0 0 8px",
+              }}
+            >
+              🚀 Actively seeking software engineering internship opportunities.
+              If you're building something ambitious - let's talk.
             </p>
-            <a href="mailto:arlikhozhaevca@gmail.com" style={{ color: "#0A84FF", fontSize: 13, fontWeight: 600, textDecoration: "none" }}>
+            <a
+              href="mailto:arlikhozhaevca@gmail.com"
+              style={{
+                color: "#0A84FF",
+                fontSize: 13,
+                fontWeight: 600,
+                textDecoration: "none",
+              }}
+            >
               arlikhozhaevca@gmail.com →
             </a>
           </div>
@@ -606,10 +1698,30 @@ const FinderApp = () => {
 
       {/* Trash Tab */}
       {tab === "trash" && (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingTop: 60, gap: 16 }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            paddingTop: 60,
+            gap: 16,
+          }}
+        >
           <Trash2 size={64} color="rgba(255,255,255,0.15)" />
-          <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 15, fontWeight: 500, margin: 0 }}>Trash is Empty</p>
-          <p style={{ color: "rgba(255,255,255,0.18)", fontSize: 12, margin: 0 }}>
+          <p
+            style={{
+              color: "rgba(255,255,255,0.3)",
+              fontSize: 15,
+              fontWeight: 500,
+              margin: 0,
+            }}
+          >
+            Trash is Empty
+          </p>
+          <p
+            style={{ color: "rgba(255,255,255,0.18)", fontSize: 12, margin: 0 }}
+          >
             Items deleted more than 30 days ago will be removed.
           </p>
         </div>
@@ -624,14 +1736,48 @@ const AppIcon = ({ icon, label, onClick }) => {
 
   const handleTap = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    gsap.fromTo(ref.current, { scale: 0.88 }, { scale: 1, duration: 0.3, ease: "back.out(2)" });
+    gsap.fromTo(
+      ref.current,
+      { scale: 0.88 },
+      { scale: 1, duration: 0.3, ease: "back.out(2)" },
+    );
     onClick(rect);
   };
 
   return (
-    <div ref={ref} onClick={handleTap} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, cursor: "pointer", userSelect: "none" }}>
-      <img src={icon} alt={label} style={{ width: 60, height: 60, objectFit: "contain", borderRadius: 14, boxShadow: "0 4px 20px rgba(0,0,0,0.4)" }} />
-      <span style={{ color: "white", fontSize: 11, fontWeight: 500, textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>{label}</span>
+    <div
+      ref={ref}
+      onClick={handleTap}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 6,
+        cursor: "pointer",
+        userSelect: "none",
+      }}
+    >
+      <img
+        src={icon}
+        alt={label}
+        style={{
+          width: 60,
+          height: 60,
+          objectFit: "contain",
+          borderRadius: 14,
+          boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+        }}
+      />
+      <span
+        style={{
+          color: "white",
+          fontSize: 11,
+          fontWeight: 500,
+          textShadow: "0 1px 4px rgba(0,0,0,0.8)",
+        }}
+      >
+        {label}
+      </span>
     </div>
   );
 };
@@ -642,26 +1788,57 @@ const DockIcon = ({ icon, label, onClick }) => {
 
   const handleTap = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    gsap.fromTo(ref.current, { scale: 0.85 }, { scale: 1, duration: 0.3, ease: "back.out(2)" });
+    gsap.fromTo(
+      ref.current,
+      { scale: 0.85 },
+      { scale: 1, duration: 0.3, ease: "back.out(2)" },
+    );
     onClick(rect);
   };
 
   return (
-    <div ref={ref} onClick={handleTap} style={{ cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <img src={icon} alt={label} style={{ width: 52, height: 52, objectFit: "contain", borderRadius: 13, boxShadow: "0 4px 16px rgba(0,0,0,0.5)" }} />
+    <div
+      ref={ref}
+      onClick={handleTap}
+      style={{
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <img
+        src={icon}
+        alt={label}
+        style={{
+          width: 52,
+          height: 52,
+          objectFit: "contain",
+          borderRadius: 13,
+          boxShadow: "0 4px 16px rgba(0,0,0,0.5)",
+        }}
+      />
     </div>
   );
 };
 
 // ─── App Registry ─────────────────────────────────────────────────────────────
 const APP_META = {
-  finder:   { name: "Finder",   icon: "/images/finder.png",   Component: FinderApp   },
-  safari:   { name: "Blog",     icon: "/images/safari.png",   Component: SafariApp   },
-  photos:   { name: "Gallery",  icon: "/images/photos.png",   Component: PhotosApp   },
-  contact:  { name: "Contact",  icon: "/images/contact.png",  Component: ContactApp  },
-  notes:    { name: "About Me", icon: "/images/notes.png",    Component: NotesApp    },
-  terminal: { name: "Skills",   icon: "/images/terminal.png", Component: TerminalApp },
-  resume:   { name: "Resume",   icon: "/images/resume.png",   Component: ResumeApp   },
+  finder: { name: "Finder", icon: "/images/finder.png", Component: FinderApp },
+  safari: { name: "Blog", icon: "/images/safari.png", Component: SafariApp },
+  photos: { name: "Gallery", icon: "/images/photos.png", Component: PhotosApp },
+  contact: {
+    name: "Contact",
+    icon: "/images/contact.png",
+    Component: ContactApp,
+  },
+  notes: { name: "About Me", icon: "/images/notes.png", Component: NotesApp },
+  terminal: {
+    name: "Skills",
+    icon: "/images/terminal.png",
+    Component: TerminalApp,
+  },
+  resume: { name: "Resume", icon: "/images/resume.png", Component: ResumeApp },
 };
 
 const GRID_APPS = ["notes", "terminal", "resume"];
@@ -669,51 +1846,153 @@ const DOCK_APPS = ["finder", "safari", "photos", "contact"];
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 const MobileHome = () => {
-  const [activeApp,  setActiveApp]  = useState(null);
+  const [activeApp, setActiveApp] = useState(null);
   const [originRect, setOriginRect] = useState(null);
 
-  const openApp  = useCallback((id, rect) => { setOriginRect(rect); setActiveApp(id); }, []);
-  const closeApp = useCallback(() => { setActiveApp(null); setOriginRect(null); }, []);
+  const openApp = useCallback((id, rect) => {
+    setOriginRect(rect);
+    setActiveApp(id);
+  }, []);
+  const closeApp = useCallback(() => {
+    setActiveApp(null);
+    setOriginRect(null);
+  }, []);
 
   return (
     <div
       className="sm:hidden"
-      style={{ width: "100dvw", height: "100dvh", backgroundImage: "url('/images/wallpaper.png')", backgroundSize: "cover", backgroundPosition: "center", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column" }}
+      style={{
+        width: "100dvw",
+        height: "100dvh",
+        backgroundImage: "url('/images/wallpaper.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        position: "relative",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+      }}
     >
       {/* Ambient glows */}
-      <div style={{ position: "absolute", top: -80, left: -60, width: 280, height: 280, borderRadius: "50%", background: "radial-gradient(circle, rgba(88,86,214,0.25) 0%, transparent 70%)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: 120, right: -80, width: 240, height: 240, borderRadius: "50%", background: "radial-gradient(circle, rgba(10,132,255,0.2) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div
+        style={{
+          position: "absolute",
+          top: -80,
+          left: -60,
+          width: 280,
+          height: 280,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(88,86,214,0.25) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: 120,
+          right: -80,
+          width: 240,
+          height: 240,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(10,132,255,0.2) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
 
       <StatusBar />
 
       {/* Greeting */}
-      <div style={{ textAlign: "center", padding: "24px 24px 8px", userSelect: "none" }}>
-        <p style={{ color: "white", fontSize: 26, fontWeight: 700, margin: 0, letterSpacing: "-0.5px", lineHeight: 1.25 }}>
+      <div
+        style={{
+          textAlign: "center",
+          padding: "24px 24px 8px",
+          userSelect: "none",
+        }}
+      >
+        <p
+          style={{
+            color: "white",
+            fontSize: 26,
+            fontWeight: 700,
+            margin: 0,
+            letterSpacing: "-0.5px",
+            lineHeight: 1.25,
+          }}
+        >
           Hey, I'm Abdu Alim! 👋
         </p>
-        <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 14, margin: "8px 0 0", fontWeight: 400 }}>
+        <p
+          style={{
+            color: "rgba(255,255,255,0.55)",
+            fontSize: 14,
+            margin: "8px 0 0",
+            fontWeight: 400,
+          }}
+        >
           Welcome to my Portfolio
         </p>
-        <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 12, margin: "4px 0 0" }}>
+        <p
+          style={{
+            color: "rgba(255,255,255,0.35)",
+            fontSize: 12,
+            margin: "4px 0 0",
+          }}
+        >
           {dayjs().format("dddd, MMMM D")}
         </p>
       </div>
 
       {/* Grid — About Me, Skills, Resume */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px 0", padding: "28px 16px 0", alignContent: "start" }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "20px 0",
+          padding: "28px 16px 0",
+          alignContent: "start",
+        }}
+      >
         {GRID_APPS.map((id) => {
           const { name, icon } = APP_META[id];
-          return <AppIcon key={id} icon={icon} label={name} onClick={(rect) => openApp(id, rect)} />;
+          return (
+            <AppIcon
+              key={id}
+              icon={icon}
+              label={name}
+              onClick={(rect) => openApp(id, rect)}
+            />
+          );
         })}
       </div>
 
       <div style={{ flex: 1 }} />
 
       {/* Dock */}
-      <div style={{ margin: "0 20px 16px", backgroundColor: "rgba(255,255,255,0.12)", backdropFilter: "blur(24px)", borderRadius: 26, padding: "14px 20px", display: "flex", justifyContent: "space-around", alignItems: "center", border: "1px solid rgba(255,255,255,0.15)" }}>
+      <div
+        style={{
+          margin: "0 20px 16px",
+          backgroundColor: "rgba(255,255,255,0.12)",
+          backdropFilter: "blur(24px)",
+          borderRadius: 26,
+          padding: "14px 20px",
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+          border: "1px solid rgba(255,255,255,0.15)",
+        }}
+      >
         {DOCK_APPS.map((id) => {
           const { name, icon } = APP_META[id];
-          return <DockIcon key={id} icon={icon} label={name} onClick={(rect) => openApp(id, rect)} />;
+          return (
+            <DockIcon
+              key={id}
+              icon={icon}
+              label={name}
+              onClick={(rect) => openApp(id, rect)}
+            />
+          );
         })}
       </div>
 
@@ -721,7 +2000,14 @@ const MobileHome = () => {
 
       {/* All sheets */}
       {Object.entries(APP_META).map(([id, { name, icon, Component }]) => (
-        <AppSheet key={id} isOpen={activeApp === id} onClose={closeApp} appName={name} appIcon={icon} originRect={originRect}>
+        <AppSheet
+          key={id}
+          isOpen={activeApp === id}
+          onClose={closeApp}
+          appName={name}
+          appIcon={icon}
+          originRect={originRect}
+        >
           <Component />
         </AppSheet>
       ))}

@@ -220,10 +220,38 @@ export {
   gallery,
 };
 
+const EXPERIENCE_LOCATION = {
+  id: 5,
+  type: "experience",
+  name: "Experience",
+  icon: "/icons/experience.svg",
+  kind: "folder",
+  children: [],
+};
+
+export const experience = [
+  {
+    id: 1,
+    company: "Envia Together",
+    logo: "/images/envia-logo.png",
+    title: "Software Developer Intern",
+    dates: "Oct 2025 – Jan 2026",
+    location: "Remote · Vancouver, BC",
+    tech: ["AWS", "Node.js", "TypeScript", "MySQL", "Terraform", "RevenueCat"],
+    bullets: [
+      "Co-designed and built a subscription backend integrating RevenueCat webhooks, covering the full lifecycle — new subscriptions, renewals, expirations, and cancellations",
+      "Implemented an event-driven AWS architecture (Lambda + API Gateway) serving as the paywall source of truth, decoupling billing logic entirely from mobile clients",
+      "Exposed a subscription status REST API consumed by mobile clients, reducing client-side billing complexity and centralizing subscription state",
+      "Secured API credentials via AWS environment variables and implemented robust error handling for edge cases including expired subscriptions, invalid receipts, and network failures",
+      "Deployed and validated backend services on AWS, testing all endpoint flows using Postman before client integration",
+    ],
+  },
+];
+
 const WORK_LOCATION = {
   id: 1,
   type: "work",
-  name: "Work",
+  name: "Projects",
   icon: "/icons/work.svg",
   kind: "folder",
   children: [
@@ -415,9 +443,10 @@ const TRASH_LOCATION = {
 };
 
 export const locations = {
-  work: WORK_LOCATION,
   about: ABOUT_LOCATION,
+  experience: EXPERIENCE_LOCATION,
   resume: RESUME_LOCATION,
+  work: WORK_LOCATION,
   trash: TRASH_LOCATION,
 };
 
