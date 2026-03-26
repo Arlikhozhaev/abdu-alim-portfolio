@@ -1,5 +1,6 @@
-import { navIcons, navLinks } from "#constants";
+import { navIcons, navLinks, locations } from "#constants";
 import useWindowStore from "#store/window";
+import useLocationStore from "#store/location";
 import useDarkStore from "#store/dark";
 import RecommendationToast from "./RecommendationToast";
 import dayjs from "dayjs";
@@ -7,6 +8,7 @@ import { useState } from "react";
 
 const Navbar = () => {
   const { openWindow } = useWindowStore();
+  const { setActiveLocation } = useLocationStore();
   const { isDark, toggleDark } = useDarkStore();
   const [showRecommendation, setShowRecommendation] = useState(false);
 
@@ -26,7 +28,13 @@ const Navbar = () => {
 
           <ul>
             {navLinks.map(({ id, name, type }) => (
-              <li key={id} onClick={() => openWindow(type)}>
+              <li
+                key={id}
+                onClick={() => {
+                  openWindow(type);
+                  if (type === "finder") setActiveLocation(locations.work);
+                }}
+              >
                 <p className="text-sm dark:text-gray-200">{name}</p>
               </li>
             ))}
@@ -42,7 +50,13 @@ const Navbar = () => {
                 className="cursor-pointer"
               >
                 <img
-                  src={id === 4 ? (isDark ? "/icons/sun.svg" : "/icons/moon.svg") : img}
+                  src={
+                    id === 4
+                      ? isDark
+                        ? "/icons/sun.svg"
+                        : "/icons/moon.svg"
+                      : img
+                  }
                   className={`icon-hover dark:invert ${id === 1 ? "animate-pulse" : ""}`}
                   alt={`icon-${id}`}
                 />
@@ -50,7 +64,9 @@ const Navbar = () => {
             ))}
           </ul>
 
-          <time className="dark:text-gray-100">{dayjs().format("ddd MMM D h:mm A")}</time>
+          <time className="dark:text-gray-100">
+            {dayjs().format("ddd MMM D h:mm A")}
+          </time>
         </div>
       </nav>
 
