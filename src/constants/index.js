@@ -89,35 +89,27 @@ const blogPosts = [
 const techStack = [
   {
     category: "Languages",
-    items: ["C++", "Java", "JavaScript", "TypeScript", "Python"],
+    items: ["TypeScript", "JavaScript", "C/C++", "Java", "Python", "SQL", "Bash"],
   },
   {
     category: "Frontend",
-    items: ["React", "Next.js", "HTML5"],
-  },
-  {
-    category: "Styling",
-    items: ["CSS3", "Tailwind CSS"],
+    items: ["React", "Next.js", "Tailwind CSS", "HTML5", "CSS3"],
   },
   {
     category: "Backend",
-    items: ["Node.js", "REST APIs"],
+    items: ["Node.js", "FastAPI", "RESTful APIs", "Celery", "AWS Lambda", "API Gateway"],
+  },
+  {
+    category: "AI & LLMs",
+    items: ["OpenAI API", "Claude API", "Vercel AI SDK", "k-means clustering"],
+  },
+  {
+    category: "Cloud & DevOps",
+    items: ["AWS(EC2, S3, Lambda, API Gateway, IAM)", "Terraform(IaC)", "Vercel", "Git", "Linux"],
   },
   {
     category: "Databases",
-    items: ["MySQL", "SQL"],
-  },
-  {
-    category: "Cloud",
-    items: ["AWS", "Terraform", "Vercel"],
-  },
-  {
-    category: "Dev Tools",
-    items: ["Git", "GitHub", "VS Code", "IntelliJ IDEA"],
-  },
-  {
-    category: "OS",
-    items: ["Linux(Ubuntu)", "Windows"],
+    items: ["PostgreSQL", "MySQL", "Supabase", "Prisma ORM"],
   },
 ];
 
@@ -135,7 +127,7 @@ const socials = [
     text: "Platform",
     icon: "/icons/atom.svg",
     bg: "#4bcb63",
-    link: "https://arlikhozhaev.ca/",
+    link: "https://arlikhozhaev.dev/",
   },
   {
     id: 3,
@@ -239,10 +231,9 @@ export const experience = [
     location: "Remote · Vancouver, BC",
     tech: ["AWS", "Node.js", "TypeScript", "MySQL", "Terraform", "RevenueCat"],
     bullets: [
-      "Co-designed and built a subscription backend integrating RevenueCat webhooks, covering the full lifecycle — new subscriptions, renewals, expirations, and cancellations",
-      "Implemented an event-driven AWS architecture (Lambda + API Gateway) serving as the paywall source of truth, decoupling billing logic entirely from mobile clients",
-      "Exposed a subscription status REST API consumed by mobile clients, reducing client-side billing complexity and centralizing subscription state",
-      "Secured API credentials via AWS environment variables and implemented robust error handling for edge cases including expired subscriptions, invalid receipts, and network failures",
+      "Co-designed and built a subscription enforcement backend for an MVP launch, integrating RevenueCat webhooks to handle the full entitlement lifecycle (trial, active, expired, billing-retry) across web clients",
+      "Co-built an event-driven AWS system (Lambda + API Gateway) that became the single source of truth for paywall access -- enabling real-time entitlement enforcement with zero production incidents across all post-launch releases",
+      "Provisioned and managed cloud infrastructure using Terraform (IaC), maintaining reproducible dev and production environments and eliminating manual environment setup.",
       "Deployed and validated backend services on AWS, testing all endpoint flows using Postman before client integration",
     ],
   },
@@ -258,11 +249,134 @@ const WORK_LOCATION = {
     // ▶ Project 1
     {
       id: 5,
-      name: "FlashStudy-AI",
+      name: "ReviewLens",
       icon: "/images/folder.png",
       kind: "folder",
       position: "top-10 left-5", // icon position inside Finder
-      windowPosition: "top-[5vh] left-5", // optional: Finder window position
+      windowPosition: "top-[5vh] left-9", // optional: Finder window position
+      children: [
+        {
+          id: 1,
+          name: "ReviewLens.txt",
+          icon: "/images/txt.png",
+          kind: "file",
+          fileType: "txt",
+          position: "top-5 left-10",
+          description: [
+            "AI-powered review analysis platform. Clusters customer feedback into structured insights using OpenAI embeddings + k-means.",
+            "Built with Next.js 14 App Router, TypeScript, Prisma, Supabase, and GPT-4o-mini.",
+            "Full-stack SaaS — CSV parsing, AI pipeline, Recharts dashboard, shareable reports, and session persistence.",
+          ],
+        },
+        {
+          id: 2,
+          name: "ReviewLens Website",
+          icon: "/images/safari.png",
+          kind: "file",
+          fileType: "url",
+          href: "https://review-lens-ten.vercel.app/",
+          position: "top-10 right-20",
+        },
+        {
+          id: 4,
+          name: "ReviewLens.png",
+          icon: "/images/image.png",
+          kind: "file",
+          fileType: "img",
+          position: "top-52 right-80",
+          imageUrl: "/images/project-1.png",
+        },
+      ],
+    },
+    // ▶ Project 2
+    {
+      id: 6,
+      name: "AutoDev",
+      icon: "/images/folder.png",
+      kind: "folder",
+      position: "top-52 right-50",
+      windowPosition: "top-[20vh] left-5",
+      children: [
+        {
+          id: 1,
+          name: "AutoDev.txt",
+          icon: "/images/txt.png",
+          kind: "file",
+          fileType: "txt",
+          position: "top-5 right-10",
+          description: [
+            "AI-powered autonomous code analysis, refactoring, and PR automation.",
+          ],
+        },
+        {
+          id: 2,
+          name: "autodev.com",
+          icon: "/images/safari.png",
+          kind: "file",
+          fileType: "url",
+          href: "https://github.com/Arlikhozhaev/autodev",
+          position: "top-20 left-20",
+        },
+        {
+          id: 4,
+          name: "autodev.png",
+          icon: "/images/image.png",
+          kind: "file",
+          fileType: "img",
+          position: "top-52 left-80",
+          imageUrl: "/images/project-2.png",
+        },
+      ],
+    },
+    // ▶ Project 3
+    {
+      id: 7,
+      name: "RateMyProfessor-RAG",
+      icon: "/images/folder.png",
+      kind: "folder",
+      position: "top-15 right-40", // icon position inside Finder
+      windowPosition: "top-[35vh] left-7", // optional: Finder window position
+      children: [
+        {
+          id: 1,
+          name: "RateMyProfessor-RAG.txt",
+          icon: "/images/txt.png",
+          kind: "file",
+          fileType: "txt",
+          position: "top-5 left-10",
+          description: [
+            "A modern AI-powered professor recommendation platform built with Next.js, SQLite, and retrieval-based chat flows.",
+            "The app helps students explore professors using review data, personalized search results, and a conversational assistant.",
+          ],
+        },
+        {
+          id: 2,
+          name: "RateMyProfessor-RAG Website",
+          icon: "/images/safari.png",
+          kind: "file",
+          fileType: "url",
+          href: "https://rate-my-professor-rag-three.vercel.app/",
+          position: "top-10 right-20",
+        },
+        {
+          id: 4,
+          name: "RateMyProfessor-RAG.png",
+          icon: "/images/image.png",
+          kind: "file",
+          fileType: "img",
+          position: "top-52 right-80",
+          imageUrl: "/images/project-3.png",
+        },
+      ],
+    },
+    // ▶ Project 4
+    {
+      id: 8,
+      name: "FlashStudy-AI",
+      icon: "/images/folder.png",
+      kind: "folder",
+      position: "top-62 left-10", // icon position inside Finder
+      windowPosition: "top-[50vh] left-7", // optional: Finder window position
       children: [
         {
           id: 1,
@@ -294,48 +408,7 @@ const WORK_LOCATION = {
           kind: "file",
           fileType: "img",
           position: "top-52 right-80",
-          imageUrl: "/images/project-1.png",
-        },
-      ],
-    },
-
-    // ▶ Project 2
-    {
-      id: 6,
-      name: "AutoDev",
-      icon: "/images/folder.png",
-      kind: "folder",
-      position: "top-52 right-80",
-      windowPosition: "top-[20vh] left-7",
-      children: [
-        {
-          id: 1,
-          name: "AutoDev.txt",
-          icon: "/images/txt.png",
-          kind: "file",
-          fileType: "txt",
-          position: "top-5 right-10",
-          description: [
-            "AI-powered autonomous code analysis, refactoring, and PR automation.",
-          ],
-        },
-        {
-          id: 2,
-          name: "autodev.com",
-          icon: "/images/safari.png",
-          kind: "file",
-          fileType: "url",
-          href: "https://github.com/Arlikhozhaev/autodev",
-          position: "top-20 left-20",
-        },
-        {
-          id: 4,
-          name: "autodev.png",
-          icon: "/images/image.png",
-          kind: "file",
-          fileType: "img",
-          position: "top-52 left-80",
-          imageUrl: "/images/project-2.png",
+          imageUrl: "/images/project-4.png",
         },
       ],
     },
@@ -387,9 +460,9 @@ const ABOUT_LOCATION = {
       image: "/images/young-me.jpg",
       description: [
         "Hey! I’m Abdu Alim 👋, a Software Engineer who enjoys building scalable, interactive and user-friendly websites that actually work well.",
-        "I specialize in C++, Java, JavaScript, TypeScript, React, and Next.js — and I love making things feel smooth, fast, and delightful.",
+        "I specialize in C/C++, Java, JavaScript, TypeScript, React, and Next.js — and I love making things feel smooth, fast, and delightful.",
         "I’m big on clean UI, good UX, solid backend and writing code that doesn’t need a search party to debug.",
-        "Outside of dev work, you'll find me boxing, hiking somewhere in the mountains, or literally nature glazing anywhere I can. 😅",
+        "Outside of dev work, you'll find me boxing, golfing, hiking somewhere in the mountains, or literally nature glazing anywhere I can. 😅",
       ],
     },
   ],
