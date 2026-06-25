@@ -331,7 +331,7 @@ const WORK_LOCATION = {
     // ▶ Project 3
     {
       id: 7,
-      name: "RateMyProfessor-RAG",
+      name: "ProfessorMatch AI",
       icon: "/images/folder.png",
       kind: "folder",
       position: "top-15 right-40", // icon position inside Finder
@@ -339,7 +339,7 @@ const WORK_LOCATION = {
       children: [
         {
           id: 1,
-          name: "RateMyProfessor-RAG.txt",
+          name: "ProfessorMatch AI.txt",
           icon: "/images/txt.png",
           kind: "file",
           fileType: "txt",
@@ -351,16 +351,16 @@ const WORK_LOCATION = {
         },
         {
           id: 2,
-          name: "RateMyProfessor-RAG Website",
+          name: "ProfessorMatch AI Website",
           icon: "/images/safari.png",
           kind: "file",
           fileType: "url",
-          href: "https://rate-my-professor-rag-three.vercel.app/",
+          href: "https://professor-match-ai.vercel.app/",
           position: "top-10 right-20",
         },
         {
           id: 4,
-          name: "RateMyProfessor-RAG.png",
+          name: "ProfessorMatch AI.png",
           icon: "/images/image.png",
           kind: "file",
           fileType: "img",
