@@ -1,34 +1,25 @@
-import { Navbar, Welcome, Dock, Home, MobileHome } from "#components"
-import { Safari, Terminal, Resume, Finder, Text, Image, Contact, Photos, DynamicWindows } from "#windows";
-import gsap from "gsap";
+import { lazy, Suspense } from "react";
+import useMediaQuery from "#hooks/useMediaQuery";
+import { DESKTOP_MEDIA_QUERY } from "#constants/breakpoints";
+import AppLoadingScreen from "#components/AppLoadingScreen";
 
-import { Draggable } from "gsap/Draggable"
-gsap.registerPlugin(Draggable);
+const DesktopApp = lazy(() => import("./DesktopApp"));
+const MobileHome = lazy(() => import("#components/MobileHome"));
 
-const App = () => (
-  <main>
-    {/* Desktop — hidden on mobile */}
-    <div className="hidden sm:block">
-      <Navbar />
-      <Welcome />
-      <Dock />
-      <Terminal />
-      <Safari />
-      <Resume />
-      <Finder />
-      <Text />
-      <Image />
-      <Contact />
-      <Photos />
-      <DynamicWindows />
-      <Home />
-    </div>
+const App = () => {
+  const isDesktop = useMediaQuery(DESKTOP_MEDIA_QUERY);
 
-    {/* Mobile — hidden on desktop */}
-    <div className="sm:hidden">
-      <MobileHome />
-    </div>
-  </main>
-)
+  return (
+    <main>
+      <Suspense
+        fallback={
+          <AppLoadingScreen variant={isDesktop ? "desktop" : "mobile"} />
+        }
+      >
+        {isDesktop ? <DesktopApp /> : <MobileHome />}
+      </Suspense>
+    </main>
+  );
+};
 
-export default App
+export default App;

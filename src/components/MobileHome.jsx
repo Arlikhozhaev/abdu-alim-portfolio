@@ -19,7 +19,8 @@ import {
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
-import { gallery, techStack, blogPosts, socials } from "#constants";
+import { gallery, techStack, blogPosts, socials, projects, experience, trashItems, CONTACT_EMAIL, aboutContent, RESUME_PATH } from "#constants";
+import AboutProfile from "./AboutProfile";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -656,7 +657,7 @@ const ContactApp = () => (
             margin: "4px 0 0",
           }}
         >
-          Software Developer · Vancouver, BC
+          CS Student & Aspiring Software Engineer · Vancouver, BC
         </p>
       </div>
     </div>
@@ -674,10 +675,10 @@ const ContactApp = () => (
         Email
       </p>
       <a
-        href="mailto:arlikhozhaevca@gmail.com"
+        href={`mailto:${CONTACT_EMAIL}`}
         style={{ color: "#0A84FF", fontSize: 15, textDecoration: "none" }}
       >
-        arlikhozhaevca@gmail.com
+        {CONTACT_EMAIL}
       </a>
     </div>
 
@@ -734,166 +735,7 @@ const ContactApp = () => (
 );
 
 // ─── Notes App (About Me) ─────────────────────────────────────────────────────
-const NotesApp = () => (
-  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-    <div
-      style={{
-        backgroundColor: "#2c2c2e",
-        borderRadius: 16,
-        overflow: "hidden",
-      }}
-    >
-      <img
-        src="/images/young-me.jpg"
-        alt="Abdu Alim"
-        style={{
-          width: "100%",
-          height: "auto",
-          display: "block",
-          objectFit: "contain",
-        }}
-      />
-    </div>
-
-    <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
-      <p
-        style={{
-          color: "white",
-          fontWeight: 700,
-          fontSize: 17,
-          margin: "0 0 8px",
-          letterSpacing: "-0.2px",
-        }}
-      >
-        Hey, I'm Alim (Ah-leem)! 👨🏻‍💻
-      </p>
-      <p
-        style={{
-          color: "rgba(255,255,255,0.75)",
-          fontSize: 14,
-          lineHeight: 1.65,
-          margin: 0,
-        }}
-      >
-        CS student & software engineer based in Vancouver. I build scalable,
-        interactive software and love the intersection where clean engineering
-        meets great design.
-      </p>
-    </div>
-
-    <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
-      <p
-        style={{
-          color: "#0A84FF",
-          fontWeight: 700,
-          fontSize: 13,
-          textTransform: "uppercase",
-          letterSpacing: 1,
-          margin: "0 0 8px",
-        }}
-      >
-        ⚡ What sets me apart
-      </p>
-      <p
-        style={{
-          color: "rgba(255,255,255,0.75)",
-          fontSize: 14,
-          lineHeight: 1.65,
-          margin: 0,
-        }}
-      >
-        I don't just code - I learn fast, adapt quickly, and ship results. I
-        thrive where creativity meets engineering: optimizing systems, solving
-        hard problems, and building things that actually matter.
-      </p>
-    </div>
-
-    <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
-      <p
-        style={{
-          color: "#30d158",
-          fontWeight: 700,
-          fontSize: 13,
-          textTransform: "uppercase",
-          letterSpacing: 1,
-          margin: "0 0 8px",
-        }}
-      >
-        💻 Stack
-      </p>
-      <p
-        style={{
-          color: "rgba(255,255,255,0.75)",
-          fontSize: 14,
-          lineHeight: 1.65,
-          margin: 0,
-        }}
-      >
-        C++, Java, JavaScript, TypeScript, Python, React, Next.js, FastAPI,
-        Node.js, PostgreSQL, Firebase, AWS, Vercel
-      </p>
-    </div>
-
-    <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
-      <p
-        style={{
-          color: "#ff9f0a",
-          fontWeight: 700,
-          fontSize: 13,
-          textTransform: "uppercase",
-          letterSpacing: 1,
-          margin: "0 0 8px",
-        }}
-      >
-        🥊 Outside the keyboard
-      </p>
-      <p
-        style={{
-          color: "rgba(255,255,255,0.75)",
-          fontSize: 14,
-          lineHeight: 1.65,
-          margin: 0,
-        }}
-      >
-        Boxing, hiking in the mountains, and nature gazing wherever I can find
-        it. Stepping away from the screen helps me recharge, think clearly, and
-        come back a better engineer.
-      </p>
-    </div>
-
-    <div
-      style={{
-        backgroundColor: "#1a3a5c",
-        borderRadius: 16,
-        padding: 16,
-        border: "1px solid rgba(10,132,255,0.3)",
-      }}
-    >
-      <p
-        style={{
-          color: "white",
-          fontSize: 14,
-          lineHeight: 1.65,
-          margin: "0 0 10px",
-        }}
-      >
-        🚀 Actively seeking software engineering internship opportunities. If
-        you're building something ambitious - let's talk.
-      </p>
-      <a
-        href="mailto:arlikhozhaevca@gmail.com"
-        style={{
-          color: "#0A84FF",
-          fontSize: 14,
-          fontWeight: 600,
-          textDecoration: "none",
-        }}
-      >
-        arlikhozhaevca@gmail.com →
-      </a>
-    </div>
-  </div>
-);
+const NotesApp = () => <AboutProfile />;
 
 // ─── Terminal App (Skills) ────────────────────────────────────────────────────
 const TerminalApp = () => (
@@ -991,7 +833,7 @@ const ResumeApp = () => {
       {/* Actions */}
       <div style={{ display: "flex", gap: 8 }}>
         <a
-          href="/files/resume.pdf"
+          href={RESUME_PATH}
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -1012,7 +854,7 @@ const ResumeApp = () => {
           <ExternalLink size={14} /> Open
         </a>
         <a
-          href="/files/resume.pdf"
+          href={RESUME_PATH}
           download="Abdu-Alim-Resume.pdf"
           style={{
             flex: 1,
@@ -1095,7 +937,7 @@ const ResumeApp = () => {
         }}
       >
         <Document
-          file="/files/resume.pdf"
+          file={RESUME_PATH}
           onLoadSuccess={({ numPages }) => setNumPages(numPages)}
           loading={
             <p
@@ -1155,51 +997,6 @@ const FinderApp = () => {
     { id: "resume", label: "Resume", icon: <FileText size={14} /> },
     { id: "work", label: "Projects", icon: <FolderOpen size={14} /> },
     { id: "trash", label: "Trash", icon: <Trash2 size={14} /> },
-  ];
-
-  const projects = [
-    {
-      id: 1,
-      name: "FlashStudy-AI",
-      desc: "AI-powered flashcard generator using NLP to transform study material into structured flashcards.",
-      link: "https://flash-study-ai.vercel.app/",
-      img: "/images/project-1.png",
-      tech: ["React", "Node.js", "Firebase", "OpenAI"],
-    },
-    {
-      id: 2,
-      name: "AutoDev",
-      desc: "AI-powered autonomous code analysis, refactoring, and PR automation.",
-      link: "https://github.com/Arlikhozhaev/autodev",
-      img: "/images/project-2.png",
-      tech: ["FastAPI", "Celery", "PostgreSQL", "Next.js"],
-    },
-  ];
-
-  const experience = [
-    {
-      id: 1,
-      company: "Envia Together",
-      logo: "/images/envia-logo.png",
-      title: "Software Developer Intern",
-      dates: "Oct 2025 – Jan 2026",
-      location: "Remote · Vancouver, BC",
-      tech: [
-        "AWS",
-        "Node.js",
-        "TypeScript",
-        "MySQL",
-        "Terraform",
-        "RevenueCat",
-      ],
-      bullets: [
-        "Co-designed and built a subscription backend integrating RevenueCat webhooks, covering the full lifecycle — new subscriptions, renewals, expirations, and cancellations",
-        "Implemented an event-driven AWS architecture (Lambda + API Gateway) serving as the paywall source of truth, decoupling billing logic entirely from mobile clients",
-        "Exposed a subscription status REST API consumed by mobile clients, reducing client-side billing complexity and centralizing subscription state",
-        "Secured API credentials via AWS environment variables and implemented robust error handling for edge cases including expired subscriptions, invalid receipts, and network failures",
-        "Deployed and validated backend services on AWS, testing all endpoint flows using Postman before client integration",
-      ],
-    },
   ];
 
   return (
@@ -1518,214 +1315,83 @@ const FinderApp = () => {
       {tab === "resume" && <ResumeApp />}
 
       {/* About Tab */}
-      {tab === "about" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <div
-            style={{
-              backgroundColor: "#2c2c2e",
-              borderRadius: 16,
-              overflow: "hidden",
-            }}
-          >
-            <img
-              src="/images/young-me.jpg"
-              alt="Abdu Alim"
-              style={{ width: "100%", height: "auto", display: "block" }}
-            />
-          </div>
-
-          <div
-            style={{
-              backgroundColor: "#2c2c2e",
-              borderRadius: 16,
-              padding: 14,
-            }}
-          >
-            <p
-              style={{
-                color: "white",
-                fontWeight: 700,
-                fontSize: 16,
-                margin: "0 0 8px",
-              }}
-            >
-              Hey, I'm Alim (Ah-leem)! 👨🏻‍💻
-            </p>
-            <p
-              style={{
-                color: "rgba(255,255,255,0.75)",
-                fontSize: 13,
-                lineHeight: 1.65,
-                margin: 0,
-              }}
-            >
-              CS student & software engineer in Vancouver. I build scalable,
-              interactive software where clean engineering meets great design.
-            </p>
-          </div>
-
-          <div
-            style={{
-              backgroundColor: "#2c2c2e",
-              borderRadius: 16,
-              padding: 14,
-            }}
-          >
-            <p
-              style={{
-                color: "#0A84FF",
-                fontWeight: 700,
-                fontSize: 13,
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                margin: "0 0 8px",
-              }}
-            >
-              ⚡ What sets me apart
-            </p>
-            <p
-              style={{
-                color: "rgba(255,255,255,0.75)",
-                fontSize: 13,
-                lineHeight: 1.65,
-                margin: 0,
-              }}
-            >
-              I don't just code - I learn fast, adapt quickly, and ship results.
-              I thrive where creativity meets engineering: optimizing systems,
-              solving hard problems, and building things that actually matter.
-            </p>
-          </div>
-
-          <div
-            style={{
-              backgroundColor: "#2c2c2e",
-              borderRadius: 16,
-              padding: 14,
-            }}
-          >
-            <p
-              style={{
-                color: "#30d158",
-                fontWeight: 700,
-                fontSize: 13,
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                margin: "0 0 8px",
-              }}
-            >
-              💻 Stack
-            </p>
-            <p
-              style={{
-                color: "rgba(255,255,255,0.75)",
-                fontSize: 14,
-                lineHeight: 1.65,
-                margin: 0,
-              }}
-            >
-              C++, Java, JavaScript, TypeScript, Python, React, Next.js,
-              FastAPI, Node.js, PostgreSQL, Firebase, AWS, Vercel
-            </p>
-          </div>
-
-          <div
-            style={{
-              backgroundColor: "#2c2c2e",
-              borderRadius: 16,
-              padding: 14,
-            }}
-          >
-            <p
-              style={{
-                color: "#ff9f0a",
-                fontWeight: 700,
-                fontSize: 13,
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                margin: "0 0 8px",
-              }}
-            >
-              🥊 Outside the keyboard
-            </p>
-            <p
-              style={{
-                color: "rgba(255,255,255,0.75)",
-                fontSize: 14,
-                lineHeight: 1.65,
-                margin: 0,
-              }}
-            >
-              Boxing, hiking in the mountains, and nature gazing wherever I can
-              find it. Stepping away from the screen helps me recharge, think
-              clearly, and come back a better engineer.
-            </p>
-          </div>
-
-          <div
-            style={{
-              backgroundColor: "#1a3a5c",
-              borderRadius: 16,
-              padding: 14,
-              border: "1px solid rgba(10,132,255,0.3)",
-            }}
-          >
-            <p
-              style={{
-                color: "white",
-                fontSize: 14,
-                lineHeight: 1.65,
-                margin: "0 0 8px",
-              }}
-            >
-              🚀 Actively seeking software engineering internship opportunities.
-              If you're building something ambitious - let's talk.
-            </p>
-            <a
-              href="mailto:arlikhozhaevca@gmail.com"
-              style={{
-                color: "#0A84FF",
-                fontSize: 13,
-                fontWeight: 600,
-                textDecoration: "none",
-              }}
-            >
-              arlikhozhaevca@gmail.com →
-            </a>
-          </div>
-        </div>
-      )}
+      {tab === "about" && <AboutProfile compact />}
 
       {/* Trash Tab */}
-      {tab === "trash" && (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            paddingTop: 60,
-            gap: 16,
-          }}
-        >
-          <Trash2 size={64} color="rgba(255,255,255,0.15)" />
-          <p
+      {tab === "trash" &&
+        (trashItems.length > 0 ? (
+          <div
             style={{
-              color: "rgba(255,255,255,0.3)",
-              fontSize: 15,
-              fontWeight: 500,
-              margin: 0,
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gap: 12,
             }}
           >
-            Trash is Empty
-          </p>
-          <p
-            style={{ color: "rgba(255,255,255,0.18)", fontSize: 12, margin: 0 }}
+            {trashItems.map(({ id, name, imageUrl }) => (
+              <div
+                key={id}
+                style={{
+                  backgroundColor: "#2c2c2e",
+                  borderRadius: 16,
+                  overflow: "hidden",
+                }}
+              >
+                <img
+                  src={imageUrl}
+                  alt={name}
+                  style={{
+                    width: "100%",
+                    height: 120,
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+                <p
+                  style={{
+                    color: "rgba(255,255,255,0.5)",
+                    fontSize: 11,
+                    margin: 0,
+                    padding: "8px 12px",
+                  }}
+                >
+                  {name}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              paddingTop: 60,
+              gap: 16,
+            }}
           >
-            Items deleted more than 30 days ago will be removed.
-          </p>
-        </div>
-      )}
+            <Trash2 size={64} color="rgba(255,255,255,0.15)" />
+            <p
+              style={{
+                color: "rgba(255,255,255,0.3)",
+                fontSize: 15,
+                fontWeight: 500,
+                margin: 0,
+              }}
+            >
+              Trash is Empty
+            </p>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.18)",
+                fontSize: 12,
+                margin: 0,
+              }}
+            >
+              Items deleted more than 30 days ago will be removed.
+            </p>
+          </div>
+        ))}
     </div>
   );
 };
@@ -1921,7 +1587,7 @@ const MobileHome = () => {
             lineHeight: 1.25,
           }}
         >
-          Hey, I'm Abdu Alim! 👋
+          {aboutContent.headline}
         </p>
         <p
           style={{

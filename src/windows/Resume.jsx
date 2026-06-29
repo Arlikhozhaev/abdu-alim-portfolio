@@ -1,5 +1,6 @@
 import { WindowControls } from "#components";
 import WindowWrapper from "#hoc/WindowWrapper";
+import { RESUME_PATH } from "#constants";
 import { Download } from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -18,7 +19,7 @@ const Resume = () => {
         <h2>Resume.pdf</h2>
 
         <a
-          href="files/resume.pdf"
+          href={RESUME_PATH}
           download
           className="cursor-pointer"
           title="Download Resume"
@@ -28,7 +29,7 @@ const Resume = () => {
       </div>
 
       <div className="overflow-hidden">
-        <Document file="files/resume.pdf">
+        <Document file={RESUME_PATH}>
           <Page
             pageNumber={1}
             width={550}
