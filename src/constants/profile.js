@@ -86,7 +86,7 @@ export const projects = [
     name: "AutoDev",
     desc: "AI-powered autonomous code analysis, refactoring, and PR automation.",
     link: "https://github.com/Arlikhozhaev/autodev",
-    linkLabel: "autodev.com",
+    linkLabel: "AutoDev Website",
     img: "/images/project-2.png",
     tech: ["FastAPI", "Celery", "PostgreSQL", "Next.js"],
     position: "top-52 right-50",

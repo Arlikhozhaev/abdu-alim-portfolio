@@ -1,80 +1,93 @@
-# macOS Portfolio — Abdu Alim Arlikhozhaev
+# macOS Portfolio — Abdu Alim
 
-A fully interactive, macOS-inspired developer portfolio built with React, Tailwind CSS, GSAP, Zustand, and Vite. Features a working desktop environment with draggable, resizable windows, a functional dock, dark mode, animated transitions, and a live photo gallery — all running in the browser.
+An interactive, macOS-inspired developer portfolio built with React 19, Vite 7, Tailwind CSS v4, GSAP, and Zustand. Desktop visitors get a draggable window environment; mobile visitors get an iOS-style home screen — both fed from the same content source.
 
----
+**Live:** [arlikhozhaev.dev](https://arlikhozhaev.dev/)
 
-![Portfolio Preview](/public/images/preview.png)
+![Portfolio preview](/public/images/preview.png)
 
 ---
 
 ## Features
 
-- **macOS Desktop UI** — Navbar, Dock, draggable + resizable windows, window focus/z-index management
-- **Dark Mode** — Toggle via navbar icon, persisted in `localStorage`, applied via Tailwind v4 `dark:` variant
-- **Finder** — Browse projects and files in a macOS Finder-style window
-- **Photos** — Masonry gallery with per-photo titles, hover overlays, and multiple independent windows
-- **Safari** — Developer blog viewer with real Medium article links
-- **Terminal** — Animated tech stack display styled as a real terminal session
-- **Resume** — Inline PDF viewer with download support via `react-pdf`
-- **Contact** — Social links with branded cards
-- **GSAP Animations** — Window open/close transitions, entrance animations, and smooth dragging
-- **Dynamic Window System** — Spawn unlimited independent image windows from the gallery
+### Desktop (≥ 640px)
+- **macOS desktop UI** — menu bar, dock with magnification, wallpaper, project folders on the desktop
+- **Draggable windows** — drag from the title bar only; inputs and links stay interactive
+- **Window focus** — click-to-front z-index management via Zustand
+- **Dark mode** — navbar toggle, persisted in `localStorage`, Tailwind `dark:` variant
+- **Finder** — browse Projects, About me, Experience, Resume, and Trash as macOS-style folders
+- **Safari (Blog)** — searchable Medium article feed
+- **Terminal (Skills)** — animated tech stack grouped by category
+- **Resume** — inline PDF viewer with zoom, download, and open-in-tab
+- **Contact** — profile card, email, and social links
+- **Photos (Gallery)** — masonry grid; open multiple independent image windows
+- **Dynamic windows** — spawn unlimited image pop-outs from Finder or Gallery
+- **LinkedIn recommendation** — toast from the menu bar wifi icon
+
+### Mobile (< 640px)
+- **iOS-style home screen** — wallpaper, app grid, frosted dock, swipe-to-close app sheets
+- **Always dark** — mobile UI is decoupled from desktop theme toggle
+- **Same content** — About, Skills, Resume, Finder, Blog, Gallery, Contact mirror desktop data
+- **Visible contact path** — “Get in touch” mailto link on the home screen greeting
+
+### Engineering
+- **Code splitting** — lazy-loaded desktop vs mobile shells; manual vendor chunks (PDF, GSAP, React)
+- **Single source of truth** — all portfolio copy and structure in `src/constants/profile.js`
+- **Shared components** — `ResumeViewer`, `BlogFeed`, `AboutProfile` used on both platforms
+- **SEO** — meta tags, Open Graph, Twitter cards, canonical URL in `index.html`
+- **Analytics** — Vercel Analytics in `src/main.jsx`
 
 ---
 
 ## Tech Stack
 
 | Layer | Technology |
-|---|---|
-| Framework | React 19 + Vite |
+|-------|------------|
+| Framework | React 19 + Vite 7 |
 | Styling | Tailwind CSS v4 |
-| Animation | GSAP + `@gsap/react` |
-| State Management | Zustand + Immer |
-| PDF Rendering | `react-pdf` + `pdfjs-dist` |
-| Date Formatting | Day.js |
-| Utilities | clsx, lucide-react |
+| Animation | GSAP + `@gsap/react` + Draggable |
+| State | Zustand + Immer |
+| PDF | `react-pdf` + `pdfjs-dist` |
+| Icons | Lucide React |
+| Analytics | `@vercel/analytics` |
 
 ---
 
 ## Getting Started
 
 ### Prerequisites
-
 - Node.js 18+
-- npm or yarn
+- npm
 
-### Installation
+### Install & run
 
 ```bash
-# Clone the repository
 git clone https://github.com/Arlikhozhaev/abdu-alim-portfolio.git
 cd abdu-alim-portfolio
-
-# Install dependencies
 npm install
-
-# Install required packages
-npm install dayjs
-npm install gsap
-npm install zustand
-npm install immer
-npm install react-pdf
-npm install clsx
-```
-
-### Development
-
-```bash
 npm run dev
 ```
 
-### Production Build
+### Production
 
 ```bash
 npm run build
 npm run preview
 ```
+
+### Required assets
+
+The app expects these under `public/` (included in the repo):
+
+```
+public/
+├── files/
+│   └── resume.pdf
+├── icons/          # Menu bar, dock, social SVGs
+└── images/         # Wallpaper, app icons, project shots, gallery, avatars
+```
+
+If images or the resume are missing after clone, the UI will show broken assets locally.
 
 ---
 
@@ -82,50 +95,165 @@ npm run preview
 
 ```
 src/
-├── components/          # Shared UI components (Navbar, Dock, WindowControls, etc.)
-├── constants/           # App-wide data (navLinks, gallery, techStack, locations, etc.)
-├── hoc/
-│   └── WindowWrapper.jsx  # HOC that adds drag, resize, animation to any window
+├── App.jsx                 # Routes desktop vs mobile at 640px breakpoint
+├── DesktopApp.jsx          # Desktop shell (navbar, dock, all windows)
+├── main.jsx                # React root + Vercel Analytics
+├── index.css               # Tailwind + macOS window/dock/welcome styles
+│
+├── components/
+│   ├── Navbar.jsx          # Menu bar (Projects, Contact, Resume + icons)
+│   ├── Welcome.jsx         # Desktop hero + contact CTA
+│   ├── Dock.jsx            # macOS dock with hover magnification
+│   ├── Home.jsx            # Desktop project folder shortcuts
+│   ├── MobileHome.jsx      # Full mobile iOS UI (app sheets)
+│   ├── ContactCta.jsx      # Shared “Get in touch” mailto link
+│   ├── AboutProfile.jsx    # About Me content (mobile Notes app)
+│   ├── BlogFeed.jsx        # Searchable blog list (desktop Safari + mobile)
+│   ├── ResumeViewer.jsx    # PDF viewer (desktop Resume + mobile app)
+│   ├── RecommendationToast.jsx
+│   └── AppLoadingScreen.jsx
+│
+├── constants/
+│   ├── profile.js          # ★ Edit portfolio content here
+│   ├── index.js            # Nav, dock, blog, gallery, locations, window config
+│   ├── mobileTheme.js      # Dark theme tokens for mobile sheets
+│   ├── recommendation.js   # LinkedIn recommendation data
+│   └── breakpoints.js      # DESKTOP_MEDIA_QUERY (640px)
+│
+├── context/
+│   └── MobileThemeContext.jsx   # Mobile always uses dark tokens
+│
+├── hooks/
+│   ├── useMediaQuery.js    # Sync breakpoint detection (no flash)
+│   └── useBlogSearch.js    # Client-side blog filtering
+│
 ├── store/
-│   ├── window.js        # Zustand store — window open/close/focus + dynamic windows
-│   ├── dark.js          # Zustand store — dark mode toggle + localStorage persistence
-│   └── location.js      # Zustand store — Finder active location state
-└── windows/             # Individual window components
-    ├── Finder.jsx
-    ├── Safari.jsx
-    ├── Terminal.jsx
-    ├── Resume.jsx
-    ├── Contact.jsx
-    ├── Photos.jsx
-    ├── Text.jsx
-    ├── Image.jsx
-    └── DynamicWindows.jsx  # Renders multiple independent photo windows
+│   ├── window.js           # Open/close/focus static + dynamic windows
+│   ├── location.js         # Finder sidebar active location
+│   └── dark.js             # Desktop dark mode + localStorage
+│
+├── hoc/
+│   └── WindowWrapper.jsx   # GSAP entrance + header-only drag for windows
+│
+└── windows/
+    ├── Finder.jsx          # Folder browser + experience/projects views
+    ├── Safari.jsx          # Blog window with search
+    ├── Terminal.jsx        # Tech stack
+    ├── Resume.jsx          # Wraps ResumeViewer
+    ├── Contact.jsx         # Contact card + socials
+    ├── Photos.jsx          # Gallery grid
+    ├── Text.jsx            # Rich text viewer (about, project descriptions)
+    ├── Image.jsx           # Single image viewer
+    └── DynamicWindows.jsx  # Runtime photo pop-out windows
 ```
 
 ---
 
-## Architecture Highlights
+## Architecture
 
-### Window System
-Every window is wrapped in `WindowWrapper` — a higher-order component that injects GSAP entrance animations, GSAP `Draggable` for drag behavior, a custom resize handle, and Zustand-powered z-index focus management. Static windows (Finder, Terminal, etc.) are registered in `WINDOW_CONFIG`. Photo windows use a dynamic window system that spawns independent instances at runtime via `openDynamicWindow`.
+### Desktop vs mobile routing
 
-### Dark Mode
-Dark mode is managed by a dedicated Zustand store (`useDarkStore`) that toggles a `.dark` class on `<html>` and persists the preference to `localStorage`. Tailwind v4's `@variant dark` directive enables the `dark:` utility across all components without a config file.
+`App.jsx` uses `useMediaQuery(DESKTOP_MEDIA_QUERY)` where `DESKTOP_MEDIA_QUERY = "(min-width: 640px)"`. Each shell is `React.lazy()`-loaded with a branded `AppLoadingScreen` fallback. Vite manual chunks split `desktop`, `mobile`, `windows`, and vendor bundles.
 
-### State Management
-Zustand with Immer middleware is used for all global state. Immer enables direct mutation syntax inside `set` callbacks, keeping store actions clean and readable without manual object spreading.
+### Window system
+
+**Static windows** (`finder`, `contact`, `resume`, `safari`, `photos`, `terminal`, `txtfile`, `imgfile`) are registered in `WINDOW_CONFIG` inside `src/constants/index.js`. `useWindowStore` manages open state, z-index focus, and optional window payload data.
+
+**Dynamic windows** are created at runtime via `openDynamicWindow()` — used when opening gallery or Finder images in separate draggable windows. `DynamicWindows.jsx` renders the list.
+
+**WindowWrapper** (HOC) wraps each window component and provides:
+- GSAP scale/fade entrance on open
+- Draggable behavior limited to `#window-header` (not the whole window)
+- Cancel selectors for inputs, links, and `[data-no-drag]` elements
+
+Windows are **not resizable** — drag and focus only.
+
+### Finder & projects model
+
+Content in `profile.js` is transformed into Finder “locations” by builder functions:
+
+| Builder | Finder sidebar entry | Contents |
+|---------|---------------------|----------|
+| `buildWorkLocation()` | Projects | One folder per project; each contains `.txt` (description), link file, and screenshot |
+| `buildAboutLocation()` | About me | Personal photos + `Abdu-Alim.txt` rich about document |
+| `buildTrashLocation()` | Trash | Easter-egg images |
+| `EXPERIENCE_LOCATION` | Experience | Renders from `experience[]` array (not folder children) |
+| `RESUME_LOCATION` | Resume | Shortcut to `Resume.pdf` |
+
+Desktop also shows project folders directly on the wallpaper via `Home.jsx`. Opening a project folder in Finder lets you read the description (`Text.jsx`), open the live link, or view the screenshot.
+
+### Content flow (single source of truth)
+
+```
+profile.js
+  ├── aboutContent      → AboutProfile (mobile), Text window (desktop)
+  ├── projects[]        → Finder Projects, Home desktop folders
+  ├── experience[]      → Finder Experience tab
+  ├── trashItems[]      → Finder Trash
+  ├── CONTACT_EMAIL     → ContactCta, Contact app, Contact window
+  └── RESUME_PATH       → ResumeViewer, Finder Resume folder
+```
+
+`src/constants/index.js` re-exports profile data and adds platform-specific config: `navLinks`, `dockApps`, `blogPosts`, `techStack`, `socials`, `gallery`, and `locations`.
+
+### State management
+
+Three Zustand stores with Immer middleware:
+- **`window.js`** — window open/close, z-index, dynamic window list
+- **`location.js`** — which Finder sidebar location is active
+- **`dark.js`** — desktop `.dark` class on `<html>` (mobile ignores this)
+
+### Dark mode
+
+Desktop: toggle in menu bar (sun/moon icon), persisted in `localStorage`.
+
+Mobile: `MobileThemeContext` always serves dark tokens from `mobileTheme.js` — independent of desktop preference.
 
 ---
 
 ## Customization
 
-All content is data-driven via `src/constants/index.js`:
+### Edit portfolio content
 
-- **Projects** — edit `WORK_LOCATION.children` to add/remove project folders
-- **Blog posts** — edit `blogPosts` array with title, date, image, and link
-- **Tech stack** — edit `techStack` array with categories and items
-- **Gallery** — edit `gallery` array with image paths, titles, and descriptions
-- **Socials** — edit `socials` array with links and brand colors
+**Primary file:** `src/constants/profile.js`
+
+| Export | What to change |
+|--------|----------------|
+| `CONTACT_EMAIL` | Email shown in Contact + mailto CTA |
+| `RESUME_PATH` | Path to PDF in `public/files/` |
+| `aboutContent` | Headline, bio, photos, sections, desktop description |
+| `projects[]` | Name, descriptions, live links, tech tags, images, desktop positions |
+| `experience[]` | Company, role, dates, bullets, logo |
+| `trashItems[]` | Trash folder easter eggs |
+
+After editing `projects`, `buildWorkLocation()` automatically rebuilds Finder folders — no manual folder tree edits needed.
+
+### Other content (in `src/constants/index.js`)
+
+| Array | Purpose |
+|-------|---------|
+| `blogPosts` | Safari / mobile Blog app articles |
+| `techStack` | Terminal / mobile Skills app |
+| `socials` | Contact window and mobile Contact app |
+| `gallery` | Photos app image grid |
+| `navLinks` / `dockApps` | Menu bar and dock labels (icons live in `public/images/`) |
+
+### Adding a project
+
+1. Add an entry to `projects[]` in `profile.js` (unique `finderId`, image in `public/images/`).
+2. Optionally set `position` (desktop wallpaper folder) and `windowPosition` (Finder window placement).
+3. Rebuild — Finder Projects and desktop folders update automatically.
+
+---
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start Vite dev server |
+| `npm run build` | Production build to `dist/` |
+| `npm run preview` | Preview production build locally |
+| `npm run lint` | ESLint |
 
 ---
 
@@ -135,4 +263,4 @@ MIT — free to use as inspiration. Please don't deploy this as-is with my perso
 
 ---
 
-*Built by Abdu Alim Arlikhozhaev — [LinkedIn](https://www.linkedin.com/in/arlikhozhaev/) · [GitHub](https://github.com/Arlikhozhaev) · [X](https://x.com/arlikhozhaev)*
+*Built by [Abdu Alim](https://arlikhozhaev.dev/) — [LinkedIn](https://www.linkedin.com/in/arlikhozhaev/) · [GitHub](https://github.com/Arlikhozhaev) · [X](https://x.com/arlikhozhaev)*

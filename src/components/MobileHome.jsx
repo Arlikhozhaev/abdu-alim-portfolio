@@ -19,6 +19,7 @@ import AboutProfile from "./AboutProfile";
 import BlogFeed from "./BlogFeed";
 import ResumeViewer from "./ResumeViewer";
 import RecommendationToast from "./RecommendationToast";
+import ContactCta from "./ContactCta";
 import { MobileThemeProvider, useMobileTheme } from "#context/MobileThemeContext";
 
 // ─── iOS Status Bar ───────────────────────────────────────────────────────────
@@ -1415,6 +1416,7 @@ const MobileHomeContent = () => {
         >
           {dayjs().format("dddd, MMMM D")}
         </p>
+        <ContactCta variant="mobile" />
       </div>
 
       {/* Grid — About Me, Skills, Resume */}
