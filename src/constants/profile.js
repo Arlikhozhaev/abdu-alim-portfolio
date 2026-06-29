@@ -13,7 +13,7 @@ export const aboutContent = {
   heroImage: "/images/young-me.jpg",
   headline: "Hey, I'm Abdu Alim! 👋",
   intro:
-    "Computer Science student & aspiring software engineer based in Vancouver. I build scalable, interactive, user-friendly software where clean engineering meets great design — and I'm always hungry to learn, ship, and grow.",
+    "Computer Science student at Langara College (Associate of Science, expected Dec 2026) and aspiring software engineer in Vancouver. I build scalable, user-friendly software where clean engineering meets thoughtful design.",
   photos: [
     {
       id: 1,
@@ -55,19 +55,36 @@ export const aboutContent = {
     body: "Actively seeking software engineering opportunities to learn, ship, and grow. If you're building something ambitious — let's talk.",
   },
   desktopDescription: [
-    "Computer Science student & aspiring software engineer based in Vancouver. I build scalable, interactive, user-friendly software where clean engineering meets great design — and I'm always hungry to learn, ship, and grow.",
+    "Computer Science student at Langara College (Associate of Science, expected Dec 2026), based in Vancouver. I build full-stack products where solid engineering and clear UX work together.",
     "I specialize in C/C++, Java, JavaScript, TypeScript, React, and Next.js — and I love making things feel smooth, fast, and delightful.",
     "I'm big on clean UI, solid UX, reliable backends, and code that doesn't need a search party to debug.",
     "Outside of dev work, you'll find me boxing, golfing, hiking somewhere in the mountains, or literally nature gazing anywhere I can. 😅",
   ],
 };
 
+export const education = [
+  {
+    id: 1,
+    institution: "Langara College",
+    degree: "Associate of Science, Computer Science",
+    dates: "Expected Dec 2026",
+    location: "Vancouver, BC",
+    coursework: [
+      "Data Structures & Algorithms (C++)",
+      "Discrete Mathematics",
+      "Database Systems",
+      "Unix Tools & Scripting",
+      "Calculus I/II",
+    ],
+  },
+];
+
 export const projects = [
   {
     id: 1,
     finderId: 5,
     name: "ReviewLens",
-    desc: "AI-powered review analysis platform. Clusters customer feedback into structured insights using OpenAI embeddings + k-means.",
+    desc: "Full-stack SaaS that turns customer reviews into clear, actionable themes using AI clustering.",
     link: "https://review-lens-ten.vercel.app/",
     linkLabel: "ReviewLens Website",
     img: "/images/project-1.png",
@@ -75,31 +92,33 @@ export const projects = [
     position: "top-10 left-5",
     windowPosition: "top-[5vh] left-9",
     description: [
-      "AI-powered review analysis platform. Clusters customer feedback into structured insights using OpenAI embeddings + k-means.",
-      "Built with Next.js 14 App Router, TypeScript, Prisma, Supabase, and GPT-4o-mini.",
-      "Full-stack SaaS — CSV parsing, AI pipeline, Recharts dashboard, shareable reports, and session persistence.",
+      "ReviewLens helps teams understand large volumes of customer feedback without reading every comment manually. Users upload review data; the app groups similar feedback with OpenAI embeddings and k-means, then surfaces themes and trends in a visual dashboard.",
+      "I built the product end-to-end with Next.js 14 (App Router), TypeScript, Prisma, and Supabase — including auth, workspaces, a GPT-4o-mini analysis pipeline, Recharts visualizations, and shareable report links.",
+      "The goal was practical: go from raw CSV to a decision-ready summary in minutes, with a UI that non-technical stakeholders can actually use.",
     ],
   },
   {
     id: 2,
     finderId: 6,
     name: "AutoDev",
-    desc: "AI-powered autonomous code analysis, refactoring, and PR automation.",
+    desc: "Developer platform for AI-assisted code analysis, refactoring suggestions, and PR workflow automation.",
     link: "https://github.com/Arlikhozhaev/autodev",
-    linkLabel: "AutoDev Website",
+    linkLabel: "AutoDev on GitHub",
     img: "/images/project-2.png",
     tech: ["FastAPI", "Celery", "PostgreSQL", "Next.js"],
     position: "top-52 right-50",
     windowPosition: "top-[20vh] left-5",
     description: [
-      "AI-powered autonomous code analysis, refactoring, and PR automation.",
+      "AutoDev explores how AI can support the delivery loop — analyzing repositories, surfacing issues, suggesting refactors, and preparing change proposals developers review before merge.",
+      "The architecture uses FastAPI with Celery workers and PostgreSQL for async job processing, plus a Next.js frontend for connecting repos, tracking jobs, and reviewing diffs.",
+      "This project pushed me on queue-based backends, API design, and building tools where trust and clarity matter more than flashy demos.",
     ],
   },
   {
     id: 3,
     finderId: 7,
     name: "ProfessorMatch AI",
-    desc: "AI-powered professor recommendation platform with personalized search and a conversational assistant.",
+    desc: "Professor discovery app with personalized rankings and a retrieval-based AI assistant for students.",
     link: "https://professor-match-ai.vercel.app/",
     linkLabel: "ProfessorMatch AI Website",
     img: "/images/project-3.png",
@@ -107,15 +126,16 @@ export const projects = [
     position: "top-15 right-40",
     windowPosition: "top-[35vh] left-7",
     description: [
-      "A modern AI-powered professor recommendation platform built with Next.js, SQLite, and retrieval-based chat flows.",
-      "The app helps students explore professors using review data, personalized search results, and a conversational assistant.",
+      "ProfessorMatch AI helps students find professors that fit their goals and learning style. Users search and filter by department, ratings, and interests, then get recommendations backed by real review data.",
+      "Built with Next.js and TypeScript, with profiles stored in SQLite and a chat assistant powered by retrieval-based flows on OpenAI — answers stay grounded in actual reviews, not generic text.",
+      "I focused on fast search, readable match explanations, and a conversational layer that feels useful during course planning, not like a gimmick.",
     ],
   },
   {
     id: 4,
     finderId: 8,
     name: "FlashStudy-AI",
-    desc: "AI-powered flashcard generator that transforms study material into structured flashcards using NLP.",
+    desc: "Study app that converts notes and topics into AI-generated flashcards for active recall.",
     link: "https://flash-study-ai.vercel.app/",
     linkLabel: "FlashStudy-AI Website",
     img: "/images/project-4.png",
@@ -123,10 +143,9 @@ export const projects = [
     position: "top-62 left-10",
     windowPosition: "top-[50vh] left-7",
     description: [
-      "FlashStudy-AI is an AI-powered flashcard generator that transforms study material into concise, structured flashcards using natural language processing.",
-      "Users can input text or topics, and the system automatically generates question-answer pairs to improve active recall and memory retention.",
-      "Built using React, Node.js, Firebase, and OpenAI API, the application includes user authentication, flashcard storage, and review functionality to create an effective study experience.",
-      "Sign in, generate your flashcards effortlessly, and boost your memory retention—all in one seamless experience!",
+      "FlashStudy-AI turns lecture notes, articles, or topic prompts into question–answer flashcards using OpenAI. Students sign in, generate a deck in one flow, and review cards stored in Firebase.",
+      "Stack: React frontend, Node.js API, Firebase Auth and Firestore, with structured prompts and validation so generated cards stay concise and study-ready.",
+      "I cared about the details that separate a demo from a tool people reuse — handling malformed model output, keeping the review flow simple, and making generation feel instant after login.",
     ],
   },
 ];
@@ -152,7 +171,7 @@ export const experience = [
     company: "Envia Together",
     logo: "/images/envia-logo.png",
     title: "Software Developer Intern",
-    dates: "Oct 2025 – Jan 2026",
+    dates: "Oct 2025 – Jan 2026 · 4 mos",
     location: "Remote · Vancouver, BC",
     tech: ["AWS", "Node.js", "TypeScript", "MySQL", "Terraform", "RevenueCat"],
     bullets: [
@@ -160,6 +179,37 @@ export const experience = [
       "Co-built an event-driven AWS system (Lambda + API Gateway) that became the single source of truth for paywall access -- enabling real-time entitlement enforcement with zero production incidents across all post-launch releases",
       "Provisioned and managed cloud infrastructure using Terraform (IaC), maintaining reproducible dev and production environments and eliminating manual environment setup.",
       "Deployed and validated backend services on AWS, testing all endpoint flows using Postman before client integration",
+    ],
+  },
+];
+
+export const volunteerExperience = [
+  {
+    id: 1,
+    company: "Web Summit Vancouver",
+    logo: "/images/web-summit-logo.png",
+    title: "Volunteer Team Lead",
+    dates: "May 2026 · 1 mo",
+    location: "Vancouver, BC",
+    tech: ["Team Leadership", "Event Operations", "Stakeholder Coordination"],
+    bullets: [
+      "Led a volunteer team at Web Summit Vancouver 2026 — a global tech conference with 20,000+ attendees, 1,500+ startups, and 700+ investors",
+      "Resolved real-time operational issues and coordinated with the Key Events team on attendee guidance, venue flow, and on-site logistics",
+      "Supported fast-paced event execution alongside founders, investors, and teams across AI, software, and Vancouver's tech ecosystem",
+    ],
+  },
+  {
+    id: 2,
+    company: "BC Technology for Learning Society",
+    logo: "/images/bc-tech-logo.png",
+    title: "Volunteer Hardware Technician",
+    dates: "Feb 2025 – May 2025 · 4 mos",
+    location: "Vancouver, BC",
+    tech: ["Windows", "Hardware Diagnostics", "Microsoft Authorized Refurbisher"],
+    bullets: [
+      "Refurbished 350+ donated computers, laptops, and peripherals — OS installs, cleaning, and component swaps (HDD, SSD, RAM)",
+      "Tested and assessed system performance before devices reached schools, non-profits, and low-income families",
+      "Worked as a Microsoft Authorized Refurbisher, helping expand access to reliable technology in the community",
     ],
   },
 ];

@@ -2,6 +2,8 @@ import {
   aboutContent,
   projects,
   experience,
+  volunteerExperience,
+  education,
   CONTACT_EMAIL,
   RESUME_PATH,
 } from "../src/constants/profile.js";
@@ -21,7 +23,23 @@ export const buildSeoShellHtml = () => {
     )
     .join("");
 
+  const educationItems = education
+    .map((entry) => {
+      const coursework = entry.coursework?.length
+        ? ` — Coursework: ${entry.coursework.map(escapeHtml).join(", ")}`
+        : "";
+      return `<li><strong>${escapeHtml(entry.institution)}</strong> — ${escapeHtml(entry.degree)} (${escapeHtml(entry.dates)})${coursework}</li>`;
+    })
+    .join("");
+
   const experienceItems = experience
+    .map(
+      (role) =>
+        `<li><strong>${escapeHtml(role.company)}</strong> — ${escapeHtml(role.title)} (${escapeHtml(role.dates)})</li>`,
+    )
+    .join("");
+
+  const volunteerItems = volunteerExperience
     .map(
       (role) =>
         `<li><strong>${escapeHtml(role.company)}</strong> — ${escapeHtml(role.title)} (${escapeHtml(role.dates)})</li>`,
@@ -40,8 +58,16 @@ export const buildSeoShellHtml = () => {
     <ul>${projectItems}</ul>
   </section>
   <section>
+    <h2>Education</h2>
+    <ul>${educationItems}</ul>
+  </section>
+  <section>
     <h2>Experience</h2>
     <ul>${experienceItems}</ul>
+  </section>
+  <section>
+    <h2>Volunteer</h2>
+    <ul>${volunteerItems}</ul>
   </section>
   <section>
     <h2>Resume</h2>

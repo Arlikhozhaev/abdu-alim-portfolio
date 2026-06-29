@@ -3,6 +3,8 @@ import {
   projects,
   trashItems,
   experience,
+  volunteerExperience,
+  education,
   CONTACT_EMAIL,
   RESUME_PATH,
   buildWorkLocation,
@@ -218,6 +220,8 @@ export {
   projects,
   trashItems,
   experience,
+  volunteerExperience,
+  education,
   CONTACT_EMAIL,
   RESUME_PATH,
 };
