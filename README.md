@@ -255,7 +255,9 @@ After editing `projects`, `buildWorkLocation()` automatically rebuilds Finder fo
 | `npm run preview` | Preview production build locally |
 | `npm run lint` | ESLint |
 | `npm run test:e2e` | Playwright smoke tests (builds preview server automatically) |
-| `npm run images:webp` | Generate `.webp` siblings for `public/images/` (optional, improves load time) |
+| `npm run build:seo` | Production build + inject crawlable HTML shell (optional SEO prerender) |
+| `npm run prerender:seo` | Inject SEO shell into an existing `dist/index.html` |
+| `npm run images:webp` | Generate `.webp` siblings for `public/images/` |
 
 ### SEO & performance (P2)
 
@@ -264,6 +266,23 @@ After editing `projects`, `buildWorkLocation()` automatically rebuilds Finder fo
 - Google Fonts loaded via `<link>` (non-blocking) instead of CSS `@import`
 - `OptimizedImage` — lazy loading + optional WebP via `<picture>` after running `images:webp`
 - GitHub Actions CI (`.github/workflows/ci.yml`) — lint, build, and e2e on push/PR
+- Optional SEO prerender (`npm run build:seo`) — injects readable project/experience HTML into `dist/index.html` for crawlers; React replaces it on load
+
+### WebP images
+
+Committing both raster originals (`.jpg`/`.png`) and `.webp` siblings is expected. `OptimizedImage` serves WebP via `<picture>` and falls back to the original format when needed.
+
+### Optional SEO prerender
+
+Default `npm run build` is unchanged. For deployments where crawlers may not execute JavaScript:
+
+```bash
+npm run build:seo
+```
+
+This injects a static HTML summary (from `profile.js`) inside `#root`. When the app hydrates, React replaces that shell with the interactive portfolio — users see no difference.
+
+You can also run `npm run prerender:seo` after a normal build to inject the shell manually.
 
 ---
 
