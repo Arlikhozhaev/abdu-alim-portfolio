@@ -1,4 +1,4 @@
-import { useRef, useLayoutEffect } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";

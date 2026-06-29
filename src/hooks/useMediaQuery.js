@@ -16,7 +16,6 @@ const useMediaQuery = (query) => {
     const media = window.matchMedia(query);
     const onChange = (event) => setMatches(event.matches);
 
-    setMatches(media.matches);
     media.addEventListener("change", onChange);
 
     return () => media.removeEventListener("change", onChange);

@@ -1,4 +1,5 @@
 import { WindowControls } from "#components";
+import OptimizedImage from "#components/OptimizedImage";
 import { blogPosts } from "#constants";
 import useBlogSearch from "#hooks/useBlogSearch";
 import WindowWrapper from "#hoc/WindowWrapper";
@@ -75,7 +76,7 @@ const Safari = () => {
             {filteredPosts.map(({ id, image, title, date, link }) => (
               <div key={id} className="blog-post">
                 <div className="col-span-2">
-                  <img src={image} alt={title} />
+                  <OptimizedImage src={image} alt={title} />
                 </div>
 
                 <div className="content">

@@ -1,4 +1,5 @@
 import { WindowControls } from "#components";
+import OptimizedImage from "#components/OptimizedImage";
 import { photosLinks, gallery } from "#constants";
 import WindowWrapper from "#hoc/WindowWrapper";
 import useWindowStore from "#store/window";
@@ -59,7 +60,7 @@ const Photos = () => {
               }}
               className="group"
             >
-              <img
+              <OptimizedImage
                 src={img}
                 alt={title}
                 style={{ width: "100%", height: "auto", display: "block" }}

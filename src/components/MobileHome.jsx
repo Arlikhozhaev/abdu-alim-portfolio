@@ -20,6 +20,7 @@ import BlogFeed from "./BlogFeed";
 import ResumeViewer from "./ResumeViewer";
 import RecommendationToast from "./RecommendationToast";
 import ContactCta from "./ContactCta";
+import OptimizedImage from "./OptimizedImage";
 import { MobileThemeProvider, useMobileTheme } from "#context/MobileThemeContext";
 
 // ─── iOS Status Bar ───────────────────────────────────────────────────────────
@@ -493,7 +494,7 @@ const PhotosApp = () => {
               cursor: "pointer",
             }}
           >
-            <img
+            <OptimizedImage
               src={photo.img}
               alt={photo.title}
               style={{ width: "100%", height: "auto", display: "block" }}
@@ -862,7 +863,7 @@ const FinderApp = () => {
               key={id}
               style={cardShell}
             >
-              <img
+              <OptimizedImage
                 src={img}
                 alt={name}
                 style={{
@@ -1474,18 +1475,21 @@ const MobileHomeContent = () => {
       <HomeIndicator />
 
       {/* All sheets */}
-      {Object.entries(APP_META).map(([id, { name, icon, Component }]) => (
+      {Object.entries(APP_META).map(([id, meta]) => {
+        const ActiveApp = meta.Component;
+        return (
         <AppSheet
           key={id}
           isOpen={activeApp === id}
           onClose={closeApp}
-          appName={name}
-          appIcon={icon}
+          appName={meta.name}
+          appIcon={meta.icon}
           originRect={originRect}
         >
-          <Component />
+          <ActiveApp />
         </AppSheet>
-      ))}
+        );
+      })}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { Search, MoveRight } from "lucide-react";
 import useBlogSearch from "#hooks/useBlogSearch";
 import { useMobileTheme } from "#context/MobileThemeContext";
+import OptimizedImage from "./OptimizedImage";
 
 const BlogFeed = ({ posts, variant = "desktop" }) => {
   const { query, setQuery, filteredPosts, hasQuery, isEmpty } =
@@ -65,7 +66,7 @@ const BlogFeed = ({ posts, variant = "desktop" }) => {
           isDesktop ? (
             <div key={id} className="blog-post">
               <div className="col-span-2">
-                <img src={image} alt={title} />
+                <OptimizedImage src={image} alt={title} />
               </div>
               <div className="content">
                 <p>{date}</p>
@@ -91,7 +92,7 @@ const BlogFeed = ({ posts, variant = "desktop" }) => {
                   boxShadow: theme.cardShadow,
                 }}
               >
-                <img
+                <OptimizedImage
                   src={image}
                   alt={title}
                   className="block h-[180px] w-full object-cover"

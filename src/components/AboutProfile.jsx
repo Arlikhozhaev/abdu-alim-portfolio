@@ -3,6 +3,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { aboutContent, CONTACT_EMAIL, techStack } from "#constants";
 import { useMobileTheme } from "#context/MobileThemeContext";
+import OptimizedImage from "./OptimizedImage";
 
 const AboutProfile = ({ compact = false }) => {
   const containerRef = useRef(null);
@@ -57,9 +58,10 @@ const AboutProfile = ({ compact = false }) => {
           boxShadow: theme.cardShadow,
         }}
       >
-        <img
+        <OptimizedImage
           src={aboutContent.heroImage}
           alt="Abdu Alim"
+          priority
           style={{
             width: "100%",
             height: "auto",

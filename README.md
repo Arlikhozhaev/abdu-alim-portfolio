@@ -254,6 +254,16 @@ After editing `projects`, `buildWorkLocation()` automatically rebuilds Finder fo
 | `npm run build` | Production build to `dist/` |
 | `npm run preview` | Preview production build locally |
 | `npm run lint` | ESLint |
+| `npm run test:e2e` | Playwright smoke tests (builds preview server automatically) |
+| `npm run images:webp` | Generate `.webp` siblings for `public/images/` (optional, improves load time) |
+
+### SEO & performance (P2)
+
+- `public/robots.txt` and `public/sitemap.xml` for crawlers
+- JSON-LD (`Person` + `WebSite`) and Twitter/OG meta in `index.html`
+- Google Fonts loaded via `<link>` (non-blocking) instead of CSS `@import`
+- `OptimizedImage` — lazy loading + optional WebP via `<picture>` after running `images:webp`
+- GitHub Actions CI (`.github/workflows/ci.yml`) — lint, build, and e2e on push/PR
 
 ---
 

@@ -1,5 +1,6 @@
 import WindowWrapper from "#hoc/WindowWrapper";
 import { WindowControls } from "#components";
+import OptimizedImage from "#components/OptimizedImage";
 import useWindowStore from "#store/window";
 import { CONTACT_EMAIL } from "#constants";
 
@@ -22,7 +23,7 @@ const Text = () => {
       <div className="p-5 space-y-5 bg-white dark:bg-zinc-900 max-h-[70vh] overflow-y-auto">
         {image ? (
           <div className="w-full overflow-hidden rounded-xl shadow-md">
-            <img src={image} alt={name} className="w-full h-auto" />
+            <OptimizedImage src={image} alt={name} className="w-full h-auto" />
           </div>
         ) : null}
 
