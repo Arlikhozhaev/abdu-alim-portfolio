@@ -15,7 +15,7 @@ const ResumeViewer = ({ variant = "desktop" }) => {
   const [numPages, setNumPages] = useState(null);
   const [scale, setScale] = useState(1);
   const containerRef = useRef(null);
-  const [pageWidth, setPageWidth] = useState(variant === "desktop" ? 520 : 300);
+  const [pageWidth, setPageWidth] = useState(variant === "desktop" ? 640 : 300);
   const theme = useMobileTheme();
   const isDesktop = variant === "desktop";
 
@@ -24,7 +24,7 @@ const ResumeViewer = ({ variant = "desktop" }) => {
     if (!el) return;
 
     const updateWidth = () => {
-      const padding = isDesktop ? 48 : 32;
+      const padding = isDesktop ? 40 : 32;
       setPageWidth(Math.max(240, el.offsetWidth - padding));
     };
 
@@ -36,7 +36,7 @@ const ResumeViewer = ({ variant = "desktop" }) => {
   }, [isDesktop]);
 
   return (
-    <div className={isDesktop ? "px-4 pb-4 space-y-3" : "flex flex-col gap-3"}>
+    <div className={isDesktop ? "px-5 pt-5 pb-5 space-y-4" : "flex flex-col gap-3"}>
       <div
         className={
           isDesktop
@@ -133,7 +133,7 @@ const ResumeViewer = ({ variant = "desktop" }) => {
         ref={containerRef}
         className={
           isDesktop
-            ? "max-h-[62vh] overflow-auto rounded-xl border border-gray-200 dark:border-zinc-700 bg-gray-100 dark:bg-zinc-800/50 py-4"
+            ? "max-h-[72vh] overflow-auto rounded-xl border border-gray-200 dark:border-zinc-700 bg-gray-100 dark:bg-zinc-800/50 py-4"
             : "max-h-[55vh] overflow-auto rounded-xl py-4"
         }
         style={

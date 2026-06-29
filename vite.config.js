@@ -3,9 +3,14 @@ import react from '@vitejs/plugin-react'
 import taillwindcss from '@tailwindcss/vite'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
+import { seoPrerenderPlugin } from './vite-plugin-seo-prerender.js'
 
-export default defineConfig({
-  plugins: [react(), taillwindcss()],
+export default defineConfig(({ mode }) => ({
+  plugins: [
+    react(),
+    taillwindcss(),
+    seoPrerenderPlugin(mode === 'prerender'),
+  ],
   resolve: {
     alias: {
       '#components': resolve(dirname(fileURLToPath(import.meta.url)), 'src/components'),
@@ -35,4 +40,4 @@ export default defineConfig({
       },
     },
   },
-})
+}))
