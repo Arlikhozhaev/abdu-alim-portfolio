@@ -1,0 +1,43 @@
+export const mobileThemes = {
+  dark: {
+    id: "dark",
+    pageBg: "#000000",
+    sheetBg: "#1c1c1e",
+    cardBg: "#2c2c2e",
+    text: "#ffffff",
+    textSecondary: "rgba(255,255,255,0.75)",
+    textMuted: "rgba(255,255,255,0.45)",
+    textFaint: "rgba(255,255,255,0.35)",
+    border: "rgba(255,255,255,0.08)",
+    overlay: "rgba(0,0,0,0.6)",
+    accent: "#0A84FF",
+    ctaBg: "#1a3a5c",
+    ctaBorder: "rgba(10,132,255,0.3)",
+    controlBg: "rgba(255,255,255,0.15)",
+    homeIndicator: "rgba(255,255,255,0.4)",
+    statusIcon: "white",
+    statusIconMuted: "rgba(255,255,255,0.35)",
+  },
+  light: {
+    id: "light",
+    pageBg: "#f2f2f7",
+    sheetBg: "#ffffff",
+    cardBg: "#ffffff",
+    text: "#1c1c1e",
+    textSecondary: "rgba(60,60,67,0.85)",
+    textMuted: "rgba(60,60,67,0.55)",
+    textFaint: "rgba(60,60,67,0.4)",
+    border: "rgba(60,60,67,0.12)",
+    overlay: "rgba(0,0,0,0.35)",
+    accent: "#007AFF",
+    ctaBg: "#e8f2ff",
+    ctaBorder: "rgba(0,122,255,0.25)",
+    controlBg: "rgba(60,60,67,0.08)",
+    homeIndicator: "rgba(60,60,67,0.35)",
+    statusIcon: "#1c1c1e",
+    statusIconMuted: "rgba(60,60,67,0.25)",
+  },
+};
+
+export const getMobileTheme = (isDark) =>
+  isDark ? mobileThemes.dark : mobileThemes.light;

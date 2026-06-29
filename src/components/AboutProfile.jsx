@@ -2,15 +2,11 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { aboutContent, CONTACT_EMAIL, techStack } from "#constants";
-
-const cardStyle = {
-  backgroundColor: "#2c2c2e",
-  borderRadius: 16,
-  padding: 16,
-};
+import { useMobileTheme } from "#context/MobileThemeContext";
 
 const AboutProfile = ({ compact = false }) => {
   const containerRef = useRef(null);
+  const theme = useMobileTheme();
 
   useGSAP(
     () => {
@@ -38,6 +34,13 @@ const AboutProfile = ({ compact = false }) => {
   const sectionTitleSize = compact ? 13 : 13;
   const gap = compact ? 12 : 12;
 
+  const cardStyle = {
+    backgroundColor: theme.cardBg,
+    borderRadius: 16,
+    padding: compact ? 14 : 16,
+    border: theme.id === "light" ? `1px solid ${theme.border}` : "none",
+  };
+
   return (
     <div
       ref={containerRef}
@@ -46,9 +49,10 @@ const AboutProfile = ({ compact = false }) => {
       <div
         data-about-item
         style={{
-          backgroundColor: "#2c2c2e",
+          backgroundColor: theme.cardBg,
           borderRadius: 16,
           overflow: "hidden",
+          border: theme.id === "light" ? `1px solid ${theme.border}` : "none",
         }}
       >
         <img
@@ -66,7 +70,7 @@ const AboutProfile = ({ compact = false }) => {
       <div data-about-item style={cardStyle}>
         <p
           style={{
-            color: "white",
+            color: theme.text,
             fontWeight: 700,
             fontSize: titleSize,
             margin: "0 0 8px",
@@ -77,7 +81,7 @@ const AboutProfile = ({ compact = false }) => {
         </p>
         <p
           style={{
-            color: "rgba(255,255,255,0.75)",
+            color: theme.textSecondary,
             fontSize: bodySize,
             lineHeight: 1.65,
             margin: 0,
@@ -103,7 +107,7 @@ const AboutProfile = ({ compact = false }) => {
           </p>
           <p
             style={{
-              color: "rgba(255,255,255,0.75)",
+              color: theme.textSecondary,
               fontSize: bodySize,
               lineHeight: 1.65,
               margin: 0,
@@ -132,7 +136,7 @@ const AboutProfile = ({ compact = false }) => {
             <div key={category}>
               <p
                 style={{
-                  color: "rgba(255,255,255,0.45)",
+                  color: theme.textMuted,
                   fontSize: 10,
                   fontWeight: 600,
                   textTransform: "uppercase",
@@ -144,7 +148,7 @@ const AboutProfile = ({ compact = false }) => {
               </p>
               <p
                 style={{
-                  color: "rgba(255,255,255,0.75)",
+                  color: theme.textSecondary,
                   fontSize: compact ? 12 : 13,
                   lineHeight: 1.5,
                   margin: 0,
@@ -161,13 +165,13 @@ const AboutProfile = ({ compact = false }) => {
         data-about-item
         style={{
           ...cardStyle,
-          backgroundColor: "#1a3a5c",
-          border: "1px solid rgba(10,132,255,0.3)",
+          backgroundColor: theme.ctaBg,
+          border: `1px solid ${theme.ctaBorder}`,
         }}
       >
         <p
           style={{
-            color: "white",
+            color: theme.text,
             fontSize: bodySize,
             lineHeight: 1.65,
             margin: "0 0 10px",
@@ -178,7 +182,7 @@ const AboutProfile = ({ compact = false }) => {
         <a
           href={`mailto:${CONTACT_EMAIL}`}
           style={{
-            color: "#0A84FF",
+            color: theme.accent,
             fontSize: bodySize,
             fontWeight: 600,
             textDecoration: "none",

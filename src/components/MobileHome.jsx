@@ -4,32 +4,28 @@ import gsap from "gsap";
 import dayjs from "dayjs";
 import {
   X,
-  MoveRight,
   Check,
   Flag,
   ExternalLink,
   ChevronLeft,
-  Download,
   Trash2,
   FolderOpen,
   FileText,
   User,
   Briefcase,
 } from "lucide-react";
-import { Document, Page, pdfjs } from "react-pdf";
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
-import { gallery, techStack, blogPosts, socials, projects, experience, trashItems, CONTACT_EMAIL, aboutContent, RESUME_PATH } from "#constants";
+import { gallery, techStack, blogPosts, socials, projects, experience, trashItems, CONTACT_EMAIL, aboutContent } from "#constants";
 import AboutProfile from "./AboutProfile";
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
+import BlogFeed from "./BlogFeed";
+import ResumeViewer from "./ResumeViewer";
+import RecommendationToast from "./RecommendationToast";
+import { MobileThemeProvider, useMobileTheme } from "#context/MobileThemeContext";
+import useDarkStore from "#store/dark";
 
 // ─── iOS Status Bar ───────────────────────────────────────────────────────────
-const StatusBar = () => {
+const StatusBar = ({ onRecommendationClick, onToggleTheme, isDark }) => {
   const [time, setTime] = useState(dayjs().format("h:mm"));
+  const theme = useMobileTheme();
 
   useEffect(() => {
     const interval = setInterval(() => setTime(dayjs().format("h:mm")), 1000);
@@ -43,13 +39,63 @@ const StatusBar = () => {
           fontFamily: "'SF Pro Display', system-ui",
           fontWeight: 600,
           fontSize: "17px",
-          color: "white",
+          color: theme.statusIcon,
           letterSpacing: "-0.3px",
         }}
       >
         {time}
       </span>
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={onRecommendationClick}
+          aria-label="View LinkedIn recommendation"
+          style={{
+            background: "none",
+            border: "none",
+            padding: 4,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <path d="M8 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z" fill={theme.statusIcon} />
+            <path
+              d="M3.5 6.5a6.5 6.5 0 0 1 9 0"
+              stroke={theme.statusIcon}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              fill="none"
+            />
+            <path
+              d="M1 4a10 10 0 0 1 14 0"
+              stroke={theme.statusIconMuted}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              fill="none"
+            />
+          </svg>
+        </button>
+        <button
+          type="button"
+          onClick={onToggleTheme}
+          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          style={{
+            background: theme.controlBg,
+            border: "none",
+            borderRadius: 14,
+            width: 28,
+            height: 28,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 14,
+          }}
+        >
+          {isDark ? "☀️" : "🌙"}
+        </button>
         <div className="flex items-end gap-0.5">
           {[3, 5, 7, 9].map((h, i) => (
             <div
@@ -58,35 +104,19 @@ const StatusBar = () => {
                 width: 3,
                 height: h,
                 borderRadius: 1.5,
-                backgroundColor: i < 3 ? "white" : "rgba(255,255,255,0.35)",
+                backgroundColor:
+                  i < 3 ? theme.statusIcon : theme.statusIconMuted,
               }}
             />
           ))}
         </div>
-        <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
-          <path d="M8 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z" fill="white" />
-          <path
-            d="M3.5 6.5a6.5 6.5 0 0 1 9 0"
-            stroke="white"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            fill="none"
-          />
-          <path
-            d="M1 4a10 10 0 0 1 14 0"
-            stroke="rgba(255,255,255,0.5)"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            fill="none"
-          />
-        </svg>
         <div className="flex items-center gap-0.5">
           <div
             style={{
               width: 24,
               height: 12,
               borderRadius: 3,
-              border: "1.5px solid rgba(255,255,255,0.7)",
+              border: `1.5px solid ${theme.statusIconMuted}`,
               padding: "1.5px",
               display: "flex",
               alignItems: "center",
@@ -97,18 +127,10 @@ const StatusBar = () => {
                 width: "75%",
                 height: "100%",
                 borderRadius: 1.5,
-                backgroundColor: "white",
+                backgroundColor: theme.statusIcon,
               }}
             />
           </div>
-          <div
-            style={{
-              width: 2,
-              height: 5,
-              borderRadius: 1,
-              backgroundColor: "rgba(255,255,255,0.5)",
-            }}
-          />
         </div>
       </div>
     </div>
@@ -148,6 +170,7 @@ const AppSheet = ({
   const sheetRef = useRef(null);
   const overlayRef = useRef(null);
   const touch = useRef({ startY: 0, startTime: 0, dragging: false });
+  const theme = useMobileTheme();
 
   useGSAP(() => {
     const sheet = sheetRef.current;
@@ -255,7 +278,7 @@ const AppSheet = ({
           position: "fixed",
           inset: 0,
           zIndex: 100,
-          backgroundColor: "rgba(0,0,0,0.6)",
+          backgroundColor: theme.overlay,
           pointerEvents: "none",
           opacity: 0,
           backdropFilter: "blur(6px)",
@@ -271,7 +294,7 @@ const AppSheet = ({
           height: "92dvh",
           zIndex: 101,
           borderRadius: "20px 20px 0 0",
-          backgroundColor: "#1c1c1e",
+          backgroundColor: theme.sheetBg,
           overflow: "hidden",
           opacity: 0,
           pointerEvents: "none",
@@ -302,7 +325,7 @@ const AppSheet = ({
               />
               <span
                 style={{
-                  color: "white",
+                  color: theme.text,
                   fontWeight: 700,
                   fontSize: 18,
                   letterSpacing: "-0.3px",
@@ -317,7 +340,7 @@ const AppSheet = ({
                 width: 32,
                 height: 32,
                 borderRadius: 16,
-                backgroundColor: "rgba(255,255,255,0.15)",
+                backgroundColor: theme.controlBg,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -325,11 +348,11 @@ const AppSheet = ({
                 cursor: "pointer",
               }}
             >
-              <X size={16} color="white" />
+              <X size={16} color={theme.text} />
             </button>
           </div>
           <div
-            style={{ height: 1, backgroundColor: "rgba(255,255,255,0.08)" }}
+            style={{ height: 1, backgroundColor: theme.border }}
           />
         </div>
 
@@ -538,84 +561,29 @@ const PhotosApp = () => {
 };
 
 // ─── Safari App ───────────────────────────────────────────────────────────────
-const SafariApp = () => (
-  <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-    <p
-      style={{
-        color: "rgba(255,255,255,0.4)",
-        fontSize: 12,
-        textTransform: "uppercase",
-        letterSpacing: 1,
-        margin: 0,
-      }}
-    >
-      My Developer Blog
-    </p>
-    {blogPosts.map(({ id, image, title, date, link }) => (
-      <a
-        key={id}
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ textDecoration: "none", display: "block" }}
-      >
-        <div
-          style={{
-            backgroundColor: "#2c2c2e",
-            borderRadius: 16,
-            overflow: "hidden",
-          }}
-        >
-          <img
-            src={image}
-            alt={title}
-            style={{
-              width: "100%",
-              height: 180,
-              objectFit: "cover",
-              display: "block",
-            }}
-          />
-          <div style={{ padding: 14 }}>
-            <p
-              style={{
-                color: "rgba(255,255,255,0.4)",
-                fontSize: 11,
-                margin: "0 0 6px",
-              }}
-            >
-              {date}
-            </p>
-            <p
-              style={{
-                color: "white",
-                fontWeight: 600,
-                fontSize: 15,
-                lineHeight: 1.4,
-                margin: "0 0 10px",
-              }}
-            >
-              {title}
-            </p>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                color: "#0A84FF",
-              }}
-            >
-              <span style={{ fontSize: 13 }}>Read full post</span>
-              <MoveRight size={14} />
-            </div>
-          </div>
-        </div>
-      </a>
-    ))}
-  </div>
-);
+const SafariApp = () => {
+  const theme = useMobileTheme();
 
-// ─── Contact App ──────────────────────────────────────────────────────────────
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <p
+        style={{
+          color: theme.textMuted,
+          fontSize: 12,
+          textTransform: "uppercase",
+          letterSpacing: 1,
+          margin: 0,
+        }}
+      >
+        My Developer Blog
+      </p>
+      <BlogFeed posts={blogPosts} variant="mobile" />
+    </div>
+  );
+};
+
+// ─── Resume App ───────────────────────────────────────────────────────────────
+const ResumeApp = () => <ResumeViewer variant="mobile" />;
 const ContactApp = () => (
   <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
     <div
@@ -815,179 +783,7 @@ const TerminalApp = () => (
   </div>
 );
 
-// ─── Resume App ───────────────────────────────────────────────────────────────
-const ResumeApp = () => {
-  const [numPages, setNumPages] = useState(null);
-  const [scale, setScale] = useState(1);
-  const containerRef = useRef(null);
-  const [pageWidth, setPageWidth] = useState(300);
-
-  useEffect(() => {
-    if (containerRef.current) {
-      setPageWidth(containerRef.current.offsetWidth - 32);
-    }
-  }, []);
-
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      {/* Actions */}
-      <div style={{ display: "flex", gap: 8 }}>
-        <a
-          href={RESUME_PATH}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 6,
-            backgroundColor: "#0A84FF",
-            color: "white",
-            fontWeight: 600,
-            fontSize: 13,
-            padding: "12px 0",
-            borderRadius: 12,
-            textDecoration: "none",
-          }}
-        >
-          <ExternalLink size={14} /> Open
-        </a>
-        <a
-          href={RESUME_PATH}
-          download="Abdu-Alim-Resume.pdf"
-          style={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 6,
-            backgroundColor: "rgba(255,255,255,0.1)",
-            color: "white",
-            fontWeight: 600,
-            fontSize: 13,
-            padding: "12px 0",
-            borderRadius: 12,
-            textDecoration: "none",
-          }}
-        >
-          <Download size={14} /> Download
-        </a>
-      </div>
-
-      {/* Zoom controls */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 16,
-          backgroundColor: "rgba(255,255,255,0.06)",
-          borderRadius: 10,
-          padding: "8px 0",
-        }}
-      >
-        <button
-          onClick={() => setScale((s) => Math.max(0.5, s - 0.25))}
-          style={{
-            background: "none",
-            border: "none",
-            color: "white",
-            fontSize: 20,
-            cursor: "pointer",
-            padding: "0 12px",
-          }}
-        >
-          −
-        </button>
-        <span
-          style={{
-            color: "rgba(255,255,255,0.5)",
-            fontSize: 12,
-            minWidth: 40,
-            textAlign: "center",
-          }}
-        >
-          {Math.round(scale * 100)}%
-        </span>
-        <button
-          onClick={() => setScale((s) => Math.min(2.5, s + 0.25))}
-          style={{
-            background: "none",
-            border: "none",
-            color: "white",
-            fontSize: 20,
-            cursor: "pointer",
-            padding: "0 12px",
-          }}
-        >
-          +
-        </button>
-      </div>
-
-      {/* PDF Viewer */}
-      <div
-        ref={containerRef}
-        style={{
-          backgroundColor: "#2c2c2e",
-          borderRadius: 12,
-          overflow: "auto",
-          maxHeight: "55vh",
-          padding: "16px 0",
-        }}
-      >
-        <Document
-          file={RESUME_PATH}
-          onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-          loading={
-            <p
-              style={{
-                color: "rgba(255,255,255,0.4)",
-                textAlign: "center",
-                padding: 24,
-                fontSize: 13,
-              }}
-            >
-              Loading...
-            </p>
-          }
-          error={
-            <p
-              style={{
-                color: "#ff453a",
-                textAlign: "center",
-                padding: 24,
-                fontSize: 13,
-              }}
-            >
-              Failed to load PDF.
-            </p>
-          }
-        >
-          {Array.from({ length: numPages || 0 }, (_, i) => (
-            <div
-              key={i}
-              style={{
-                marginBottom: 8,
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <Page
-                pageNumber={i + 1}
-                width={pageWidth * scale}
-                renderTextLayer={false}
-                renderAnnotationLayer={false}
-              />
-            </div>
-          ))}
-        </Document>
-      </div>
-    </div>
-  );
-};
-
-// ─── Finder App ───────────────────────────────────────────────────────────────
+// ─── Contact App ──────────────────────────────────────────────────────────────
 const FinderApp = () => {
   const [tab, setTab] = useState("about");
 
@@ -1511,9 +1307,12 @@ const GRID_APPS = ["notes", "terminal", "resume"];
 const DOCK_APPS = ["finder", "safari", "photos", "contact"];
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
-const MobileHome = () => {
+const MobileHomeContent = () => {
   const [activeApp, setActiveApp] = useState(null);
   const [originRect, setOriginRect] = useState(null);
+  const [showRecommendation, setShowRecommendation] = useState(false);
+  const { isDark, toggleDark } = useDarkStore();
+  const theme = useMobileTheme();
 
   const openApp = useCallback((id, rect) => {
     setOriginRect(rect);
@@ -1530,44 +1329,60 @@ const MobileHome = () => {
       style={{
         width: "100dvw",
         height: "100dvh",
-        backgroundImage: "url('/images/wallpaper.png')",
+        backgroundColor: theme.pageBg,
+        backgroundImage: isDark ? "url('/images/wallpaper.png')" : "none",
         backgroundSize: "cover",
         backgroundPosition: "center",
         position: "relative",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
+        transition: "background-color 0.25s ease",
       }}
     >
-      {/* Ambient glows */}
-      <div
-        style={{
-          position: "absolute",
-          top: -80,
-          left: -60,
-          width: 280,
-          height: 280,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(88,86,214,0.25) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: 120,
-          right: -80,
-          width: 240,
-          height: 240,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(10,132,255,0.2) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
+      {isDark ? (
+        <>
+          <div
+            style={{
+              position: "absolute",
+              top: -80,
+              left: -60,
+              width: 280,
+              height: 280,
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, rgba(88,86,214,0.25) 0%, transparent 70%)",
+              pointerEvents: "none",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              bottom: 120,
+              right: -80,
+              width: 240,
+              height: 240,
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, rgba(10,132,255,0.2) 0%, transparent 70%)",
+              pointerEvents: "none",
+            }}
+          />
+        </>
+      ) : null}
+
+      <StatusBar
+        isDark={isDark}
+        onToggleTheme={toggleDark}
+        onRecommendationClick={() => setShowRecommendation((prev) => !prev)}
       />
 
-      <StatusBar />
+      {showRecommendation ? (
+        <RecommendationToast
+          topOffset="48px"
+          onClose={() => setShowRecommendation(false)}
+        />
+      ) : null}
 
       {/* Greeting */}
       <div
@@ -1579,7 +1394,7 @@ const MobileHome = () => {
       >
         <p
           style={{
-            color: "white",
+            color: theme.text,
             fontSize: 26,
             fontWeight: 700,
             margin: 0,
@@ -1591,7 +1406,7 @@ const MobileHome = () => {
         </p>
         <p
           style={{
-            color: "rgba(255,255,255,0.55)",
+            color: theme.textMuted,
             fontSize: 14,
             margin: "8px 0 0",
             fontWeight: 400,
@@ -1601,7 +1416,7 @@ const MobileHome = () => {
         </p>
         <p
           style={{
-            color: "rgba(255,255,255,0.35)",
+            color: theme.textFaint,
             fontSize: 12,
             margin: "4px 0 0",
           }}
@@ -1639,14 +1454,14 @@ const MobileHome = () => {
       <div
         style={{
           margin: "0 20px 16px",
-          backgroundColor: "rgba(255,255,255,0.12)",
+          backgroundColor: isDark ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.82)",
           backdropFilter: "blur(24px)",
           borderRadius: 26,
           padding: "14px 20px",
           display: "flex",
           justifyContent: "space-around",
           alignItems: "center",
-          border: "1px solid rgba(255,255,255,0.15)",
+          border: `1px solid ${theme.border}`,
         }}
       >
         {DOCK_APPS.map((id) => {
@@ -1680,5 +1495,11 @@ const MobileHome = () => {
     </div>
   );
 };
+
+const MobileHome = () => (
+  <MobileThemeProvider>
+    <MobileHomeContent />
+  </MobileThemeProvider>
+);
 
 export default MobileHome;

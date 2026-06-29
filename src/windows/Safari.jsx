@@ -1,5 +1,7 @@
 import { WindowControls } from "#components";
+import BlogFeed from "#components/BlogFeed";
 import { blogPosts } from "#constants";
+import useBlogSearch from "#hooks/useBlogSearch";
 import WindowWrapper from "#hoc/WindowWrapper";
 import {
   ChevronLeft,
@@ -14,6 +16,9 @@ import {
 } from "lucide-react";
 
 const Safari = () => {
+  const { query, setQuery, filteredPosts, hasQuery, isEmpty } =
+    useBlogSearch(blogPosts);
+
   return (
     <>
       <div id="window-header">
@@ -33,8 +38,11 @@ const Safari = () => {
             <Search className="icon" />
 
             <input
-              type="text"
-              placeholder="Search or enter website name"
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search articles…"
+              aria-label="Search blog posts"
               className="flex-1"
             />
           </div>
@@ -50,23 +58,29 @@ const Safari = () => {
       <div className="blog">
         <h2>My Developer Blog</h2>
 
-        <div className="space-y-8">
-          {blogPosts.map(({ id, image, title, date, link }) => (
-            <div key={id} className="blog-post">
-              <div className="col-span-2">
-                <img src={image} alt={title} />
-              </div>
+        {hasQuery && isEmpty ? (
+          <p className="text-center text-sm text-gray-500 dark:text-zinc-400 py-8">
+            No articles match &ldquo;{query.trim()}&rdquo;
+          </p>
+        ) : (
+          <div className="space-y-8">
+            {filteredPosts.map(({ id, image, title, date, link }) => (
+              <div key={id} className="blog-post">
+                <div className="col-span-2">
+                  <img src={image} alt={title} />
+                </div>
 
-              <div className="content">
-                <p>{date}</p>
-                <h3>{title}</h3>
-                <a href={link} target="_blank" rel="noopener noreferrer">
-                  Check out the full post <MoveRight className="icon-hover" />
-                </a>
+                <div className="content">
+                  <p>{date}</p>
+                  <h3>{title}</h3>
+                  <a href={link} target="_blank" rel="noopener noreferrer">
+                    Check out the full post <MoveRight className="icon-hover" />
+                  </a>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
