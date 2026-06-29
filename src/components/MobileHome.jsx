@@ -20,12 +20,10 @@ import BlogFeed from "./BlogFeed";
 import ResumeViewer from "./ResumeViewer";
 import RecommendationToast from "./RecommendationToast";
 import { MobileThemeProvider, useMobileTheme } from "#context/MobileThemeContext";
-import useDarkStore from "#store/dark";
 
 // ─── iOS Status Bar ───────────────────────────────────────────────────────────
-const StatusBar = ({ onRecommendationClick, onToggleTheme, isDark }) => {
+const StatusBar = ({ onRecommendationClick }) => {
   const [time, setTime] = useState(dayjs().format("h:mm"));
-  const theme = useMobileTheme();
 
   useEffect(() => {
     const interval = setInterval(() => setTime(dayjs().format("h:mm")), 1000);
@@ -39,7 +37,7 @@ const StatusBar = ({ onRecommendationClick, onToggleTheme, isDark }) => {
           fontFamily: "'SF Pro Display', system-ui",
           fontWeight: 600,
           fontSize: "17px",
-          color: theme.statusIcon,
+          color: "white",
           letterSpacing: "-0.3px",
         }}
       >
@@ -60,41 +58,22 @@ const StatusBar = ({ onRecommendationClick, onToggleTheme, isDark }) => {
           }}
         >
           <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
-            <path d="M8 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z" fill={theme.statusIcon} />
+            <path d="M8 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z" fill="white" />
             <path
               d="M3.5 6.5a6.5 6.5 0 0 1 9 0"
-              stroke={theme.statusIcon}
+              stroke="white"
               strokeWidth="1.5"
               strokeLinecap="round"
               fill="none"
             />
             <path
               d="M1 4a10 10 0 0 1 14 0"
-              stroke={theme.statusIconMuted}
+              stroke="rgba(255,255,255,0.5)"
               strokeWidth="1.5"
               strokeLinecap="round"
               fill="none"
             />
           </svg>
-        </button>
-        <button
-          type="button"
-          onClick={onToggleTheme}
-          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          style={{
-            background: theme.controlBg,
-            border: "none",
-            borderRadius: 14,
-            width: 28,
-            height: 28,
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 14,
-          }}
-        >
-          {isDark ? "☀️" : "🌙"}
         </button>
         <div className="flex items-end gap-0.5">
           {[3, 5, 7, 9].map((h, i) => (
@@ -104,8 +83,7 @@ const StatusBar = ({ onRecommendationClick, onToggleTheme, isDark }) => {
                 width: 3,
                 height: h,
                 borderRadius: 1.5,
-                backgroundColor:
-                  i < 3 ? theme.statusIcon : theme.statusIconMuted,
+                backgroundColor: i < 3 ? "white" : "rgba(255,255,255,0.35)",
               }}
             />
           ))}
@@ -116,7 +94,7 @@ const StatusBar = ({ onRecommendationClick, onToggleTheme, isDark }) => {
               width: 24,
               height: 12,
               borderRadius: 3,
-              border: `1.5px solid ${theme.statusIconMuted}`,
+              border: "1.5px solid rgba(255,255,255,0.7)",
               padding: "1.5px",
               display: "flex",
               alignItems: "center",
@@ -127,7 +105,7 @@ const StatusBar = ({ onRecommendationClick, onToggleTheme, isDark }) => {
                 width: "75%",
                 height: "100%",
                 borderRadius: 1.5,
-                backgroundColor: theme.statusIcon,
+                backgroundColor: "white",
               }}
             />
           </div>
@@ -485,12 +463,13 @@ const PhotoLightbox = ({ photo, onClose }) => {
 // ─── Photos App ───────────────────────────────────────────────────────────────
 const PhotosApp = () => {
   const [selected, setSelected] = useState(null);
+  const theme = useMobileTheme();
 
   return (
     <div style={{ position: "relative" }}>
       <p
         style={{
-          color: "rgba(255,255,255,0.4)",
+          color: theme.textMuted,
           fontSize: 12,
           marginBottom: 12,
           textTransform: "uppercase",
@@ -584,7 +563,10 @@ const SafariApp = () => {
 
 // ─── Resume App ───────────────────────────────────────────────────────────────
 const ResumeApp = () => <ResumeViewer variant="mobile" />;
-const ContactApp = () => (
+const ContactApp = () => {
+  const theme = useMobileTheme();
+
+  return (
   <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
     <div
       style={{
@@ -603,13 +585,14 @@ const ContactApp = () => (
           height: 80,
           borderRadius: 40,
           objectFit: "cover",
-          border: "3px solid rgba(255,255,255,0.2)",
+          border: `3px solid ${theme.avatarBorder}`,
+          boxShadow: theme.cardShadow,
         }}
       />
       <div style={{ textAlign: "center" }}>
         <p
           style={{
-            color: "white",
+            color: theme.text,
             fontWeight: 700,
             fontSize: 22,
             margin: 0,
@@ -620,7 +603,7 @@ const ContactApp = () => (
         </p>
         <p
           style={{
-            color: "rgba(255,255,255,0.5)",
+            color: theme.textMuted,
             fontSize: 14,
             margin: "4px 0 0",
           }}
@@ -630,10 +613,18 @@ const ContactApp = () => (
       </div>
     </div>
 
-    <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
+    <div
+      style={{
+        backgroundColor: theme.cardBg,
+        borderRadius: 16,
+        padding: 16,
+        border: `1px solid ${theme.border}`,
+        boxShadow: theme.cardShadow,
+      }}
+    >
       <p
         style={{
-          color: "rgba(255,255,255,0.4)",
+          color: theme.textMuted,
           fontSize: 11,
           textTransform: "uppercase",
           letterSpacing: 1,
@@ -644,7 +635,7 @@ const ContactApp = () => (
       </p>
       <a
         href={`mailto:${CONTACT_EMAIL}`}
-        style={{ color: "#0A84FF", fontSize: 15, textDecoration: "none" }}
+        style={{ color: theme.accent, fontSize: 15, textDecoration: "none", fontWeight: 600 }}
       >
         {CONTACT_EMAIL}
       </a>
@@ -653,7 +644,7 @@ const ContactApp = () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       <p
         style={{
-          color: "rgba(255,255,255,0.4)",
+          color: theme.textMuted,
           fontSize: 11,
           textTransform: "uppercase",
           letterSpacing: 1,
@@ -690,26 +681,30 @@ const ContactApp = () => (
                   filter: "brightness(0) invert(1)",
                 }}
               />
-              <span style={{ color: "white", fontWeight: 600, fontSize: 15 }}>
+              <span style={{ color: "#ffffff", fontWeight: 600, fontSize: 15 }}>
                 {text}
               </span>
             </div>
-            <ExternalLink size={14} color="rgba(255,255,255,0.7)" />
+            <ExternalLink size={14} color="rgba(255,255,255,0.85)" />
           </div>
         </a>
       ))}
     </div>
   </div>
-);
+  );
+};
 
 // ─── Notes App (About Me) ─────────────────────────────────────────────────────
 const NotesApp = () => <AboutProfile />;
 
 // ─── Terminal App (Skills) ────────────────────────────────────────────────────
-const TerminalApp = () => (
+const TerminalApp = () => {
+  const theme = useMobileTheme();
+
+  return (
   <div style={{ fontFamily: "'Roboto Mono', monospace" }}>
-    <p style={{ color: "#00A154", fontSize: 13, marginBottom: 16 }}>
-      <span style={{ color: "white", fontWeight: 700 }}>@abdu-alim % </span>show
+    <p style={{ color: theme.terminalGreen, fontSize: 13, marginBottom: 16 }}>
+      <span style={{ color: theme.terminalPrompt, fontWeight: 700 }}>@abdu-alim % </span>show
       tech stack
     </p>
     <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -717,22 +712,24 @@ const TerminalApp = () => (
         <div
           key={category}
           style={{
-            backgroundColor: "#2c2c2e",
+            backgroundColor: theme.cardBg,
             borderRadius: 12,
             padding: "12px 14px",
             display: "flex",
             gap: 10,
             alignItems: "flex-start",
+            border: `1px solid ${theme.border}`,
+            boxShadow: theme.cardShadow,
           }}
         >
           <Check
             size={14}
-            style={{ color: "#00A154", flexShrink: 0, marginTop: 2 }}
+            style={{ color: theme.terminalGreen, flexShrink: 0, marginTop: 2 }}
           />
           <div>
             <p
               style={{
-                color: "#00A154",
+                color: theme.terminalGreen,
                 fontWeight: 700,
                 fontSize: 12,
                 margin: "0 0 4px",
@@ -742,7 +739,7 @@ const TerminalApp = () => (
             </p>
             <p
               style={{
-                color: "rgba(255,255,255,0.7)",
+                color: theme.textSecondary,
                 fontSize: 12,
                 margin: 0,
                 lineHeight: 1.5,
@@ -757,7 +754,7 @@ const TerminalApp = () => (
     <div
       style={{
         marginTop: 16,
-        color: "#00A154",
+        color: theme.terminalGreen,
         fontSize: 12,
         display: "flex",
         flexDirection: "column",
@@ -774,18 +771,28 @@ const TerminalApp = () => (
           display: "flex",
           alignItems: "center",
           gap: 8,
-          color: "rgba(255,255,255,0.6)",
+          color: theme.terminalMuted,
         }}
       >
         <Flag size={12} fill="currentColor" /> Render time: 6ms
       </p>
     </div>
   </div>
-);
+  );
+};
 
 // ─── Contact App ──────────────────────────────────────────────────────────────
 const FinderApp = () => {
   const [tab, setTab] = useState("about");
+  const theme = useMobileTheme();
+
+  const cardShell = {
+    backgroundColor: theme.cardBg,
+    borderRadius: 16,
+    overflow: "hidden",
+    border: `1px solid ${theme.border}`,
+    boxShadow: theme.cardShadow,
+  };
 
   const tabs = [
     { id: "about", label: "About", icon: <User size={14} /> },
@@ -803,7 +810,7 @@ const FinderApp = () => {
           display: "flex",
           gap: 6,
           marginBottom: 16,
-          backgroundColor: "rgba(255,255,255,0.06)",
+          backgroundColor: theme.tabBarBg,
           borderRadius: 12,
           padding: 4,
         }}
@@ -822,8 +829,8 @@ const FinderApp = () => {
               borderRadius: 9,
               border: "none",
               cursor: "pointer",
-              backgroundColor: tab === id ? "#0A84FF" : "transparent",
-              color: tab === id ? "white" : "rgba(255,255,255,0.45)",
+              backgroundColor: tab === id ? theme.tabActiveBg : "transparent",
+              color: tab === id ? theme.tabActiveText : theme.tabInactiveText,
               transition: "all 0.15s ease",
               fontSize: 10,
               fontWeight: 600,
@@ -840,7 +847,7 @@ const FinderApp = () => {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <p
             style={{
-              color: "rgba(255,255,255,0.4)",
+              color: theme.textMuted,
               fontSize: 12,
               textTransform: "uppercase",
               letterSpacing: 1,
@@ -852,11 +859,7 @@ const FinderApp = () => {
           {projects.map(({ id, name, desc, link, img, tech }) => (
             <div
               key={id}
-              style={{
-                backgroundColor: "#2c2c2e",
-                borderRadius: 16,
-                overflow: "hidden",
-              }}
+              style={cardShell}
             >
               <img
                 src={img}
@@ -871,7 +874,7 @@ const FinderApp = () => {
               <div style={{ padding: 14 }}>
                 <p
                   style={{
-                    color: "white",
+                    color: theme.text,
                     fontWeight: 700,
                     fontSize: 15,
                     margin: "0 0 6px",
@@ -881,7 +884,7 @@ const FinderApp = () => {
                 </p>
                 <p
                   style={{
-                    color: "rgba(255,255,255,0.55)",
+                    color: theme.textSecondary,
                     fontSize: 13,
                     lineHeight: 1.5,
                     margin: "0 0 10px",
@@ -901,8 +904,8 @@ const FinderApp = () => {
                     <span
                       key={t}
                       style={{
-                        backgroundColor: "rgba(255,255,255,0.1)",
-                        color: "rgba(255,255,255,0.7)",
+                        backgroundColor: theme.chipBg,
+                        color: theme.chipText,
                         fontSize: 10,
                         padding: "3px 9px",
                         borderRadius: 20,
@@ -921,7 +924,7 @@ const FinderApp = () => {
                     display: "flex",
                     alignItems: "center",
                     gap: 6,
-                    color: "#0A84FF",
+                    color: theme.accent,
                     fontSize: 13,
                     textDecoration: "none",
                     fontWeight: 600,
@@ -940,7 +943,7 @@ const FinderApp = () => {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <p
             style={{
-              color: "rgba(255,255,255,0.4)",
+              color: theme.textMuted,
               fontSize: 12,
               textTransform: "uppercase",
               letterSpacing: 1,
@@ -951,21 +954,13 @@ const FinderApp = () => {
           </p>
           {experience.map(
             ({ id, company, logo, title, dates, location, tech, bullets }) => (
-              <div
-                key={id}
-                style={{
-                  backgroundColor: "#2c2c2e",
-                  borderRadius: 16,
-                  overflow: "hidden",
-                }}
-              >
+              <div key={id} style={cardShell}>
                 {/* Card Header */}
                 <div
                   style={{
-                    background:
-                      "linear-gradient(135deg, #1c3a5c, rgba(10,132,255,0.12))",
+                    background: theme.experienceHeader,
                     padding: "16px 14px 12px",
-                    borderBottom: "1px solid rgba(255,255,255,0.06)",
+                    borderBottom: `1px solid ${theme.experienceHeaderBorder}`,
                   }}
                 >
                   <div
@@ -984,15 +979,15 @@ const FinderApp = () => {
                         height: 44,
                         borderRadius: 10,
                         objectFit: "contain",
-                        backgroundColor: "rgba(255,255,255,0.08)",
+                        backgroundColor: theme.experienceLogoBg,
                         padding: 4,
-                        border: "1px solid rgba(255,255,255,0.1)",
+                        border: `1px solid ${theme.experienceLogoBorder}`,
                       }}
                     />
                     <div>
                       <p
                         style={{
-                          color: "white",
+                          color: theme.text,
                           fontWeight: 700,
                           fontSize: 15,
                           margin: "0 0 3px",
@@ -1002,7 +997,7 @@ const FinderApp = () => {
                       </p>
                       <p
                         style={{
-                          color: "#0A84FF",
+                          color: theme.accent,
                           fontWeight: 600,
                           fontSize: 12,
                           margin: 0,
@@ -1015,7 +1010,7 @@ const FinderApp = () => {
                   <div style={{ display: "flex", gap: 12 }}>
                     <p
                       style={{
-                        color: "rgba(255,255,255,0.4)",
+                        color: theme.textMuted,
                         fontSize: 11,
                         margin: 0,
                       }}
@@ -1024,7 +1019,7 @@ const FinderApp = () => {
                     </p>
                     <p
                       style={{
-                        color: "rgba(255,255,255,0.4)",
+                        color: theme.textMuted,
                         fontSize: 11,
                         margin: 0,
                       }}
@@ -1057,14 +1052,14 @@ const FinderApp = () => {
                           width: 5,
                           height: 5,
                           borderRadius: "50%",
-                          backgroundColor: "#0A84FF",
+                          backgroundColor: theme.bulletColor,
                           flexShrink: 0,
                           marginTop: 7,
                         }}
                       />
                       <p
                         style={{
-                          color: "rgba(255,255,255,0.7)",
+                          color: theme.textSecondary,
                           fontSize: 13,
                           lineHeight: 1.65,
                           margin: 0,
@@ -1089,8 +1084,8 @@ const FinderApp = () => {
                     <span
                       key={t}
                       style={{
-                        backgroundColor: "rgba(10,132,255,0.12)",
-                        color: "#0A84FF",
+                        backgroundColor: theme.tagBg,
+                        color: theme.tagText,
                         fontSize: 10,
                         padding: "3px 9px",
                         borderRadius: 20,
@@ -1124,14 +1119,7 @@ const FinderApp = () => {
             }}
           >
             {trashItems.map(({ id, name, imageUrl }) => (
-              <div
-                key={id}
-                style={{
-                  backgroundColor: "#2c2c2e",
-                  borderRadius: 16,
-                  overflow: "hidden",
-                }}
-              >
+              <div key={id} style={cardShell}>
                 <img
                   src={imageUrl}
                   alt={name}
@@ -1144,7 +1132,7 @@ const FinderApp = () => {
                 />
                 <p
                   style={{
-                    color: "rgba(255,255,255,0.5)",
+                    color: theme.textMuted,
                     fontSize: 11,
                     margin: 0,
                     padding: "8px 12px",
@@ -1166,10 +1154,10 @@ const FinderApp = () => {
               gap: 16,
             }}
           >
-            <Trash2 size={64} color="rgba(255,255,255,0.15)" />
+            <Trash2 size={64} color={theme.emptyIcon} />
             <p
               style={{
-                color: "rgba(255,255,255,0.3)",
+                color: theme.emptyText,
                 fontSize: 15,
                 fontWeight: 500,
                 margin: 0,
@@ -1179,7 +1167,7 @@ const FinderApp = () => {
             </p>
             <p
               style={{
-                color: "rgba(255,255,255,0.18)",
+                color: theme.emptySubtext,
                 fontSize: 12,
                 margin: 0,
               }}
@@ -1311,8 +1299,6 @@ const MobileHomeContent = () => {
   const [activeApp, setActiveApp] = useState(null);
   const [originRect, setOriginRect] = useState(null);
   const [showRecommendation, setShowRecommendation] = useState(false);
-  const { isDark, toggleDark } = useDarkStore();
-  const theme = useMobileTheme();
 
   const openApp = useCallback((id, rect) => {
     setOriginRect(rect);
@@ -1329,51 +1315,57 @@ const MobileHomeContent = () => {
       style={{
         width: "100dvw",
         height: "100dvh",
-        backgroundColor: theme.pageBg,
-        backgroundImage: isDark ? "url('/images/wallpaper.png')" : "none",
+        backgroundColor: "#000",
+        backgroundImage: "url('/images/wallpaper.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         position: "relative",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
-        transition: "background-color 0.25s ease",
       }}
     >
-      {isDark ? (
-        <>
-          <div
-            style={{
-              position: "absolute",
-              top: -80,
-              left: -60,
-              width: 280,
-              height: 280,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle, rgba(88,86,214,0.25) 0%, transparent 70%)",
-              pointerEvents: "none",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              bottom: 120,
-              right: -80,
-              width: 240,
-              height: 240,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle, rgba(10,132,255,0.2) 0%, transparent 70%)",
-              pointerEvents: "none",
-            }}
-          />
-        </>
-      ) : null}
+      <div
+        style={{
+          position: "absolute",
+          top: -80,
+          left: -60,
+          width: 280,
+          height: 280,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(88,86,214,0.25) 0%, transparent 70%)",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: 120,
+          right: -80,
+          width: 240,
+          height: 240,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(10,132,255,0.2) 0%, transparent 70%)",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
 
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
+          minHeight: 0,
+        }}
+      >
       <StatusBar
-        isDark={isDark}
-        onToggleTheme={toggleDark}
         onRecommendationClick={() => setShowRecommendation((prev) => !prev)}
       />
 
@@ -1394,7 +1386,7 @@ const MobileHomeContent = () => {
       >
         <p
           style={{
-            color: theme.text,
+            color: "white",
             fontSize: 26,
             fontWeight: 700,
             margin: 0,
@@ -1406,7 +1398,7 @@ const MobileHomeContent = () => {
         </p>
         <p
           style={{
-            color: theme.textMuted,
+            color: "rgba(255,255,255,0.55)",
             fontSize: 14,
             margin: "8px 0 0",
             fontWeight: 400,
@@ -1416,7 +1408,7 @@ const MobileHomeContent = () => {
         </p>
         <p
           style={{
-            color: theme.textFaint,
+            color: "rgba(255,255,255,0.35)",
             fontSize: 12,
             margin: "4px 0 0",
           }}
@@ -1454,14 +1446,14 @@ const MobileHomeContent = () => {
       <div
         style={{
           margin: "0 20px 16px",
-          backgroundColor: isDark ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.82)",
+          backgroundColor: "rgba(255,255,255,0.12)",
           backdropFilter: "blur(24px)",
           borderRadius: 26,
           padding: "14px 20px",
           display: "flex",
           justifyContent: "space-around",
           alignItems: "center",
-          border: `1px solid ${theme.border}`,
+          border: "1px solid rgba(255,255,255,0.15)",
         }}
       >
         {DOCK_APPS.map((id) => {
@@ -1492,6 +1484,7 @@ const MobileHomeContent = () => {
           <Component />
         </AppSheet>
       ))}
+      </div>
     </div>
   );
 };

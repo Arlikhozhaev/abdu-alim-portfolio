@@ -1,5 +1,4 @@
 import { WindowControls } from "#components";
-import BlogFeed from "#components/BlogFeed";
 import { blogPosts } from "#constants";
 import useBlogSearch from "#hooks/useBlogSearch";
 import WindowWrapper from "#hoc/WindowWrapper";
@@ -34,16 +33,25 @@ const Safari = () => {
         <div className="flex-1 flex-center gap-3">
           <ShieldHalf className="icon" />
 
-          <div className="search">
-            <Search className="icon" />
+          <div
+            className="search"
+            data-no-drag
+            onPointerDown={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+          >
+            <Search className="icon pointer-events-none shrink-0" />
 
             <input
-              type="search"
+              type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onPointerDown={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+              onClick={(e) => e.currentTarget.focus()}
               placeholder="Search articles…"
               aria-label="Search blog posts"
-              className="flex-1"
+              autoComplete="off"
+              className="flex-1 min-w-0 w-full cursor-text outline-none select-text bg-transparent text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-zinc-500"
             />
           </div>
         </div>

@@ -29,6 +29,9 @@ const DynamicImageWindow = ({ windowData }) => {
     if (!el) return;
     const [instance] = Draggable.create(el, {
       bounds: "body",
+      trigger: el.querySelector("#window-header") ?? el,
+      cancel: "input,textarea,button,select,option,a,[data-no-drag]",
+      dragClickables: true,
       onPress: () => focusDynamicWindow(key),
     });
     return () => instance.kill();

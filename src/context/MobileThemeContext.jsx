@@ -1,19 +1,16 @@
 import { createContext, useContext } from "react";
-import useDarkStore from "#store/dark";
 import { getMobileTheme } from "#constants/mobileTheme";
 
-const MobileThemeContext = createContext(getMobileTheme(true));
+const darkTheme = getMobileTheme(true);
 
-export const MobileThemeProvider = ({ children }) => {
-  const { isDark } = useDarkStore();
-  const theme = getMobileTheme(isDark);
+const MobileThemeContext = createContext(darkTheme);
 
-  return (
-    <MobileThemeContext.Provider value={theme}>
-      {children}
-    </MobileThemeContext.Provider>
-  );
-};
+/** Mobile UI is always dark — independent of desktop theme toggle. */
+export const MobileThemeProvider = ({ children }) => (
+  <MobileThemeContext.Provider value={darkTheme}>
+    {children}
+  </MobileThemeContext.Provider>
+);
 
 export const useMobileTheme = () => useContext(MobileThemeContext);
 

@@ -38,7 +38,8 @@ const AboutProfile = ({ compact = false }) => {
     backgroundColor: theme.cardBg,
     borderRadius: 16,
     padding: compact ? 14 : 16,
-    border: theme.id === "light" ? `1px solid ${theme.border}` : "none",
+    border: `1px solid ${theme.border}`,
+    boxShadow: theme.cardShadow,
   };
 
   return (
@@ -52,7 +53,8 @@ const AboutProfile = ({ compact = false }) => {
           backgroundColor: theme.cardBg,
           borderRadius: 16,
           overflow: "hidden",
-          border: theme.id === "light" ? `1px solid ${theme.border}` : "none",
+          border: `1px solid ${theme.border}`,
+          boxShadow: theme.cardShadow,
         }}
       >
         <img
