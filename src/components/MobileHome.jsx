@@ -4,30 +4,25 @@ import gsap from "gsap";
 import dayjs from "dayjs";
 import {
   X,
-  MoveRight,
   Check,
   Flag,
   ExternalLink,
   ChevronLeft,
-  Download,
   Trash2,
   FolderOpen,
   FileText,
   User,
   Briefcase,
 } from "lucide-react";
-import { Document, Page, pdfjs } from "react-pdf";
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
-import { gallery, techStack, blogPosts, socials } from "#constants";
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
+import { gallery, techStack, blogPosts, socials, projects, experience, trashItems, CONTACT_EMAIL, aboutContent } from "#constants";
+import AboutProfile from "./AboutProfile";
+import BlogFeed from "./BlogFeed";
+import ResumeViewer from "./ResumeViewer";
+import RecommendationToast from "./RecommendationToast";
+import { MobileThemeProvider, useMobileTheme } from "#context/MobileThemeContext";
 
 // ─── iOS Status Bar ───────────────────────────────────────────────────────────
-const StatusBar = () => {
+const StatusBar = ({ onRecommendationClick }) => {
   const [time, setTime] = useState(dayjs().format("h:mm"));
 
   useEffect(() => {
@@ -48,7 +43,38 @@ const StatusBar = () => {
       >
         {time}
       </span>
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={onRecommendationClick}
+          aria-label="View LinkedIn recommendation"
+          style={{
+            background: "none",
+            border: "none",
+            padding: 4,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <path d="M8 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z" fill="white" />
+            <path
+              d="M3.5 6.5a6.5 6.5 0 0 1 9 0"
+              stroke="white"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              fill="none"
+            />
+            <path
+              d="M1 4a10 10 0 0 1 14 0"
+              stroke="rgba(255,255,255,0.5)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              fill="none"
+            />
+          </svg>
+        </button>
         <div className="flex items-end gap-0.5">
           {[3, 5, 7, 9].map((h, i) => (
             <div
@@ -62,23 +88,6 @@ const StatusBar = () => {
             />
           ))}
         </div>
-        <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
-          <path d="M8 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z" fill="white" />
-          <path
-            d="M3.5 6.5a6.5 6.5 0 0 1 9 0"
-            stroke="white"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            fill="none"
-          />
-          <path
-            d="M1 4a10 10 0 0 1 14 0"
-            stroke="rgba(255,255,255,0.5)"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            fill="none"
-          />
-        </svg>
         <div className="flex items-center gap-0.5">
           <div
             style={{
@@ -100,14 +109,6 @@ const StatusBar = () => {
               }}
             />
           </div>
-          <div
-            style={{
-              width: 2,
-              height: 5,
-              borderRadius: 1,
-              backgroundColor: "rgba(255,255,255,0.5)",
-            }}
-          />
         </div>
       </div>
     </div>
@@ -147,6 +148,7 @@ const AppSheet = ({
   const sheetRef = useRef(null);
   const overlayRef = useRef(null);
   const touch = useRef({ startY: 0, startTime: 0, dragging: false });
+  const theme = useMobileTheme();
 
   useGSAP(() => {
     const sheet = sheetRef.current;
@@ -254,7 +256,7 @@ const AppSheet = ({
           position: "fixed",
           inset: 0,
           zIndex: 100,
-          backgroundColor: "rgba(0,0,0,0.6)",
+          backgroundColor: theme.overlay,
           pointerEvents: "none",
           opacity: 0,
           backdropFilter: "blur(6px)",
@@ -270,7 +272,7 @@ const AppSheet = ({
           height: "92dvh",
           zIndex: 101,
           borderRadius: "20px 20px 0 0",
-          backgroundColor: "#1c1c1e",
+          backgroundColor: theme.sheetBg,
           overflow: "hidden",
           opacity: 0,
           pointerEvents: "none",
@@ -301,7 +303,7 @@ const AppSheet = ({
               />
               <span
                 style={{
-                  color: "white",
+                  color: theme.text,
                   fontWeight: 700,
                   fontSize: 18,
                   letterSpacing: "-0.3px",
@@ -316,7 +318,7 @@ const AppSheet = ({
                 width: 32,
                 height: 32,
                 borderRadius: 16,
-                backgroundColor: "rgba(255,255,255,0.15)",
+                backgroundColor: theme.controlBg,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -324,11 +326,11 @@ const AppSheet = ({
                 cursor: "pointer",
               }}
             >
-              <X size={16} color="white" />
+              <X size={16} color={theme.text} />
             </button>
           </div>
           <div
-            style={{ height: 1, backgroundColor: "rgba(255,255,255,0.08)" }}
+            style={{ height: 1, backgroundColor: theme.border }}
           />
         </div>
 
@@ -461,12 +463,13 @@ const PhotoLightbox = ({ photo, onClose }) => {
 // ─── Photos App ───────────────────────────────────────────────────────────────
 const PhotosApp = () => {
   const [selected, setSelected] = useState(null);
+  const theme = useMobileTheme();
 
   return (
     <div style={{ position: "relative" }}>
       <p
         style={{
-          color: "rgba(255,255,255,0.4)",
+          color: theme.textMuted,
           fontSize: 12,
           marginBottom: 12,
           textTransform: "uppercase",
@@ -537,85 +540,33 @@ const PhotosApp = () => {
 };
 
 // ─── Safari App ───────────────────────────────────────────────────────────────
-const SafariApp = () => (
-  <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-    <p
-      style={{
-        color: "rgba(255,255,255,0.4)",
-        fontSize: 12,
-        textTransform: "uppercase",
-        letterSpacing: 1,
-        margin: 0,
-      }}
-    >
-      My Developer Blog
-    </p>
-    {blogPosts.map(({ id, image, title, date, link }) => (
-      <a
-        key={id}
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ textDecoration: "none", display: "block" }}
-      >
-        <div
-          style={{
-            backgroundColor: "#2c2c2e",
-            borderRadius: 16,
-            overflow: "hidden",
-          }}
-        >
-          <img
-            src={image}
-            alt={title}
-            style={{
-              width: "100%",
-              height: 180,
-              objectFit: "cover",
-              display: "block",
-            }}
-          />
-          <div style={{ padding: 14 }}>
-            <p
-              style={{
-                color: "rgba(255,255,255,0.4)",
-                fontSize: 11,
-                margin: "0 0 6px",
-              }}
-            >
-              {date}
-            </p>
-            <p
-              style={{
-                color: "white",
-                fontWeight: 600,
-                fontSize: 15,
-                lineHeight: 1.4,
-                margin: "0 0 10px",
-              }}
-            >
-              {title}
-            </p>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                color: "#0A84FF",
-              }}
-            >
-              <span style={{ fontSize: 13 }}>Read full post</span>
-              <MoveRight size={14} />
-            </div>
-          </div>
-        </div>
-      </a>
-    ))}
-  </div>
-);
+const SafariApp = () => {
+  const theme = useMobileTheme();
 
-// ─── Contact App ──────────────────────────────────────────────────────────────
-const ContactApp = () => (
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <p
+        style={{
+          color: theme.textMuted,
+          fontSize: 12,
+          textTransform: "uppercase",
+          letterSpacing: 1,
+          margin: 0,
+        }}
+      >
+        My Developer Blog
+      </p>
+      <BlogFeed posts={blogPosts} variant="mobile" />
+    </div>
+  );
+};
+
+// ─── Resume App ───────────────────────────────────────────────────────────────
+const ResumeApp = () => <ResumeViewer variant="mobile" />;
+const ContactApp = () => {
+  const theme = useMobileTheme();
+
+  return (
   <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
     <div
       style={{
@@ -634,13 +585,14 @@ const ContactApp = () => (
           height: 80,
           borderRadius: 40,
           objectFit: "cover",
-          border: "3px solid rgba(255,255,255,0.2)",
+          border: `3px solid ${theme.avatarBorder}`,
+          boxShadow: theme.cardShadow,
         }}
       />
       <div style={{ textAlign: "center" }}>
         <p
           style={{
-            color: "white",
+            color: theme.text,
             fontWeight: 700,
             fontSize: 22,
             margin: 0,
@@ -651,20 +603,28 @@ const ContactApp = () => (
         </p>
         <p
           style={{
-            color: "rgba(255,255,255,0.5)",
+            color: theme.textMuted,
             fontSize: 14,
             margin: "4px 0 0",
           }}
         >
-          Software Developer · Vancouver, BC
+          CS Student & Aspiring Software Engineer · Vancouver, BC
         </p>
       </div>
     </div>
 
-    <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
+    <div
+      style={{
+        backgroundColor: theme.cardBg,
+        borderRadius: 16,
+        padding: 16,
+        border: `1px solid ${theme.border}`,
+        boxShadow: theme.cardShadow,
+      }}
+    >
       <p
         style={{
-          color: "rgba(255,255,255,0.4)",
+          color: theme.textMuted,
           fontSize: 11,
           textTransform: "uppercase",
           letterSpacing: 1,
@@ -674,17 +634,17 @@ const ContactApp = () => (
         Email
       </p>
       <a
-        href="mailto:arlikhozhaevca@gmail.com"
-        style={{ color: "#0A84FF", fontSize: 15, textDecoration: "none" }}
+        href={`mailto:${CONTACT_EMAIL}`}
+        style={{ color: theme.accent, fontSize: 15, textDecoration: "none", fontWeight: 600 }}
       >
-        arlikhozhaevca@gmail.com
+        {CONTACT_EMAIL}
       </a>
     </div>
 
     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       <p
         style={{
-          color: "rgba(255,255,255,0.4)",
+          color: theme.textMuted,
           fontSize: 11,
           textTransform: "uppercase",
           letterSpacing: 1,
@@ -721,185 +681,30 @@ const ContactApp = () => (
                   filter: "brightness(0) invert(1)",
                 }}
               />
-              <span style={{ color: "white", fontWeight: 600, fontSize: 15 }}>
+              <span style={{ color: "#ffffff", fontWeight: 600, fontSize: 15 }}>
                 {text}
               </span>
             </div>
-            <ExternalLink size={14} color="rgba(255,255,255,0.7)" />
+            <ExternalLink size={14} color="rgba(255,255,255,0.85)" />
           </div>
         </a>
       ))}
     </div>
   </div>
-);
+  );
+};
 
 // ─── Notes App (About Me) ─────────────────────────────────────────────────────
-const NotesApp = () => (
-  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-    <div
-      style={{
-        backgroundColor: "#2c2c2e",
-        borderRadius: 16,
-        overflow: "hidden",
-      }}
-    >
-      <img
-        src="/images/young-me.jpg"
-        alt="Abdu Alim"
-        style={{
-          width: "100%",
-          height: "auto",
-          display: "block",
-          objectFit: "contain",
-        }}
-      />
-    </div>
-
-    <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
-      <p
-        style={{
-          color: "white",
-          fontWeight: 700,
-          fontSize: 17,
-          margin: "0 0 8px",
-          letterSpacing: "-0.2px",
-        }}
-      >
-        Hey, I'm Alim (Ah-leem)! 👨🏻‍💻
-      </p>
-      <p
-        style={{
-          color: "rgba(255,255,255,0.75)",
-          fontSize: 14,
-          lineHeight: 1.65,
-          margin: 0,
-        }}
-      >
-        CS student & software engineer based in Vancouver. I build scalable,
-        interactive software and love the intersection where clean engineering
-        meets great design.
-      </p>
-    </div>
-
-    <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
-      <p
-        style={{
-          color: "#0A84FF",
-          fontWeight: 700,
-          fontSize: 13,
-          textTransform: "uppercase",
-          letterSpacing: 1,
-          margin: "0 0 8px",
-        }}
-      >
-        ⚡ What sets me apart
-      </p>
-      <p
-        style={{
-          color: "rgba(255,255,255,0.75)",
-          fontSize: 14,
-          lineHeight: 1.65,
-          margin: 0,
-        }}
-      >
-        I don't just code - I learn fast, adapt quickly, and ship results. I
-        thrive where creativity meets engineering: optimizing systems, solving
-        hard problems, and building things that actually matter.
-      </p>
-    </div>
-
-    <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
-      <p
-        style={{
-          color: "#30d158",
-          fontWeight: 700,
-          fontSize: 13,
-          textTransform: "uppercase",
-          letterSpacing: 1,
-          margin: "0 0 8px",
-        }}
-      >
-        💻 Stack
-      </p>
-      <p
-        style={{
-          color: "rgba(255,255,255,0.75)",
-          fontSize: 14,
-          lineHeight: 1.65,
-          margin: 0,
-        }}
-      >
-        C++, Java, JavaScript, TypeScript, Python, React, Next.js, FastAPI,
-        Node.js, PostgreSQL, Firebase, AWS, Vercel
-      </p>
-    </div>
-
-    <div style={{ backgroundColor: "#2c2c2e", borderRadius: 16, padding: 16 }}>
-      <p
-        style={{
-          color: "#ff9f0a",
-          fontWeight: 700,
-          fontSize: 13,
-          textTransform: "uppercase",
-          letterSpacing: 1,
-          margin: "0 0 8px",
-        }}
-      >
-        🥊 Outside the keyboard
-      </p>
-      <p
-        style={{
-          color: "rgba(255,255,255,0.75)",
-          fontSize: 14,
-          lineHeight: 1.65,
-          margin: 0,
-        }}
-      >
-        Boxing, hiking in the mountains, and nature gazing wherever I can find
-        it. Stepping away from the screen helps me recharge, think clearly, and
-        come back a better engineer.
-      </p>
-    </div>
-
-    <div
-      style={{
-        backgroundColor: "#1a3a5c",
-        borderRadius: 16,
-        padding: 16,
-        border: "1px solid rgba(10,132,255,0.3)",
-      }}
-    >
-      <p
-        style={{
-          color: "white",
-          fontSize: 14,
-          lineHeight: 1.65,
-          margin: "0 0 10px",
-        }}
-      >
-        🚀 Actively seeking software engineering internship opportunities. If
-        you're building something ambitious - let's talk.
-      </p>
-      <a
-        href="mailto:arlikhozhaevca@gmail.com"
-        style={{
-          color: "#0A84FF",
-          fontSize: 14,
-          fontWeight: 600,
-          textDecoration: "none",
-        }}
-      >
-        arlikhozhaevca@gmail.com →
-      </a>
-    </div>
-  </div>
-);
+const NotesApp = () => <AboutProfile />;
 
 // ─── Terminal App (Skills) ────────────────────────────────────────────────────
-const TerminalApp = () => (
+const TerminalApp = () => {
+  const theme = useMobileTheme();
+
+  return (
   <div style={{ fontFamily: "'Roboto Mono', monospace" }}>
-    <p style={{ color: "#00A154", fontSize: 13, marginBottom: 16 }}>
-      <span style={{ color: "white", fontWeight: 700 }}>@abdu-alim % </span>show
+    <p style={{ color: theme.terminalGreen, fontSize: 13, marginBottom: 16 }}>
+      <span style={{ color: theme.terminalPrompt, fontWeight: 700 }}>@abdu-alim % </span>show
       tech stack
     </p>
     <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -907,22 +712,24 @@ const TerminalApp = () => (
         <div
           key={category}
           style={{
-            backgroundColor: "#2c2c2e",
+            backgroundColor: theme.cardBg,
             borderRadius: 12,
             padding: "12px 14px",
             display: "flex",
             gap: 10,
             alignItems: "flex-start",
+            border: `1px solid ${theme.border}`,
+            boxShadow: theme.cardShadow,
           }}
         >
           <Check
             size={14}
-            style={{ color: "#00A154", flexShrink: 0, marginTop: 2 }}
+            style={{ color: theme.terminalGreen, flexShrink: 0, marginTop: 2 }}
           />
           <div>
             <p
               style={{
-                color: "#00A154",
+                color: theme.terminalGreen,
                 fontWeight: 700,
                 fontSize: 12,
                 margin: "0 0 4px",
@@ -932,7 +739,7 @@ const TerminalApp = () => (
             </p>
             <p
               style={{
-                color: "rgba(255,255,255,0.7)",
+                color: theme.textSecondary,
                 fontSize: 12,
                 margin: 0,
                 lineHeight: 1.5,
@@ -947,7 +754,7 @@ const TerminalApp = () => (
     <div
       style={{
         marginTop: 16,
-        color: "#00A154",
+        color: theme.terminalGreen,
         fontSize: 12,
         display: "flex",
         flexDirection: "column",
@@ -964,190 +771,28 @@ const TerminalApp = () => (
           display: "flex",
           alignItems: "center",
           gap: 8,
-          color: "rgba(255,255,255,0.6)",
+          color: theme.terminalMuted,
         }}
       >
         <Flag size={12} fill="currentColor" /> Render time: 6ms
       </p>
     </div>
   </div>
-);
-
-// ─── Resume App ───────────────────────────────────────────────────────────────
-const ResumeApp = () => {
-  const [numPages, setNumPages] = useState(null);
-  const [scale, setScale] = useState(1);
-  const containerRef = useRef(null);
-  const [pageWidth, setPageWidth] = useState(300);
-
-  useEffect(() => {
-    if (containerRef.current) {
-      setPageWidth(containerRef.current.offsetWidth - 32);
-    }
-  }, []);
-
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      {/* Actions */}
-      <div style={{ display: "flex", gap: 8 }}>
-        <a
-          href="/files/resume.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 6,
-            backgroundColor: "#0A84FF",
-            color: "white",
-            fontWeight: 600,
-            fontSize: 13,
-            padding: "12px 0",
-            borderRadius: 12,
-            textDecoration: "none",
-          }}
-        >
-          <ExternalLink size={14} /> Open
-        </a>
-        <a
-          href="/files/resume.pdf"
-          download="Abdu-Alim-Resume.pdf"
-          style={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 6,
-            backgroundColor: "rgba(255,255,255,0.1)",
-            color: "white",
-            fontWeight: 600,
-            fontSize: 13,
-            padding: "12px 0",
-            borderRadius: 12,
-            textDecoration: "none",
-          }}
-        >
-          <Download size={14} /> Download
-        </a>
-      </div>
-
-      {/* Zoom controls */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 16,
-          backgroundColor: "rgba(255,255,255,0.06)",
-          borderRadius: 10,
-          padding: "8px 0",
-        }}
-      >
-        <button
-          onClick={() => setScale((s) => Math.max(0.5, s - 0.25))}
-          style={{
-            background: "none",
-            border: "none",
-            color: "white",
-            fontSize: 20,
-            cursor: "pointer",
-            padding: "0 12px",
-          }}
-        >
-          −
-        </button>
-        <span
-          style={{
-            color: "rgba(255,255,255,0.5)",
-            fontSize: 12,
-            minWidth: 40,
-            textAlign: "center",
-          }}
-        >
-          {Math.round(scale * 100)}%
-        </span>
-        <button
-          onClick={() => setScale((s) => Math.min(2.5, s + 0.25))}
-          style={{
-            background: "none",
-            border: "none",
-            color: "white",
-            fontSize: 20,
-            cursor: "pointer",
-            padding: "0 12px",
-          }}
-        >
-          +
-        </button>
-      </div>
-
-      {/* PDF Viewer */}
-      <div
-        ref={containerRef}
-        style={{
-          backgroundColor: "#2c2c2e",
-          borderRadius: 12,
-          overflow: "auto",
-          maxHeight: "55vh",
-          padding: "16px 0",
-        }}
-      >
-        <Document
-          file="/files/resume.pdf"
-          onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-          loading={
-            <p
-              style={{
-                color: "rgba(255,255,255,0.4)",
-                textAlign: "center",
-                padding: 24,
-                fontSize: 13,
-              }}
-            >
-              Loading...
-            </p>
-          }
-          error={
-            <p
-              style={{
-                color: "#ff453a",
-                textAlign: "center",
-                padding: 24,
-                fontSize: 13,
-              }}
-            >
-              Failed to load PDF.
-            </p>
-          }
-        >
-          {Array.from({ length: numPages || 0 }, (_, i) => (
-            <div
-              key={i}
-              style={{
-                marginBottom: 8,
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <Page
-                pageNumber={i + 1}
-                width={pageWidth * scale}
-                renderTextLayer={false}
-                renderAnnotationLayer={false}
-              />
-            </div>
-          ))}
-        </Document>
-      </div>
-    </div>
   );
 };
 
-// ─── Finder App ───────────────────────────────────────────────────────────────
+// ─── Contact App ──────────────────────────────────────────────────────────────
 const FinderApp = () => {
   const [tab, setTab] = useState("about");
+  const theme = useMobileTheme();
+
+  const cardShell = {
+    backgroundColor: theme.cardBg,
+    borderRadius: 16,
+    overflow: "hidden",
+    border: `1px solid ${theme.border}`,
+    boxShadow: theme.cardShadow,
+  };
 
   const tabs = [
     { id: "about", label: "About", icon: <User size={14} /> },
@@ -1155,51 +800,6 @@ const FinderApp = () => {
     { id: "resume", label: "Resume", icon: <FileText size={14} /> },
     { id: "work", label: "Projects", icon: <FolderOpen size={14} /> },
     { id: "trash", label: "Trash", icon: <Trash2 size={14} /> },
-  ];
-
-  const projects = [
-    {
-      id: 1,
-      name: "FlashStudy-AI",
-      desc: "AI-powered flashcard generator using NLP to transform study material into structured flashcards.",
-      link: "https://flash-study-ai.vercel.app/",
-      img: "/images/project-1.png",
-      tech: ["React", "Node.js", "Firebase", "OpenAI"],
-    },
-    {
-      id: 2,
-      name: "AutoDev",
-      desc: "AI-powered autonomous code analysis, refactoring, and PR automation.",
-      link: "https://github.com/Arlikhozhaev/autodev",
-      img: "/images/project-2.png",
-      tech: ["FastAPI", "Celery", "PostgreSQL", "Next.js"],
-    },
-  ];
-
-  const experience = [
-    {
-      id: 1,
-      company: "Envia Together",
-      logo: "/images/envia-logo.png",
-      title: "Software Developer Intern",
-      dates: "Oct 2025 – Jan 2026",
-      location: "Remote · Vancouver, BC",
-      tech: [
-        "AWS",
-        "Node.js",
-        "TypeScript",
-        "MySQL",
-        "Terraform",
-        "RevenueCat",
-      ],
-      bullets: [
-        "Co-designed and built a subscription backend integrating RevenueCat webhooks, covering the full lifecycle — new subscriptions, renewals, expirations, and cancellations",
-        "Implemented an event-driven AWS architecture (Lambda + API Gateway) serving as the paywall source of truth, decoupling billing logic entirely from mobile clients",
-        "Exposed a subscription status REST API consumed by mobile clients, reducing client-side billing complexity and centralizing subscription state",
-        "Secured API credentials via AWS environment variables and implemented robust error handling for edge cases including expired subscriptions, invalid receipts, and network failures",
-        "Deployed and validated backend services on AWS, testing all endpoint flows using Postman before client integration",
-      ],
-    },
   ];
 
   return (
@@ -1210,7 +810,7 @@ const FinderApp = () => {
           display: "flex",
           gap: 6,
           marginBottom: 16,
-          backgroundColor: "rgba(255,255,255,0.06)",
+          backgroundColor: theme.tabBarBg,
           borderRadius: 12,
           padding: 4,
         }}
@@ -1229,8 +829,8 @@ const FinderApp = () => {
               borderRadius: 9,
               border: "none",
               cursor: "pointer",
-              backgroundColor: tab === id ? "#0A84FF" : "transparent",
-              color: tab === id ? "white" : "rgba(255,255,255,0.45)",
+              backgroundColor: tab === id ? theme.tabActiveBg : "transparent",
+              color: tab === id ? theme.tabActiveText : theme.tabInactiveText,
               transition: "all 0.15s ease",
               fontSize: 10,
               fontWeight: 600,
@@ -1247,7 +847,7 @@ const FinderApp = () => {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <p
             style={{
-              color: "rgba(255,255,255,0.4)",
+              color: theme.textMuted,
               fontSize: 12,
               textTransform: "uppercase",
               letterSpacing: 1,
@@ -1259,11 +859,7 @@ const FinderApp = () => {
           {projects.map(({ id, name, desc, link, img, tech }) => (
             <div
               key={id}
-              style={{
-                backgroundColor: "#2c2c2e",
-                borderRadius: 16,
-                overflow: "hidden",
-              }}
+              style={cardShell}
             >
               <img
                 src={img}
@@ -1278,7 +874,7 @@ const FinderApp = () => {
               <div style={{ padding: 14 }}>
                 <p
                   style={{
-                    color: "white",
+                    color: theme.text,
                     fontWeight: 700,
                     fontSize: 15,
                     margin: "0 0 6px",
@@ -1288,7 +884,7 @@ const FinderApp = () => {
                 </p>
                 <p
                   style={{
-                    color: "rgba(255,255,255,0.55)",
+                    color: theme.textSecondary,
                     fontSize: 13,
                     lineHeight: 1.5,
                     margin: "0 0 10px",
@@ -1308,8 +904,8 @@ const FinderApp = () => {
                     <span
                       key={t}
                       style={{
-                        backgroundColor: "rgba(255,255,255,0.1)",
-                        color: "rgba(255,255,255,0.7)",
+                        backgroundColor: theme.chipBg,
+                        color: theme.chipText,
                         fontSize: 10,
                         padding: "3px 9px",
                         borderRadius: 20,
@@ -1328,7 +924,7 @@ const FinderApp = () => {
                     display: "flex",
                     alignItems: "center",
                     gap: 6,
-                    color: "#0A84FF",
+                    color: theme.accent,
                     fontSize: 13,
                     textDecoration: "none",
                     fontWeight: 600,
@@ -1347,7 +943,7 @@ const FinderApp = () => {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <p
             style={{
-              color: "rgba(255,255,255,0.4)",
+              color: theme.textMuted,
               fontSize: 12,
               textTransform: "uppercase",
               letterSpacing: 1,
@@ -1358,21 +954,13 @@ const FinderApp = () => {
           </p>
           {experience.map(
             ({ id, company, logo, title, dates, location, tech, bullets }) => (
-              <div
-                key={id}
-                style={{
-                  backgroundColor: "#2c2c2e",
-                  borderRadius: 16,
-                  overflow: "hidden",
-                }}
-              >
+              <div key={id} style={cardShell}>
                 {/* Card Header */}
                 <div
                   style={{
-                    background:
-                      "linear-gradient(135deg, #1c3a5c, rgba(10,132,255,0.12))",
+                    background: theme.experienceHeader,
                     padding: "16px 14px 12px",
-                    borderBottom: "1px solid rgba(255,255,255,0.06)",
+                    borderBottom: `1px solid ${theme.experienceHeaderBorder}`,
                   }}
                 >
                   <div
@@ -1391,15 +979,15 @@ const FinderApp = () => {
                         height: 44,
                         borderRadius: 10,
                         objectFit: "contain",
-                        backgroundColor: "rgba(255,255,255,0.08)",
+                        backgroundColor: theme.experienceLogoBg,
                         padding: 4,
-                        border: "1px solid rgba(255,255,255,0.1)",
+                        border: `1px solid ${theme.experienceLogoBorder}`,
                       }}
                     />
                     <div>
                       <p
                         style={{
-                          color: "white",
+                          color: theme.text,
                           fontWeight: 700,
                           fontSize: 15,
                           margin: "0 0 3px",
@@ -1409,7 +997,7 @@ const FinderApp = () => {
                       </p>
                       <p
                         style={{
-                          color: "#0A84FF",
+                          color: theme.accent,
                           fontWeight: 600,
                           fontSize: 12,
                           margin: 0,
@@ -1422,7 +1010,7 @@ const FinderApp = () => {
                   <div style={{ display: "flex", gap: 12 }}>
                     <p
                       style={{
-                        color: "rgba(255,255,255,0.4)",
+                        color: theme.textMuted,
                         fontSize: 11,
                         margin: 0,
                       }}
@@ -1431,7 +1019,7 @@ const FinderApp = () => {
                     </p>
                     <p
                       style={{
-                        color: "rgba(255,255,255,0.4)",
+                        color: theme.textMuted,
                         fontSize: 11,
                         margin: 0,
                       }}
@@ -1464,14 +1052,14 @@ const FinderApp = () => {
                           width: 5,
                           height: 5,
                           borderRadius: "50%",
-                          backgroundColor: "#0A84FF",
+                          backgroundColor: theme.bulletColor,
                           flexShrink: 0,
                           marginTop: 7,
                         }}
                       />
                       <p
                         style={{
-                          color: "rgba(255,255,255,0.7)",
+                          color: theme.textSecondary,
                           fontSize: 13,
                           lineHeight: 1.65,
                           margin: 0,
@@ -1496,8 +1084,8 @@ const FinderApp = () => {
                     <span
                       key={t}
                       style={{
-                        backgroundColor: "rgba(10,132,255,0.12)",
-                        color: "#0A84FF",
+                        backgroundColor: theme.tagBg,
+                        color: theme.tagText,
                         fontSize: 10,
                         padding: "3px 9px",
                         borderRadius: 20,
@@ -1518,214 +1106,76 @@ const FinderApp = () => {
       {tab === "resume" && <ResumeApp />}
 
       {/* About Tab */}
-      {tab === "about" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <div
-            style={{
-              backgroundColor: "#2c2c2e",
-              borderRadius: 16,
-              overflow: "hidden",
-            }}
-          >
-            <img
-              src="/images/young-me.jpg"
-              alt="Abdu Alim"
-              style={{ width: "100%", height: "auto", display: "block" }}
-            />
-          </div>
-
-          <div
-            style={{
-              backgroundColor: "#2c2c2e",
-              borderRadius: 16,
-              padding: 14,
-            }}
-          >
-            <p
-              style={{
-                color: "white",
-                fontWeight: 700,
-                fontSize: 16,
-                margin: "0 0 8px",
-              }}
-            >
-              Hey, I'm Alim (Ah-leem)! 👨🏻‍💻
-            </p>
-            <p
-              style={{
-                color: "rgba(255,255,255,0.75)",
-                fontSize: 13,
-                lineHeight: 1.65,
-                margin: 0,
-              }}
-            >
-              CS student & software engineer in Vancouver. I build scalable,
-              interactive software where clean engineering meets great design.
-            </p>
-          </div>
-
-          <div
-            style={{
-              backgroundColor: "#2c2c2e",
-              borderRadius: 16,
-              padding: 14,
-            }}
-          >
-            <p
-              style={{
-                color: "#0A84FF",
-                fontWeight: 700,
-                fontSize: 13,
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                margin: "0 0 8px",
-              }}
-            >
-              ⚡ What sets me apart
-            </p>
-            <p
-              style={{
-                color: "rgba(255,255,255,0.75)",
-                fontSize: 13,
-                lineHeight: 1.65,
-                margin: 0,
-              }}
-            >
-              I don't just code - I learn fast, adapt quickly, and ship results.
-              I thrive where creativity meets engineering: optimizing systems,
-              solving hard problems, and building things that actually matter.
-            </p>
-          </div>
-
-          <div
-            style={{
-              backgroundColor: "#2c2c2e",
-              borderRadius: 16,
-              padding: 14,
-            }}
-          >
-            <p
-              style={{
-                color: "#30d158",
-                fontWeight: 700,
-                fontSize: 13,
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                margin: "0 0 8px",
-              }}
-            >
-              💻 Stack
-            </p>
-            <p
-              style={{
-                color: "rgba(255,255,255,0.75)",
-                fontSize: 14,
-                lineHeight: 1.65,
-                margin: 0,
-              }}
-            >
-              C++, Java, JavaScript, TypeScript, Python, React, Next.js,
-              FastAPI, Node.js, PostgreSQL, Firebase, AWS, Vercel
-            </p>
-          </div>
-
-          <div
-            style={{
-              backgroundColor: "#2c2c2e",
-              borderRadius: 16,
-              padding: 14,
-            }}
-          >
-            <p
-              style={{
-                color: "#ff9f0a",
-                fontWeight: 700,
-                fontSize: 13,
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                margin: "0 0 8px",
-              }}
-            >
-              🥊 Outside the keyboard
-            </p>
-            <p
-              style={{
-                color: "rgba(255,255,255,0.75)",
-                fontSize: 14,
-                lineHeight: 1.65,
-                margin: 0,
-              }}
-            >
-              Boxing, hiking in the mountains, and nature gazing wherever I can
-              find it. Stepping away from the screen helps me recharge, think
-              clearly, and come back a better engineer.
-            </p>
-          </div>
-
-          <div
-            style={{
-              backgroundColor: "#1a3a5c",
-              borderRadius: 16,
-              padding: 14,
-              border: "1px solid rgba(10,132,255,0.3)",
-            }}
-          >
-            <p
-              style={{
-                color: "white",
-                fontSize: 14,
-                lineHeight: 1.65,
-                margin: "0 0 8px",
-              }}
-            >
-              🚀 Actively seeking software engineering internship opportunities.
-              If you're building something ambitious - let's talk.
-            </p>
-            <a
-              href="mailto:arlikhozhaevca@gmail.com"
-              style={{
-                color: "#0A84FF",
-                fontSize: 13,
-                fontWeight: 600,
-                textDecoration: "none",
-              }}
-            >
-              arlikhozhaevca@gmail.com →
-            </a>
-          </div>
-        </div>
-      )}
+      {tab === "about" && <AboutProfile compact />}
 
       {/* Trash Tab */}
-      {tab === "trash" && (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            paddingTop: 60,
-            gap: 16,
-          }}
-        >
-          <Trash2 size={64} color="rgba(255,255,255,0.15)" />
-          <p
+      {tab === "trash" &&
+        (trashItems.length > 0 ? (
+          <div
             style={{
-              color: "rgba(255,255,255,0.3)",
-              fontSize: 15,
-              fontWeight: 500,
-              margin: 0,
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gap: 12,
             }}
           >
-            Trash is Empty
-          </p>
-          <p
-            style={{ color: "rgba(255,255,255,0.18)", fontSize: 12, margin: 0 }}
+            {trashItems.map(({ id, name, imageUrl }) => (
+              <div key={id} style={cardShell}>
+                <img
+                  src={imageUrl}
+                  alt={name}
+                  style={{
+                    width: "100%",
+                    height: 120,
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+                <p
+                  style={{
+                    color: theme.textMuted,
+                    fontSize: 11,
+                    margin: 0,
+                    padding: "8px 12px",
+                  }}
+                >
+                  {name}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              paddingTop: 60,
+              gap: 16,
+            }}
           >
-            Items deleted more than 30 days ago will be removed.
-          </p>
-        </div>
-      )}
+            <Trash2 size={64} color={theme.emptyIcon} />
+            <p
+              style={{
+                color: theme.emptyText,
+                fontSize: 15,
+                fontWeight: 500,
+                margin: 0,
+              }}
+            >
+              Trash is Empty
+            </p>
+            <p
+              style={{
+                color: theme.emptySubtext,
+                fontSize: 12,
+                margin: 0,
+              }}
+            >
+              Items deleted more than 30 days ago will be removed.
+            </p>
+          </div>
+        ))}
     </div>
   );
 };
@@ -1845,9 +1295,10 @@ const GRID_APPS = ["notes", "terminal", "resume"];
 const DOCK_APPS = ["finder", "safari", "photos", "contact"];
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
-const MobileHome = () => {
+const MobileHomeContent = () => {
   const [activeApp, setActiveApp] = useState(null);
   const [originRect, setOriginRect] = useState(null);
+  const [showRecommendation, setShowRecommendation] = useState(false);
 
   const openApp = useCallback((id, rect) => {
     setOriginRect(rect);
@@ -1864,16 +1315,17 @@ const MobileHome = () => {
       style={{
         width: "100dvw",
         height: "100dvh",
+        backgroundColor: "#000",
         backgroundImage: "url('/images/wallpaper.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         position: "relative",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
       }}
     >
-      {/* Ambient glows */}
       <div
         style={{
           position: "absolute",
@@ -1885,6 +1337,7 @@ const MobileHome = () => {
           background:
             "radial-gradient(circle, rgba(88,86,214,0.25) 0%, transparent 70%)",
           pointerEvents: "none",
+          zIndex: 0,
         }}
       />
       <div
@@ -1898,10 +1351,30 @@ const MobileHome = () => {
           background:
             "radial-gradient(circle, rgba(10,132,255,0.2) 0%, transparent 70%)",
           pointerEvents: "none",
+          zIndex: 0,
         }}
       />
 
-      <StatusBar />
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
+          minHeight: 0,
+        }}
+      >
+      <StatusBar
+        onRecommendationClick={() => setShowRecommendation((prev) => !prev)}
+      />
+
+      {showRecommendation ? (
+        <RecommendationToast
+          topOffset="48px"
+          onClose={() => setShowRecommendation(false)}
+        />
+      ) : null}
 
       {/* Greeting */}
       <div
@@ -1921,7 +1394,7 @@ const MobileHome = () => {
             lineHeight: 1.25,
           }}
         >
-          Hey, I'm Abdu Alim! 👋
+          {aboutContent.headline}
         </p>
         <p
           style={{
@@ -2011,8 +1484,15 @@ const MobileHome = () => {
           <Component />
         </AppSheet>
       ))}
+      </div>
     </div>
   );
 };
+
+const MobileHome = () => (
+  <MobileThemeProvider>
+    <MobileHomeContent />
+  </MobileThemeProvider>
+);
 
 export default MobileHome;

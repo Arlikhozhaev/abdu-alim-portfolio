@@ -1,5 +1,5 @@
 import WindowWrapper from "#hoc/WindowWrapper";
-import { socials } from "#constants";
+import { socials, CONTACT_EMAIL } from "#constants";
 import { WindowControls } from "#components";
 
 const Contact = () => {
@@ -19,7 +19,12 @@ const Contact = () => {
 
         <h3 className="text-xl font-semibold dark:text-gray-100">Let's Connect</h3>
         <p className="dark:text-gray-300">Got an idea? A bug to squash? Or just wanna talk tech? I'm in!</p>
-        <p className="dark:text-gray-300">arlikhozhaevca@gmail.com</p>
+        <a
+          href={`mailto:${CONTACT_EMAIL}`}
+          className="text-blue-600 dark:text-blue-400 hover:underline"
+        >
+          {CONTACT_EMAIL}
+        </a>
 
         <ul>
           {socials.map(({ id, bg, link, icon, text }) => (
