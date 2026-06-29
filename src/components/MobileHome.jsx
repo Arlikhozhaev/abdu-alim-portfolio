@@ -14,7 +14,7 @@ import {
   User,
   Briefcase,
 } from "lucide-react";
-import { gallery, techStack, blogPosts, socials, projects, experience, trashItems, CONTACT_EMAIL, aboutContent } from "#constants";
+import { gallery, techStack, blogPosts, socials, projects, experience, volunteerExperience, education, trashItems, CONTACT_EMAIL, aboutContent } from "#constants";
 import AboutProfile from "./AboutProfile";
 import BlogFeed from "./BlogFeed";
 import ResumeViewer from "./ResumeViewer";
@@ -610,7 +610,7 @@ const ContactApp = () => {
             margin: "4px 0 0",
           }}
         >
-          CS Student & Aspiring Software Engineer · Vancouver, BC
+          Langara College · CS (A.S., Dec 2026) · Vancouver, BC
         </p>
       </div>
     </div>
@@ -952,7 +952,91 @@ const FinderApp = () => {
               margin: 0,
             }}
           >
-            Work Experience
+            Education
+          </p>
+          {education.map(({ id, institution, degree, dates, location, coursework }) => (
+            <div key={id} style={cardShell}>
+              <div style={{ padding: "16px 14px" }}>
+                <p
+                  style={{
+                    color: theme.text,
+                    fontWeight: 700,
+                    fontSize: 15,
+                    margin: "0 0 4px",
+                  }}
+                >
+                  {institution}
+                </p>
+                <p
+                  style={{
+                    color: theme.textSecondary,
+                    fontSize: 13,
+                    lineHeight: 1.55,
+                    margin: "0 0 8px",
+                  }}
+                >
+                  {degree}
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 12px", marginBottom: coursework?.length ? 10 : 0 }}>
+                  <p
+                    style={{
+                      color: theme.textMuted,
+                      fontSize: 11,
+                      margin: 0,
+                    }}
+                  >
+                    {dates}
+                  </p>
+                  <p
+                    style={{
+                      color: theme.textMuted,
+                      fontSize: 11,
+                      margin: 0,
+                    }}
+                  >
+                    · {location}
+                  </p>
+                </div>
+                {coursework?.length ? (
+                  <>
+                    <p
+                      style={{
+                        color: theme.textMuted,
+                        fontSize: 10,
+                        fontWeight: 600,
+                        textTransform: "uppercase",
+                        letterSpacing: 0.8,
+                        margin: "0 0 6px",
+                      }}
+                    >
+                      Relevant Coursework
+                    </p>
+                    <p
+                      style={{
+                        color: theme.textSecondary,
+                        fontSize: 12,
+                        lineHeight: 1.6,
+                        margin: 0,
+                      }}
+                    >
+                      {coursework.join(" · ")}
+                    </p>
+                  </>
+                ) : null}
+              </div>
+            </div>
+          ))}
+
+          <p
+            style={{
+              color: theme.textMuted,
+              fontSize: 12,
+              textTransform: "uppercase",
+              letterSpacing: 1,
+              margin: "8px 0 0",
+            }}
+          >
+            Experience
           </p>
           {experience.map(
             ({ id, company, logo, title, dates, location, tech, bullets }) => (
@@ -1074,6 +1158,162 @@ const FinderApp = () => {
                 </div>
 
                 {/* Tech Tags */}
+                <div
+                  style={{
+                    padding: "0 14px 14px",
+                    display: "flex",
+                    gap: 6,
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {tech.map((t) => (
+                    <span
+                      key={t}
+                      style={{
+                        backgroundColor: theme.tagBg,
+                        color: theme.tagText,
+                        fontSize: 10,
+                        padding: "3px 9px",
+                        borderRadius: 20,
+                        fontWeight: 500,
+                      }}
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ),
+          )}
+
+          <p
+            style={{
+              color: theme.textMuted,
+              fontSize: 12,
+              textTransform: "uppercase",
+              letterSpacing: 1,
+              margin: "8px 0 0",
+            }}
+          >
+            Volunteer
+          </p>
+          {volunteerExperience.map(
+            ({ id, company, logo, title, dates, location, tech, bullets }) => (
+              <div key={id} style={cardShell}>
+                <div
+                  style={{
+                    background: theme.experienceHeader,
+                    padding: "16px 14px 12px",
+                    borderBottom: `1px solid ${theme.experienceHeaderBorder}`,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      marginBottom: 8,
+                    }}
+                  >
+                    <img
+                      src={logo}
+                      alt={`${company} logo`}
+                      style={{
+                        width: 44,
+                        height: 44,
+                        borderRadius: 10,
+                        objectFit: "contain",
+                        backgroundColor: theme.experienceLogoBg,
+                        padding: 4,
+                        border: `1px solid ${theme.experienceLogoBorder}`,
+                      }}
+                    />
+                    <div>
+                      <p
+                        style={{
+                          color: theme.text,
+                          fontWeight: 700,
+                          fontSize: 15,
+                          margin: "0 0 3px",
+                        }}
+                      >
+                        {company}
+                      </p>
+                      <p
+                        style={{
+                          color: theme.accent,
+                          fontWeight: 600,
+                          fontSize: 12,
+                          margin: 0,
+                        }}
+                      >
+                        {title}
+                      </p>
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", gap: 12 }}>
+                    <p
+                      style={{
+                        color: theme.textMuted,
+                        fontSize: 11,
+                        margin: 0,
+                      }}
+                    >
+                      {dates}
+                    </p>
+                    <p
+                      style={{
+                        color: theme.textMuted,
+                        fontSize: 11,
+                        margin: 0,
+                      }}
+                    >
+                      · {location}
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    padding: 16,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 10,
+                  }}
+                >
+                  {bullets.map((b, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        display: "flex",
+                        gap: 10,
+                        alignItems: "flex-start",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 5,
+                          height: 5,
+                          borderRadius: "50%",
+                          backgroundColor: theme.bulletColor,
+                          flexShrink: 0,
+                          marginTop: 7,
+                        }}
+                      />
+                      <p
+                        style={{
+                          color: theme.textSecondary,
+                          fontSize: 13,
+                          lineHeight: 1.65,
+                          margin: 0,
+                        }}
+                      >
+                        {b}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
                 <div
                   style={{
                     padding: "0 14px 14px",

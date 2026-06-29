@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { aboutContent, CONTACT_EMAIL, techStack } from "#constants";
+import { aboutContent, CONTACT_EMAIL, techStack, education } from "#constants";
 import { useMobileTheme } from "#context/MobileThemeContext";
 import OptimizedImage from "./OptimizedImage";
 
@@ -94,6 +94,78 @@ const AboutProfile = ({ compact = false }) => {
           {aboutContent.intro}
         </p>
       </div>
+
+      {education.map(({ id, institution, degree, dates, location, coursework }) => (
+        <div key={id} data-about-item style={cardStyle}>
+          <p
+            style={{
+              color: "#bf5af2",
+              fontWeight: 700,
+              fontSize: sectionTitleSize,
+              textTransform: "uppercase",
+              letterSpacing: 1,
+              margin: "0 0 8px",
+            }}
+          >
+            🎓 Education
+          </p>
+          <p
+            style={{
+              color: theme.text,
+              fontWeight: 700,
+              fontSize: compact ? 14 : 15,
+              margin: "0 0 4px",
+            }}
+          >
+            {institution}
+          </p>
+          <p
+            style={{
+              color: theme.textSecondary,
+              fontSize: bodySize,
+              lineHeight: 1.55,
+              margin: "0 0 6px",
+            }}
+          >
+            {degree}
+          </p>
+          <p
+            style={{
+              color: theme.textMuted,
+              fontSize: compact ? 11 : 12,
+              margin: coursework?.length ? "0 0 10px" : 0,
+            }}
+          >
+            {dates} · {location}
+          </p>
+          {coursework?.length ? (
+            <>
+              <p
+                style={{
+                  color: theme.textMuted,
+                  fontSize: 10,
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: 0.8,
+                  margin: "0 0 6px",
+                }}
+              >
+                Relevant Coursework
+              </p>
+              <p
+                style={{
+                  color: theme.textSecondary,
+                  fontSize: compact ? 12 : 13,
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
+                {coursework.join(" · ")}
+              </p>
+            </>
+          ) : null}
+        </div>
+      ))}
 
       {aboutContent.sections.map(({ id, emoji, title, accent, body }) => (
         <div key={id} data-about-item style={cardStyle}>
