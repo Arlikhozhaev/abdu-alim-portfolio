@@ -6,6 +6,11 @@ import { fileURLToPath } from 'url'
 import { seoPrerenderPlugin } from './vite-plugin-seo-prerender.js'
 
 export default defineConfig(({ mode }) => ({
+  define: {
+    "import.meta.env.VITE_ASSET_VERSION": JSON.stringify(
+      process.env.VITE_ASSET_VERSION ?? String(Date.now()),
+    ),
+  },
   plugins: [
     react(),
     taillwindcss(),

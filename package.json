@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "build:seo": "vite build --mode prerender",
+    "build": "npm run images:webp && vite build",
+    "build:seo": "npm run images:webp && vite build --mode prerender",
     "prerender:seo": "node scripts/prerender-seo.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
