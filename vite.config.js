@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import taillwindcss from '@tailwindcss/vite'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
+import process from 'node:process'
 import { seoPrerenderPlugin } from './vite-plugin-seo-prerender.js'
 
 export default defineConfig(({ mode }) => ({
