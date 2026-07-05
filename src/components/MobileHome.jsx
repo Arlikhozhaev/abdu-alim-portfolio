@@ -858,7 +858,7 @@ const FinderApp = () => {
           >
             Projects
           </p>
-          {projects.map(({ id, name, desc, link, img, tech }) => (
+          {projects.map(({ id, name, desc, description, link, linkLabel, img, tech }) => (
             <div
               key={id}
               style={cardShell}
@@ -884,16 +884,36 @@ const FinderApp = () => {
                 >
                   {name}
                 </p>
-                <p
-                  style={{
-                    color: theme.textSecondary,
-                    fontSize: 13,
-                    lineHeight: 1.5,
-                    margin: "0 0 10px",
-                  }}
-                >
-                  {desc}
-                </p>
+                {desc ? (
+                  <p
+                    style={{
+                      color: theme.textSecondary,
+                      fontSize: 13,
+                      lineHeight: 1.5,
+                      margin: "0 0 10px",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {desc}
+                  </p>
+                ) : null}
+                {description?.length ? (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 10 }}>
+                    {description.map((paragraph, index) => (
+                      <p
+                        key={index}
+                        style={{
+                          color: theme.textSecondary,
+                          fontSize: 13,
+                          lineHeight: 1.6,
+                          margin: 0,
+                        }}
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                ) : null}
                 <div
                   style={{
                     display: "flex",
@@ -932,7 +952,7 @@ const FinderApp = () => {
                     fontWeight: 600,
                   }}
                 >
-                  View Project <ExternalLink size={13} />
+                  {linkLabel ?? "View Project"} <ExternalLink size={13} />
                 </a>
               </div>
             </div>
