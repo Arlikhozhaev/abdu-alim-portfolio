@@ -75,7 +75,7 @@ const Safari = () => {
           <div className="space-y-8">
             {filteredPosts.map(({ id, image, title, date, link }) => (
               <div key={id} className="blog-post">
-                <div className="col-span-2">
+                <div className="blog-thumb">
                   <OptimizedImage src={image} alt={title} />
                 </div>
 

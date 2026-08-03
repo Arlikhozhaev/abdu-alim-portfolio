@@ -97,6 +97,14 @@ const blogPosts = [
     image: "/images/blog1.png",
     link: "https://medium.com/techtrends-digest/ai-made-student-developers-faster-but-not-necessarily-better-19750d07d0f6",
   },
+  {
+    id: 2,
+    date: "Aug 2, 2026",
+    title:
+      "I Built ReviewLens to Find the Signal Hidden in Thousands of Customer Reviews",
+    image: "/images/blog2.png",
+    link: "https://medium.com/@arlikhozhaevca/building-reviewlens-how-i-designed-an-ai-analysis-pipeline-that-turns-raw-feedback-into-product-258188cc8721?sharedUserId=arlikhozhaevca",
+  },
 ];
 
 

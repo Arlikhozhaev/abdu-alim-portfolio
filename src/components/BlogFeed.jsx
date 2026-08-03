@@ -65,7 +65,7 @@ const BlogFeed = ({ posts, variant = "desktop" }) => {
         {filteredPosts.map(({ id, image, title, date, link }) =>
           isDesktop ? (
             <div key={id} className="blog-post">
-              <div className="col-span-2">
+              <div className="blog-thumb">
                 <OptimizedImage src={image} alt={title} />
               </div>
               <div className="content">
