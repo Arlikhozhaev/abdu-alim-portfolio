@@ -111,27 +111,23 @@ const blogPosts = [
 const techStack = [
   {
     category: "Languages",
-    items: ["TypeScript", "JavaScript", "C/C++", "Java", "Python", "SQL", "Bash"],
+    items: ["TypeScript", "JavaScript", "Java", "C/C++", "Python", "SQL", "Bash"],
   },
   {
-    category: "Frontend",
-    items: ["React", "Next.js", "Tailwind CSS", "HTML5", "CSS3"],
+    category: "Backend Systems",
+    items: ["Node.js", "FastAPI", "RESTful APIs", "Celery", "Redis", "Auth.js"],
   },
   {
-    category: "Backend",
-    items: ["Node.js", "FastAPI", "RESTful APIs", "Celery", "AWS Lambda", "API Gateway"],
-  },
-  {
-    category: "AI & LLMs",
-    items: ["OpenAI API", "Claude API", "Vercel AI SDK", "k-means clustering"],
-  },
-  {
-    category: "Cloud & DevOps",
-    items: ["AWS(EC2, S3, Lambda, API Gateway, IAM)", "Terraform(IaC)", "Vercel", "Git", "Linux"],
-  },
-  {
-    category: "Databases",
+    category: "Databases & Storage",
     items: ["PostgreSQL", "MySQL", "Supabase", "Prisma ORM"],
+  },
+  {
+    category: "Cloud & Infrastructure",
+    items: ["AWS(EC2, S3, Lambda, API Gateway)", "Terraform(IaC)", "Docker", "Vercel", "GitHub Actions", "Linux", "Git"],
+  },
+  {
+    category: "Frontend & Testing",
+    items: ["React", "Next.js", "Tailwind CSS", "HTML5", "CSS3", "Vitest", "Playwright"],
   },
 ];
 

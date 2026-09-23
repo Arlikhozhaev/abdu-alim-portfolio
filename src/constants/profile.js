@@ -13,7 +13,7 @@ export const aboutContent = {
   heroImage: "/images/young-me.jpg",
   headline: "Hey, I'm Abdu Alim! 👋",
   intro:
-    "Computer Science student at Langara College (Associate of Science, expected Dec 2026) and aspiring software engineer in Vancouver. I build scalable, user-friendly software where clean engineering meets thoughtful design.",
+    "Computer Science student at Langara College (Computer Science, expected Dec 2026) and aspiring software engineer in Vancouver. I build scalable, user-friendly software where clean engineering meets thoughtful design.",
   photos: [
     {
       id: 1,
@@ -55,8 +55,8 @@ export const aboutContent = {
     body: "Actively seeking software engineering opportunities to learn, ship, and grow. If you're building something ambitious — let's talk.",
   },
   desktopDescription: [
-    "Computer Science student at Langara College (Associate of Science, expected Dec 2026), based in Vancouver. I build full-stack products where solid engineering and clear UX work together.",
-    "I specialize in C/C++, Java, JavaScript, TypeScript, React, and Next.js — and I love making things feel smooth, fast, and delightful.",
+    "Computer Science student at Langara College (Computer Science, expected Dec 2026), based in Vancouver. I build full-stack products where solid engineering and clear UX work together.",
+    "I specialize in TypeScript, JavaScript, C/C++, Java, React, and Next.js — and I love making things feel smooth, fast, and delightful.",
     "I'm big on clean UI, solid UX, reliable backends, and code that doesn't need a search party to debug.",
     "Outside of dev work, you'll find me boxing, golfing, hiking somewhere in the mountains, or literally nature gazing anywhere I can. 😅",
   ],
@@ -66,7 +66,7 @@ export const education = [
   {
     id: 1,
     institution: "Langara College",
-    degree: "Associate of Science, Computer Science",
+    degree: "Associate of Science, Computer Science (Transfer Pathway)",
     dates: "Expected Dec 2026",
     location: "Vancouver, BC",
     coursework: [
